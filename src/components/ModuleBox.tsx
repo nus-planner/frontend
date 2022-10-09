@@ -1,36 +1,68 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  IconButton,
+  Flex,
+  Spacer,
+  Button,
+} from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Module } from "../interfaces/planner";
+import { CloseIcon } from "@chakra-ui/icons";
 
 interface ModuleBoxProps {
   module: Module;
+  displayModuleClose: boolean;
+  handleModuleClose?: (module: Module) => void;
 }
 
-const ModuleBox = ({ module }: ModuleBoxProps) => {
+const ModuleBox = ({
+  module,
+  displayModuleClose,
+  handleModuleClose,
+}: ModuleBoxProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: module.code });
 
   const style = { transform: CSS.Transform.toString(transform), transition };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Box
-        w="16rem"
-        h="5rem"
-        bgColor="green.100"
-        alignContent="center"
-        margin="0"
-        marginBottom="0.4rem"
-        borderBottom="0.2rem"
-        borderRadius="0.4rem"
-        border="1px"
-        borderColor="grey.300"
-        padding="0.2rem 0.5rem"
-      >
-        <Text fontWeight='bold'>{module.code}</Text>
-        <Text>{module.name}</Text>
-      </Box>
+    <div>
+      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <Box
+          w="16rem"
+          h="5rem"
+          bgColor="green.100"
+          alignContent="center"
+          margin="0"
+          marginBottom="0.4rem"
+          borderBottom="0.2rem"
+          borderRadius="0.4rem"
+          border="1px"
+          borderColor="grey.300"
+          padding="0.2rem 0.5rem"
+        >
+          <Flex>
+            <Text fontWeight="bold">{module.code} </Text>
+            <Spacer />
+            {displayModuleClose && (
+              <IconButton
+                icon={<CloseIcon />}
+                aria-label="Remove Module"
+                size="sm"
+                onClick={() => {
+                  console.log("hi");
+                  handleModuleClose(module);
+                }}
+              />
+            )}
+          </Flex>
+
+          <Text>{module.name}</Text>
+        </Box>
+      </div>
     </div>
   );
 };

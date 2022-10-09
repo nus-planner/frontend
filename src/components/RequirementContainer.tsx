@@ -1,7 +1,9 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, Grid, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
 import {
   SortableContext,
   horizontalListSortingStrategy,
+  rectSortingStrategy,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import ModuleBox from "./ModuleBox";
 import { Requirement } from "../interfaces/planner";
@@ -19,30 +21,36 @@ const RequirementContainer = ({
   });
 
   return (
-    <div ref={setNodeRef}>
+    <HStack ref={setNodeRef}>
       <Box
         m="2"
         padding="3"
         alignItems="left"
         color="black"
-        minH="5em"
-        minW="20em"
+        minH="10em"
+        minW="60em"
       >
         <SortableContext
           items={requirement.modules.map((mod) => mod.code)}
           id={id}
-          strategy={horizontalListSortingStrategy}
+          strategy={verticalListSortingStrategy}
         >
-          <HStack>
+          <HStack
+            boxShadow="outline"
+            minH="10em"
+            minW="20em"
+          >
             {requirement.modules.map((module) => (
-              <div key={module.code}>
-                <ModuleBox module={module} />
-              </div>
+              <ModuleBox
+                module={module}
+                key={module.code}
+                displayModuleClose={false}
+              />
             ))}
           </HStack>
         </SortableContext>
       </Box>
-    </div>
+    </HStack>
   );
 };
 

@@ -8,13 +8,17 @@ import {
 import { Module } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 
+interface PlannerContainerProps {
+  semester: Module[];
+  id: string;
+  handleModuleClose: (module: Module) => void;
+}
+
 const PlannerContainer = ({
   semester,
   id,
-}: {
-  semester: Module[];
-  id: string;
-}) => {
+  handleModuleClose,
+}: PlannerContainerProps) => {
   const { setNodeRef } = useDroppable({
     id: id,
   });
@@ -37,7 +41,12 @@ const PlannerContainer = ({
         >
           <VStack>
             {semester.modules.map((module) => (
-              <ModuleBox module={module} key={module.code} />
+              <ModuleBox
+                module={module}
+                key={module.code}
+                displayModuleClose={true}
+                handleModuleClose={handleModuleClose}
+              />
             ))}
           </VStack>
         </SortableContext>

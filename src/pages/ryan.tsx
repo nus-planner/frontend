@@ -4,22 +4,30 @@ import {
   Grid,
   GridItem,
   HStack,
+  SimpleGrid,
   StackDivider,
   VStack,
 } from "@chakra-ui/react";
-import { DndContext, closestCorners, useDroppable } from "@dnd-kit/core";
-import ModuleBox from "../components/ModuleBox";
 import {
-  arrayMove,
-  horizontalListSortingStrategy,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+  DndContext,
+  closestCorners,
+  useDroppable,
+  closestCenter,
+  useSensor,
+  PointerSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import ModuleBox from "../components/ModuleBox";
+import { arrayMove } from "@dnd-kit/sortable";
 import { useState } from "react";
 import { Module, Requirement, ModulesState } from "../interfaces/planner";
 import { insertAtIndex, removeAtIndex } from "../utils/dndUtils";
 import RequirementContainer from "../components/RequirementContainer";
 import PlannerContainer from "../components/PlannerContainer";
+import {
+  dummyModuleState,
+  sampleModuleRequirements,
+} from "../constants/dummyModuleData";
 
 interface Container {
   id: string;
@@ -127,7 +135,6 @@ const dummyModuleState: ModulesState = {
 // For requirements: Container id = requirements.title
 // For planner: Container id = planner array idx (0,1,2,...)
 // Concern: Do we care about special term?
-// TODO: Optimise this maybe, this is slow
 
 const RyanTestPage = () => {
   // OLD, for reference only
@@ -171,10 +178,6 @@ const RyanTestPage = () => {
       return;
     }
 
-    // if (!over.id) {
-    //   return;
-    // }
-
     const activeContainer = active.data.current.sortable.containerId;
     const overContainer = over.data.current?.sortable.containerId || over.id;
 
@@ -200,16 +203,8 @@ const RyanTestPage = () => {
     const { active, over } = event;
     console.log(`handleDragEnd, active: ${active.id}, over: ${over.id}`);
 
-    // if (!over.id) {
-    //   return;
-    // }
-
     const activeContainer = active.data.current.sortable.containerId;
     const overContainer = over.data.current?.sortable.containerId || over.id;
-
-    // if (!activeContainer || !overContainer) {
-    //   return;
-    // }
 
     const activeIndex = active.data.current.sortable.index;
     console.log(`test ${over.id}`);
@@ -241,7 +236,8 @@ const RyanTestPage = () => {
             return newState;
           } else if (containerType === "requirement") {
             var newState: ModulesState = { ...state };
-            const requirementIndex = getRequirementIndex(containerId[1]);
+            // const requirementIndex = getRequirementIndex(containerId[1]);
+            const requirementIndex = parseInt(containerId[1]);
             console.log(requirementIndex);
             console.log(newState.requirements[requirementIndex]);
 
@@ -293,7 +289,7 @@ const RyanTestPage = () => {
       );
     }
     if (activeContainerType == "requirement") {
-      var reqIdx = getRequirementIndex(activeContainerId[1]);
+      var reqIdx = parseInt(activeContainerId[1]);
       console.log(reqIdx);
       console.log(newState.requirements);
       item = newState.requirements[reqIdx].modules[activeIndex];
@@ -317,7 +313,8 @@ const RyanTestPage = () => {
     }
 
     if (overContainerType == "requirement") {
-      var reqIdx = getRequirementIndex(overContainerId[1]);
+      // var reqIdx = getRequirementIndex(overContainerId[1]);
+      var reqIdx = parseInt(overContainerId[1]);
       newState.requirements[reqIdx].modules = insertAtIndex(
         newState.requirements[reqIdx].modules,
         overIndex,
@@ -328,10 +325,44 @@ const RyanTestPage = () => {
     return newState;
   };
 
+  const handleModuleClose = (module: Module) => {
+    const newModulesState = { ...modulesState };
+
+    for (let i = 0; i < newModulesState.planner.length; i++) {
+      for (let j = 0; j < newModulesState.planner[i].length; j++) {
+        if (newModulesState.planner[i][j].code === module.code) {
+          newModulesState.planner[i] = removeAtIndex(
+            newModulesState.planner[i],
+            j
+          );
+          break;
+        }
+      }
+    }
+
+    for (let i = 0; i < moduleRequirements.length; i++) {
+      for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
+        if (moduleRequirements[i].modules[j].code === module.code) {
+          newModulesState.requirements[i].modules.push(module);
+        }
+      }
+    }
+
+    setModulesState(newModulesState);
+  };
+
   const [activeId, setActiveId] = useState(null);
+
+  const [moduleRequirements, setModuleRequirements] = useState<Requirement[]>(
+    sampleModuleRequirements
+  );
 
   const [modulesState, setModulesState] =
     useState<ModulesState>(dummyModuleState);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
+  );
 
   return (
     <DndContext
@@ -340,8 +371,8 @@ const RyanTestPage = () => {
       onDragStart={handleDragStart}
       onDragCancel={handleDragCancel}
       onDragOver={handleDragOver}
+      sensors={sensors}
     >
-      <a>Testing random junk</a>
       <div />
       <Box
         bgColor="gray.200"
@@ -354,7 +385,7 @@ const RyanTestPage = () => {
           {modulesState.requirements.map((requirement, id) => (
             <RequirementContainer
               requirement={requirement}
-              id={"requirement:" + requirement.title}
+              id={"requirement:" + id.toString()}
             />
           ))}
         </VStack>
@@ -364,6 +395,7 @@ const RyanTestPage = () => {
           {modulesState.planner.map((semester, id) => (
             <PlannerContainer
               semester={semester}
+              handleModuleClose={handleModuleClose}
               id={"planner:" + id.toString()}
             />
           ))}
