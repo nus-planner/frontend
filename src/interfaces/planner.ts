@@ -14,5 +14,5 @@ export interface Requirement {
 export interface ModulesState {
   requirements: Requirement[];
   planner: Module[][];
-  startYear: string;
+  startSem: number;
 }
