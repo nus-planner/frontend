@@ -31,12 +31,12 @@ const PlannerContainer = ({
         minW="20em"
       >
         <SortableContext
-          items={semester.map((mod) => mod.code)}
+          items={semester.modules.map((mod) => mod.code)}
           id={id}
           strategy={verticalListSortingStrategy}
         >
           <VStack>
-            {semester.map((module) => (
+            {semester.modules.map((module) => (
               <ModuleBox module={module} key={module.code} />
             ))}
           </VStack>

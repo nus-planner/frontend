@@ -8,11 +8,18 @@ export interface Module {
 export interface Requirement {
   title: string;
   description: string;
+  totalCredits: number;
   modules: Module[];
+}
+
+export interface Semester {
+  year: number;
+  semester: number;
+  modules: Module[]
 }
 
 export interface ModulesState {
   requirements: Requirement[];
-  planner: Module[][];
+  planner: Semester[];
   startYear: string;
 }
