@@ -50,15 +50,10 @@ const RyanTestPage = () => {
           moduleMap.set(module.code, module);
         }
       }
-      // for (let i = 0; i < sampleModuleRequirements.length; i++) {
-      //   state.requirements[i].modules = [];
-      //   for (let module of sampleModuleRequirements[i].modules) {
-      //     console.log(module);
-      //     if (moduleMap.has(module.code)) {
-      //       state.requirements[i].modules.push(module);
-      //     }
-      //   }
-      // }
+
+      console.log(moduleMap);
+      console.log(moduleRequirementsCodes);
+
       for (let i = 0; i < moduleRequirementsCodes.length; i++) {
         state.requirements[i].modules = [];
         for (let code of moduleRequirementsCodes[i]) {
@@ -276,7 +271,12 @@ const RyanTestPage = () => {
       sensors={sensors}
     >
       <div />
-      <Heading fontSize={'xl'} fontWeight={'bold'} fontFamily={'body'} padding='1em 1em 0.5em'>
+      <Heading
+        fontSize={"xl"}
+        fontWeight={"bold"}
+        fontFamily={"body"}
+        padding="1em 1em 0.5em"
+      >
         Required Modules
       </Heading>
       <div className="verscroll">
@@ -287,17 +287,26 @@ const RyanTestPage = () => {
           padding="0.5em"
           borderRadius="0.5em"
         >
-          <VStack align="left" divider={<StackDivider borderColor="purple.100" />}>
+          <VStack
+            align="left"
+            divider={<StackDivider borderColor="purple.100" />}
+          >
             {modulesState.requirements.map((requirement, id) => (
               <RequirementContainer
                 requirement={requirement}
                 id={"requirement:" + id.toString()}
+                key={id}
               />
             ))}
           </VStack>
         </Box>
       </div>
-      <Heading fontSize={'xl'} fontWeight={'bold'} fontFamily={'body'} padding='1.5em 1em 0.5em'>
+      <Heading
+        fontSize={"xl"}
+        fontWeight={"bold"}
+        fontFamily={"body"}
+        padding="1.5em 1em 0.5em"
+      >
         Study Plan
       </Heading>
       <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
@@ -307,6 +316,7 @@ const RyanTestPage = () => {
               semester={semester}
               handleModuleClose={handleModuleClose}
               id={"planner:" + id.toString()}
+              key={id}
             />
           ))}
         </HStack>

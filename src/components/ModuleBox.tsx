@@ -30,8 +30,8 @@ const ModuleBox = ({
   const style = { transform: CSS.Transform.toString(transform), transition };
   let text;
   if (module.credits != null) {
-    text = <Text fontSize={'xx-small'}>{module.credits}MCs</Text>;
-  } 
+    text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
+  }
 
   let moduleColor;
   if (module.category == 1) {
@@ -65,15 +65,17 @@ const ModuleBox = ({
           padding="0.2rem 0.5rem"
         >
           <Flex>
-            <Text fontSize={'medium'} color='black.900' fontWeight="bold">{module.code} </Text>
+            <Text fontSize={"medium"} color="black.900" fontWeight="bold">
+              {module.code.split(":")[0]}{" "}
+            </Text>
             <Spacer />
             {displayModuleClose && (
               <IconButton
                 icon={<CloseIcon />}
                 aria-label="Remove Module"
-                size='xs'
+                size="xs"
                 bgColor={moduleColor}
-                color='black'
+                color="black"
                 colorScheme={moduleColor}
                 onClick={() => {
                   console.log("hi");
@@ -82,7 +84,9 @@ const ModuleBox = ({
               />
             )}
           </Flex>
-          <Text color='black.900' fontSize={'xs'}>{module.name}</Text>
+          <Text color="black.900" fontSize={"xs"}>
+            {module.name}
+          </Text>
           {text}
         </Box>
       </div>
