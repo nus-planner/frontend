@@ -276,43 +276,32 @@ const RyanTestPage = () => {
       sensors={sensors}
     >
       <div />
-      <Heading
-        fontSize={"xl"}
-        fontWeight={"bold"}
-        fontFamily={"body"}
-        padding="1em"
-      >
+      <Heading fontSize={'xl'} fontWeight={'bold'} fontFamily={'body'} padding='1em 1em 0.5em'>
         Required Modules
       </Heading>
-      <Box
-        bgColor="purple.50"
-        margin="1em 1em 4em"
-        borderColor="black"
-        padding="0.5em"
-        borderRadius="0.5em"
-      >
-        <VStack
-          align="left"
-          divider={<StackDivider borderColor="purple.300" />}
+      <div className="verscroll">
+        <Box
+          bgColor="purple.50"
+          margin="1em 1em 4em"
+          borderColor="black"
+          padding="0.5em"
+          borderRadius="0.5em"
         >
-          {modulesState.requirements.map((requirement, id) => (
-            <RequirementContainer
-              requirement={requirement}
-              id={"requirement:" + id.toString()}
-            />
-          ))}
-        </VStack>
-      </Box>
-      <Heading
-        fontSize={"xl"}
-        fontWeight={"bold"}
-        fontFamily={"body"}
-        padding="1em"
-      >
+          <VStack align="left" divider={<StackDivider borderColor="purple.100" />}>
+            {modulesState.requirements.map((requirement, id) => (
+              <RequirementContainer
+                requirement={requirement}
+                id={"requirement:" + id.toString()}
+              />
+            ))}
+          </VStack>
+        </Box>
+      </div>
+      <Heading fontSize={'xl'} fontWeight={'bold'} fontFamily={'body'} padding='1.5em 1em 0.5em'>
         Study Plan
       </Heading>
-      <Box margin="1em 1em 4em" borderColor="black" padding="0.5em">
-        <HStack align="top" divider={<StackDivider borderColor="gray.400" />}>
+      <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
+        <HStack align="top">
           {modulesState.planner.map((semester, id) => (
             <PlannerContainer
               semester={semester}

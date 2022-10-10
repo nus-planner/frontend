@@ -38,7 +38,7 @@ const PlannerContainer = ({
           strategy={verticalListSortingStrategy}
         >
           <VStack>
-            <Text padding='2' fontSize={'sm'} color={'purple.900'}>Year {semester.year} Sem {semester.semester}</Text>
+            <Text padding='2' fontSize={'sm'} fontWeight='bold' color={'black.900'}>Year {semester.year} Sem {semester.semester}</Text>
             {semester.modules.map((module) => (
               <ModuleBox
                 module={module}
