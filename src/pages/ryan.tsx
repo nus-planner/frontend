@@ -28,7 +28,6 @@ import RequirementContainer from "../components/RequirementContainer";
 import PlannerContainer from "../components/PlannerContainer";
 import {
   dummyModuleState,
-  sampleModuleRequirements,
 } from "../constants/dummyModuleData";
 
 interface Container {
@@ -275,7 +274,7 @@ const RyanTestPage = () => {
   const [activeId, setActiveId] = useState(null);
 
   const [moduleRequirements, setModuleRequirements] = useState<Requirement[]>(
-    sampleModuleRequirements
+    dummyModuleState.requirements
   );
 
   const [modulesState, setModulesState] =
