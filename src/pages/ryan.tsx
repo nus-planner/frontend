@@ -28,6 +28,7 @@ import RequirementContainer from "../components/RequirementContainer";
 import PlannerContainer from "../components/PlannerContainer";
 import {
   dummyModuleState,
+  sampleModuleRequirements,
 } from "../constants/dummyModuleData";
 
 interface Container {
@@ -41,49 +42,30 @@ interface Container {
 // Concern: Do we care about special term?
 
 const RyanTestPage = () => {
-
-  // OLD, for reference only
-  const getContainer = (moduleCode: string): Container => {
-    // Check requirements for module code
-    for (var requirement of modulesState.requirements) {
-      for (var module of requirement.modules) {
-        if (module.code === moduleCode) {
-          return { id: requirement.title, containerType: "requirement" };
-        }
-      }
-    }
-    // Check planner for module code
-    for (var i = 0; i < modulesState.planner.length; i++) {
-      for (var module of modulesState.planner[i]) {
-        if (module.code === moduleCode) {
-          return { id: i.toString(), containerType: "planner" };
-        }
-      }
-    }
-    return null;
-  };
-
   const sortRequirementModules = (): void => {
-    const moduleSet = new Set();
+    const moduleMap = new Map();
     setModulesState((state) => {
       for (let requirement of state.requirements) {
         for (let module of requirement.modules) {
-          moduleSet.add(module.code);
+          moduleMap.set(module.code, module);
         }
       }
 
-      for (let i = 0; i < moduleRequirements.length; i++) {
+      console.log(moduleMap);
+      console.log(moduleRequirementsCodes);
+
+      for (let i = 0; i < moduleRequirementsCodes.length; i++) {
         state.requirements[i].modules = [];
-        for (let module of moduleRequirements[i].modules) {
-          if (moduleSet.has(module.code)) {
-            state.requirements[i].modules.push(module);
+        for (let code of moduleRequirementsCodes[i]) {
+          if (moduleMap.has(code)) {
+            state.requirements[i].modules.push(moduleMap.get(code));
           }
         }
       }
 
       return state;
     });
-  }
+  };
 
   const handleDragOver = (event) => {
     const { active, over } = event;
@@ -245,6 +227,7 @@ const RyanTestPage = () => {
   const handleModuleClose = (module: Module) => {
     const newModulesState = { ...modulesState };
 
+    // Remove module from planner
     for (let i = 0; i < newModulesState.planner.length; i++) {
       for (let j = 0; j < newModulesState.planner[i].modules.length; j++) {
         if (newModulesState.planner[i].modules[j].code === module.code) {
@@ -256,25 +239,19 @@ const RyanTestPage = () => {
         }
       }
     }
-
-    for (let i = 0; i < newModulesState.requirements.length; i++) {
-      for (let j = 0; j < newModulesState.requirements[i].modules.length; j++) {
-        if (newModulesState.requirements[i].modules[j].code === module.code) {
-          newModulesState.requirements[i].modules.push(module);
-          newModulesState.requirements[i].modules.sort((a, b) =>
-            a.code.localeCompare(b.code)
-          );
-        }
-      }
-    }
-
+    newModulesState.requirements[0].modules.push(module);
     setModulesState(newModulesState);
+    sortRequirementModules();
   };
 
   const [activeId, setActiveId] = useState(null);
 
-  const [moduleRequirements, setModuleRequirements] = useState<Requirement[]>(
-    dummyModuleState.requirements
+  const [moduleRequirements, setModuleRequirements] = useState<Requirement[]>({
+    ...sampleModuleRequirements,
+  });
+
+  const moduleRequirementsCodes = sampleModuleRequirements.map((x) =>
+    x.modules.map((mod) => mod.code)
   );
 
   const [modulesState, setModulesState] =
@@ -294,7 +271,12 @@ const RyanTestPage = () => {
       sensors={sensors}
     >
       <div />
-      <Heading fontSize={'xl'} fontWeight={'bold'} fontFamily={'body'} padding='1em 1em 0.5em'>
+      <Heading
+        fontSize={"xl"}
+        fontWeight={"bold"}
+        fontFamily={"body"}
+        padding="1em 1em 0.5em"
+      >
         Required Modules
       </Heading>
       <div className="verscroll">
@@ -305,17 +287,26 @@ const RyanTestPage = () => {
           padding="0.5em"
           borderRadius="0.5em"
         >
-          <VStack align="left" divider={<StackDivider borderColor="purple.100" />}>
+          <VStack
+            align="left"
+            divider={<StackDivider borderColor="purple.100" />}
+          >
             {modulesState.requirements.map((requirement, id) => (
               <RequirementContainer
                 requirement={requirement}
                 id={"requirement:" + id.toString()}
+                key={id}
               />
             ))}
           </VStack>
         </Box>
       </div>
-      <Heading fontSize={'xl'} fontWeight={'bold'} fontFamily={'body'} padding='1.5em 1em 0.5em'>
+      <Heading
+        fontSize={"xl"}
+        fontWeight={"bold"}
+        fontFamily={"body"}
+        padding="1.5em 1em 0.5em"
+      >
         Study Plan
       </Heading>
       <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
@@ -325,6 +316,7 @@ const RyanTestPage = () => {
               semester={semester}
               handleModuleClose={handleModuleClose}
               id={"planner:" + id.toString()}
+              key={id}
             />
           ))}
         </HStack>

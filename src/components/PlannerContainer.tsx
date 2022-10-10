@@ -5,11 +5,11 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { Module } from "../interfaces/planner";
+import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 
 interface PlannerContainerProps {
-  semester: Module[];
+  semester: Semester;
   id: string;
   handleModuleClose: (module: Module) => void;
 }

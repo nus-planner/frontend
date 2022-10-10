@@ -34,8 +34,8 @@ const ModuleBox = ({
   const style = { transform: CSS.Transform.toString(transform), transition };
   let text;
   if (module.credits != null) {
-    text = <Text fontSize={'xx-small'}>{module.credits}MCs</Text>;
-  } 
+    text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
+  }
 
   let moduleColor;
   if (module.category == 1) {
@@ -56,12 +56,12 @@ const ModuleBox = ({
   if (module.name != "Select A Module") {
     modName = <Text color='black.900' fontSize={'xs'}>{module.name}</Text>;
   } else {
-    if (module.code == "Any Primary"){
+    if (module.code.split(':')[0] == "Any Primary"){
       modName = <Select placeholder="Select A Module" borderColor={'black'} size="sm" marginTop={"2"}>
         {primaries.map((primary) =>
         <option> {primary} </option>)}
       </Select>;
-    } else if (module.code == 'Any UE') {
+    } else if (module.code.split(':')[0] == 'Any UE') {
       modName = <Input borderColor={'black'} size="sm" marginTop={"2"} placeholder='Key in a module'></Input>;
     }
   }
@@ -83,15 +83,17 @@ const ModuleBox = ({
           padding="0.2rem 0.5rem"
         >
           <Flex>
-            <Text fontSize={'medium'} color='black.900' fontWeight="bold">{module.code} </Text>
+            <Text fontSize={"medium"} color="black.900" fontWeight="bold">
+              {module.code.split(":")[0]}{" "}
+            </Text>
             <Spacer />
             {displayModuleClose && (
               <IconButton
                 icon={<CloseIcon />}
                 aria-label="Remove Module"
-                size='xs'
+                size="xs"
                 bgColor={moduleColor}
-                color='black'
+                color="black"
                 colorScheme={moduleColor}
                 onClick={() => {
                   console.log("hi");
