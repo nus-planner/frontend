@@ -1,4 +1,6 @@
 import {
+  Input,
+  Select,
   Box,
   Heading,
   Text,
@@ -12,6 +14,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
+import { model } from "mongoose";
+import {primaries} from "../constants/dummyModuleData";
 
 interface ModuleBoxProps {
   module: Module;
@@ -48,6 +52,20 @@ const ModuleBox = ({
     moduleColor = "yellow.100";
   }
 
+  let modName;
+  if (module.name != "Select A Module") {
+    modName = <Text color='black.900' fontSize={'xs'}>{module.name}</Text>;
+  } else {
+    if (module.code == "Any Primary"){
+      modName = <Select placeholder="Select A Module" borderColor={'black'} size="sm" marginTop={"2"}>
+        {primaries.map((primary) =>
+        <option> {primary} </option>)}
+      </Select>;
+    } else if (module.code == 'Any UE') {
+      modName = <Input borderColor={'black'} size="sm" marginTop={"2"} placeholder='Key in a module'></Input>;
+    }
+  }
+
   return (
     <div>
       <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
@@ -82,7 +100,7 @@ const ModuleBox = ({
               />
             )}
           </Flex>
-          <Text color='black.900' fontSize={'xs'}>{module.name}</Text>
+          {modName}
           {text}
         </Box>
       </div>

@@ -155,7 +155,7 @@ export const sampleModuleRequirements: Requirement[] = [
     ],
   },
 ];
-*/
+
 // Complete study plan yy help me pls ;-;
 export const sampleStudyPlan: Module[][] = [
   [
@@ -179,3 +179,24 @@ export const sampleStudyPlan: Module[][] = [
     { code: "CS3230", name: "Design and Analysis of Algorithms", credits: 4 },
   ],
 ];
+*/
+
+export const primaries = [
+"CS3231 Theory of Computation",
+"CS3236 Introduction to Information Theory",
+"CS4231 Parallel and Distributed Algorithms",
+"CS4232 Theory of Computation",
+"CS4234 Optimisation Algorithms",
+"CS3233 Competitive Programming",
+"CS4257 Algorithmic Foundations of Privacy",
+"CS4261 Algorithmic Mechanism Design",
+"CS4268 Quantum Computing",
+"CS4269 Fundamentals of Logic in Computer Science",
+"CS4330 Combinatorial Methods in Bioinformatics",
+"CS5230 Computational Complexity",
+"CS5234 Algorithms at Scale",
+"CS5236 Advanced Automata Theory",
+"CS5237 Computational Geometry and Applications",
+"CS5238 Advanced Combinatorial Methods in Bioinformatics",
+"CS5330 Randomized Algorithms",
+]
