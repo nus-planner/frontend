@@ -6,6 +6,7 @@ import {
   Flex,
   Spacer,
   Button,
+  color,
 } from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -32,9 +33,9 @@ const ModuleBox = ({
     <div>
       <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
         <Box
-          w="16rem"
+          w="12rem"
           h="5rem"
-          bgColor="green.100"
+          bgColor="purple.100"
           alignContent="center"
           margin="0"
           marginBottom="0.4rem"
@@ -45,13 +46,15 @@ const ModuleBox = ({
           padding="0.2rem 0.5rem"
         >
           <Flex>
-            <Text fontWeight="bold">{module.code} </Text>
+            <Text fontSize={'medium'} color='purple.00' fontWeight="bold">{module.code} </Text>
             <Spacer />
             {displayModuleClose && (
               <IconButton
                 icon={<CloseIcon />}
                 aria-label="Remove Module"
-                size="sm"
+                size='xs'
+                backgroundColor={'purple.300'}
+                color='purple.100'
                 onClick={() => {
                   console.log("hi");
                   handleModuleClose(module);
@@ -59,8 +62,8 @@ const ModuleBox = ({
               />
             )}
           </Flex>
-
-          <Text>{module.name}</Text>
+          <Text color='purple.900' fontSize={'xs'}>{module.name}</Text>
+          <Text color='purple.700' fontSize={'xx-small'}>{module.credits}MCs</Text>
         </Box>
       </div>
     </div>
