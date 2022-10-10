@@ -24,3 +24,13 @@ a {
     background: black;
   }
 }
+
+.horiscroll {
+  overflow-y: auto;
+}
+
+.verscroll {
+  height: 30em;
+  overflow-x: auto;
+  border-radius: 30px;
+}
