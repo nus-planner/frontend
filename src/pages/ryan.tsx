@@ -1,5 +1,8 @@
 import {
+  Button,
+  Flex,
   Heading,
+  Select,
   Text,
   Box,
   Container,
@@ -262,66 +265,92 @@ const RyanTestPage = () => {
   );
 
   return (
-    <DndContext
-      collisionDetection={closestCorners}
-      onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}
-      onDragCancel={handleDragCancel}
-      onDragOver={handleDragOver}
-      sensors={sensors}
-    >
-      <div />
-      <Heading
-        fontSize={"xl"}
-        fontWeight={"bold"}
-        fontFamily={"body"}
-        padding="1em 1em 0.5em"
-      >
-        Required Modules
-      </Heading>
-      <div className="verscroll">
-        <Box
-          bgColor="purple.50"
-          margin="1em 1em 4em"
-          borderColor="black"
-          padding="0.5em"
-          borderRadius="0.5em"
+    <div>
+      <HStack padding="1em 0.8em 0.1em 1.2em">
+        <Heading
+          fontSize={"2xl"}
+          fontWeight={"bold"}
+          fontFamily={"body"}
+          paddingRight="1em"
         >
-          <VStack
-            align="left"
-            divider={<StackDivider borderColor="purple.100" />}
+          NUS Planner
+        </Heading>
+        <Select placeholder="Choose your enrollment year" width={"15rem"} padding=""> 
+          <option>AY2019/2020</option> 
+        </Select>
+        <Select placeholder="Choose your major" width={"15rem"} padding=""> 
+          <option>Computer Science</option> 
+        </Select>
+        <Select placeholder="Choose your focus areea" width={"15rem"}> 
+          <option>Algorithms & Theory</option> 
+        </Select>
+      </HStack>
+      <DndContext
+        collisionDetection={closestCorners}
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+        onDragCancel={handleDragCancel}
+        onDragOver={handleDragOver}
+        sensors={sensors}
+      >
+        <div />
+        <Heading
+          fontSize={"xl"}
+          fontWeight={"bold"}
+          fontFamily={"body"}
+          padding="1em 1em 0.5em"
+        >
+          Required Modules
+        </Heading>
+        <div className="verscroll">
+          <Box
+            bgColor="purple.50"
+            margin="1em 1em 4em"
+            borderColor="black"
+            padding="0.5em"
+            borderRadius="0.5em"
           >
-            {modulesState.requirements.map((requirement, id) => (
-              <RequirementContainer
-                requirement={requirement}
-                id={"requirement:" + id.toString()}
+            <VStack
+              align="left"
+              divider={<StackDivider borderColor="purple.100" />}
+            >
+              {modulesState.requirements.map((requirement, id) => (
+                <RequirementContainer
+                  requirement={requirement}
+                  id={"requirement:" + id.toString()}
+                  key={id}
+                />
+              ))}
+            </VStack>
+          </Box>
+        </div>
+        <HStack padding="1.5em 1em 0.5em">
+          <Heading
+            fontSize={"xl"}
+            fontWeight={"bold"}
+            fontFamily={"body"}
+            paddingRight = "1em"
+          >
+            Study Plan
+          </Heading>
+          <Button size='sm' colorScheme={"white"} variant="outline">
+            + New Semester
+          </Button>
+        </HStack>
+        <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
+          <HStack align="top">
+            {modulesState.planner.map((semester, id) => (
+              <PlannerContainer
+                semester={semester}
+                handleModuleClose={handleModuleClose}
+                id={"planner:" + id.toString()}
                 key={id}
               />
             ))}
-          </VStack>
+          </HStack>
         </Box>
-      </div>
-      <Heading
-        fontSize={"xl"}
-        fontWeight={"bold"}
-        fontFamily={"body"}
-        padding="1.5em 1em 0.5em"
-      >
-        Study Plan
-      </Heading>
-      <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
-        <HStack align="top">
-          {modulesState.planner.map((semester, id) => (
-            <PlannerContainer
-              semester={semester}
-              handleModuleClose={handleModuleClose}
-              id={"planner:" + id.toString()}
-              key={id}
-            />
-          ))}
-        </HStack>
-      </Box>
-    </DndContext>
+      </DndContext>
+    </div>
   );
 };
 

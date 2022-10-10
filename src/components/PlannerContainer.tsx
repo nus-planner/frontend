@@ -1,9 +1,10 @@
-import { Text, Box, VStack } from "@chakra-ui/react";
+import { IconButton, Text, Box, VStack } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import DeleteIcon from '@chakra-ui/icons';
 
 import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
