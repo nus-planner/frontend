@@ -42,6 +42,7 @@ interface Container {
 // Concern: Do we care about special term?
 
 const RyanTestPage = () => {
+
   // OLD, for reference only
   const getContainer = (moduleCode: string): Container => {
     // Check requirements for module code
@@ -63,16 +64,27 @@ const RyanTestPage = () => {
     return null;
   };
 
-  const getRequirementIndex = (requirementTitle: string): number => {
-    for (var i = 0; i < modulesState.requirements.length; i++) {
-      console.log(modulesState.requirements[i].title, requirementTitle);
-      if (modulesState.requirements[i].title === requirementTitle) {
-        console.log(i);
-        return i;
+  const sortRequirementModules = (): void => {
+    const moduleSet = new Set();
+    setModulesState((state) => {
+      for (let requirement of state.requirements) {
+        for (let module of requirement.modules) {
+          moduleSet.add(module.code);
+        }
       }
-    }
-    return -1;
-  };
+
+      for (let i = 0; i < moduleRequirements.length; i++) {
+        state.requirements[i].modules = [];
+        for (let module of moduleRequirements[i].modules) {
+          if (moduleSet.has(module.code)) {
+            state.requirements[i].modules.push(module);
+          }
+        }
+      }
+
+      return state;
+    });
+  }
 
   const handleDragOver = (event) => {
     const { active, over } = event;
@@ -164,6 +176,7 @@ const RyanTestPage = () => {
         }
       });
     }
+    sortRequirementModules();
   };
 
   const handleDragStart = ({ active }) => setActiveId(active.id);
@@ -244,11 +257,14 @@ const RyanTestPage = () => {
         }
       }
     }
-    for (let i = 0; i < newModulesState.requirements.length; i++) {
-      for (let j = 0; j < newModulesState.requirements[i].modules.length; j++) {
-        console.log(module.code);
-        if (newModulesState.requirements[i].modules[j].code === module.code) {
+
+    for (let i = 0; i < moduleRequirements.length; i++) {
+      for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
+        if (moduleRequirements[i].modules[j].code === module.code) {
           newModulesState.requirements[i].modules.push(module);
+          newModulesState.requirements[i].modules.sort((a, b) =>
+            a.code.localeCompare(b.code)
+          );
         }
       }
     }
