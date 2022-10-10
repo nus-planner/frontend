@@ -22,39 +22,42 @@ const RequirementContainer = ({
   });
 
   return (
-    <HStack ref={setNodeRef} h='100px' backgroundColor={'purple.50'}>
+    <HStack ref={setNodeRef} h='95px' backgroundColor={'purple.50'}>
       <Flex align='flex-start'>
         <Stack spacing={0} mb={5} w='250px'>
           <Heading fontSize={'medium'} fontWeight={500} fontFamily={'body'} >
             {requirement.title}
           </Heading>
-          <Text fontSize={'xs'} color={'gray.500'}>{requirement.description}</Text>
+          <Text pt={'2'} fontSize={'x-small'} color={'gray.500'}>{requirement.description}</Text>
         </Stack>
       </Flex>
-      <Box
-        alignContent={'baseline'}
-        alignItems="left"
-        color="black"
-      >
-        <SortableContext
-          items={requirement.modules.map((mod) => mod.code)}
-          id={id}
-          strategy={verticalListSortingStrategy}
+      <div className="horiscroll">
+        <Box
+          alignContent={'baseline'}
+          alignItems="left"
+          color="black"
+          scrollBehavior={'auto'}
         >
-          <HStack
-            minH="5em"
-            minW="20em"
+          <SortableContext
+            items={requirement.modules.map((mod) => mod.code)}
+            id={id}
+            strategy={verticalListSortingStrategy}
           >
-            {requirement.modules.map((module) => (
-              <ModuleBox
-                module={module}
-                key={module.code}
-                displayModuleClose={false}
-              />
-            ))}
-          </HStack>
-        </SortableContext>
-      </Box>
+            <HStack
+              minH="5em"
+              minW="20em"
+            >
+              {requirement.modules.map((module) => (
+                <ModuleBox
+                  module={module}
+                  key={module.code}
+                  displayModuleClose={false}
+                />
+              ))}
+            </HStack>
+          </SortableContext>
+        </Box>
+      </div>
     </HStack>
   );
 };

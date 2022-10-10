@@ -1,4 +1,5 @@
 export interface Module {
+  category: number;
   code: string;
   name: string;
   credits: number;
