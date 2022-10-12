@@ -22,7 +22,7 @@ const RequirementContainer = ({
   id: string;
 }) => {
   return (
-    <Droppable droppableId={id} direction='horizontal'>
+    <Droppable droppableId={id} direction="horizontal" isDropDisabled={true}>
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
           <HStack h="95px" backgroundColor={"purple.50"}>

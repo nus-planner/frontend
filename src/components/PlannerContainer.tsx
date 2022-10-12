@@ -35,7 +35,7 @@ const PlannerContainer = ({
         <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              <VStack width='12rem' boxShadow='outline'>
+              <VStack minW='12rem' minH='18em'>
                 {semester.modules.map((module, idx) => (
                   <ModuleBox
                     module={module}
