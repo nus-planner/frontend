@@ -1,6 +1,5 @@
 import {
   Button,
-
   Heading,
   Select,
   Box,
@@ -8,8 +7,7 @@ import {
   StackDivider,
   VStack,
 } from "@chakra-ui/react";
-import ModuleBox from "../components/OldModuleBox";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Module, Requirement, ModulesState } from "../interfaces/planner";
 import { insertAtIndex, removeAtIndex } from "../utils/dndUtils";
 import RequirementContainer from "../components/RequirementContainer";
@@ -18,23 +16,50 @@ import {
   dummyModuleState,
   sampleModuleRequirements,
 } from "../constants/dummyModuleData";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext} from "react-beautiful-dnd";
+import { addColorToModules } from "../utils/moduleUtils";
 
 interface Container {
   id: string;
   containerType: "requirement" | "planner" | "";
 }
 
+// Notes about design:
+//
 // Container id naming scheme:
-// For requirements: Container id = requirements.title
-// For planner: Container id = planner array idx (0,1,2,...)
-// Concern: Do we care about special term?
+// For requirements: requirement:<array idx>
+// For planner: planner:<array idx>
+//
+// State Tracking of Modules:
+// The state of all modules displayed are tracked in `moduleMap`, where each module code is mapped to the module struct
+
+
 
 const Home = () => {
-
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
+  const [moduleRequirements, setModuleRequirements] = useState(
+    addColorToModules(sampleModuleRequirements)
+  );
+
+  const moduleRequirementsCodes = sampleModuleRequirements.map((x) =>
+    x.modules.map((mod) => mod.code)
+  );
+
+  const [modulesState, setModulesState] = useState<ModulesState>({
+    ...dummyModuleState,
+    requirements: moduleRequirements,
+  });
+
+  // list of all available modules
+  const moduleMap = new Map();
+  for (let requirement of moduleRequirements) {
+    for (let module of requirement.modules) {
+      moduleMap.set(module.code, module);
+    }
+  }
+
 
   const sortRequirementModules = (): void => {
     const modReqMap = new Map();
@@ -65,7 +90,7 @@ const Home = () => {
   const handleDragEnd = (event) => {
     const { source, destination, draggableId } = event;
     // e.g.
-    //source = { index: 0, droppableId: "requirement:4" }
+    // source = { index: 0, droppableId: "requirement:4" }
     // destination = { index: 2, droppableId: "requirement:4" }
     // CS1231S
 
@@ -113,7 +138,6 @@ const Home = () => {
       if (!moduleMap.has(draggableId)) return state;
 
       // Implementation Concerns:
-
       const mod = moduleMap.get(draggableId);
 
       // Adds module into planner or requirements list
@@ -145,18 +169,6 @@ const Home = () => {
         ...x,
         modules: x.modules.filter((mod) => mod.code !== module.code),
       }));
-      // for (let i = 0; i < state.planner.length; i++) {
-      //   for (let j = 0; j < state.planner[i].modules.length; j++) {
-      //     if (state.planner[i].modules[j].code === module.code) {
-      //       state.planner[i].modules = removeAtIndex(
-      //         state.planner[i].modules,
-      //         j
-      //       );
-      //       break;
-      //     }
-      //   }
-      // }
-      console.log(state.planner);
       state.requirements[0].modules.push(module);
       forceUpdate();
       return state;
@@ -166,25 +178,6 @@ const Home = () => {
 
     sortRequirementModules();
   };
-
-  const [moduleRequirements, setModuleRequirements] = useState(
-    sampleModuleRequirements
-  );
-
-  const [modulesState, setModulesState] =
-    useState<ModulesState>(dummyModuleState);
-
-  const moduleRequirementsCodes = sampleModuleRequirements.map((x) =>
-    x.modules.map((mod) => mod.code)
-  );
-
-  // list of all available modules
-  const moduleMap = new Map();
-  for (let requirement of moduleRequirements) {
-    for (let module of requirement.modules) {
-      moduleMap.set(module.code, module);
-    }
-  }
 
   return (
     <div>

@@ -1,5 +1,5 @@
 export interface Module {
-  category: number;
+  color?: string;
   code: string;
   name: string;
   credits: number;

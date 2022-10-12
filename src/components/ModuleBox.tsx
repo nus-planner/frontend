@@ -14,6 +14,7 @@ import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
 import { primaries } from "../constants/dummyModuleData";
 import { Draggable } from "react-beautiful-dnd";
+import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 
 interface ModuleBoxProps {
   module: Module;
@@ -42,21 +43,6 @@ const ModuleBox = ({
   let text;
   if (module.credits != null) {
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
-  }
-
-  let moduleColor;
-  if (module.category == 1) {
-    moduleColor = "blue.100";
-  } else if (module.category == 2) {
-    moduleColor = "orange.100";
-  } else if (module.category == 3) {
-    moduleColor = "purple.100";
-  } else if (module.category == 4) {
-    moduleColor = "green.100";
-  } else if (module.category == 5) {
-    moduleColor = "red.100";
-  } else if (module.category == 6) {
-    moduleColor = "yellow.100";
   }
 
   let modName;
@@ -105,7 +91,7 @@ const ModuleBox = ({
             <Box
               w="12rem"
               h="5rem"
-              bgColor={moduleColor}
+              bgColor={module.color ?? DEFAULT_MODULE_COLOR}
               alignContent="center"
               margin="0"
               marginBottom="0.4rem"
@@ -125,9 +111,9 @@ const ModuleBox = ({
                     icon={<CloseIcon />}
                     aria-label="Remove Module"
                     size="xs"
-                    bgColor={moduleColor}
+                    bgColor={module.color ?? DEFAULT_MODULE_COLOR}
                     color="black"
-                    colorScheme={moduleColor}
+                    colorScheme={module.color ?? DEFAULT_MODULE_COLOR}
                     onClick={() => {
                       console.log("hi");
                       handleModuleClose(module);
