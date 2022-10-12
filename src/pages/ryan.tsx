@@ -22,13 +22,13 @@ import {
   PointerSensor,
   useSensors,
 } from "@dnd-kit/core";
-import ModuleBox from "../components/ModuleBox";
+import ModuleBox from "../components/OldModuleBox";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useState } from "react";
 import { Module, Requirement, ModulesState } from "../interfaces/planner";
 import { insertAtIndex, removeAtIndex } from "../utils/dndUtils";
-import RequirementContainer from "../components/RequirementContainer";
-import PlannerContainer from "../components/PlannerContainer";
+import RequirementContainer from "../components/OldRequirementContainer";
+import PlannerContainer from "../components/OldPlannerContainer";
 import {
   dummyModuleState,
   sampleModuleRequirements,
@@ -75,7 +75,6 @@ const RyanTestPage = () => {
     console.log(`handle drag over, active: ${active.id}, over: ${over.id}`);
 
     if (!over || !over.id) {
-      setActiveId(null);
       return;
     }
 

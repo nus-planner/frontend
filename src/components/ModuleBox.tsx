@@ -10,28 +10,24 @@ import {
   Button,
   color,
 } from "@chakra-ui/react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
-import { model } from "mongoose";
-import {primaries} from "../constants/dummyModuleData";
+import { primaries } from "../constants/dummyModuleData";
+import { Draggable } from "react-beautiful-dnd";
 
 interface ModuleBoxProps {
   module: Module;
   displayModuleClose: boolean;
   handleModuleClose?: (module: Module) => void;
+  idx: number;
 }
 
 const ModuleBox = ({
   module,
   displayModuleClose,
   handleModuleClose,
+  idx,
 }: ModuleBoxProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: module.code });
-
-  const style = { transform: CSS.Transform.toString(transform), transition };
   let text;
   if (module.credits != null) {
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
@@ -54,58 +50,86 @@ const ModuleBox = ({
 
   let modName;
   if (module.name != "Select A Module") {
-    modName = <Text color='black.900' fontSize={'xs'}>{module.name}</Text>;
+    modName = (
+      <Text color="black.900" fontSize={"xs"}>
+        {module.name}
+      </Text>
+    );
   } else {
-    if (module.code.split(':')[0] == "Any Primary"){
-      modName = <Select placeholder="Select A Module" borderColor={'black'} size="sm" marginTop={"2"}>
-        {primaries.map((primary) =>
-        <option> {primary} </option>)}
-      </Select>;
-    } else if (module.code.split(':')[0] == 'Any UE') {
-      modName = <Input borderColor={'black'} size="sm" marginTop={"2"} placeholder='Key in a module'></Input>;
+    if (module.code.split(":")[0] == "Any Primary") {
+      modName = (
+        <Select
+          placeholder="Select A Module"
+          borderColor={"black"}
+          size="sm"
+          marginTop={"2"}
+        >
+          {primaries.map((primary) => (
+            <option> {primary} </option>
+          ))}
+        </Select>
+      );
+    } else if (module.code.split(":")[0] == "Any UE") {
+      modName = (
+        <Input
+          borderColor={"black"}
+          size="sm"
+          marginTop={"2"}
+          placeholder="Key in a module"
+        ></Input>
+      );
     }
   }
 
   return (
     <div>
-      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-        <Box
-          w="12rem"
-          h="5rem"
-          bgColor={moduleColor}
-          alignContent="center"
-          margin="0"
-          marginBottom="0.4rem"
-          borderBottom="0.2rem"
-          borderRadius="0.4rem"
-          border="0px"
-          borderColor="grey.300"
-          padding="0.2rem 0.5rem"
-        >
-          <Flex>
-            <Text fontSize={"medium"} color="black.900" fontWeight="bold">
-              {module.code.split(":")[0]}{" "}
-            </Text>
-            <Spacer />
-            {displayModuleClose && (
-              <IconButton
-                icon={<CloseIcon />}
-                aria-label="Remove Module"
-                size="xs"
-                bgColor={moduleColor}
-                color="black"
-                colorScheme={moduleColor}
-                onClick={() => {
-                  console.log("hi");
-                  handleModuleClose(module);
-                }}
-              />
-            )}
-          </Flex>
-          {modName}
-          {text}
-        </Box>
-      </div>
+      <Draggable key={module.code} draggableId={module.code} index={idx}>
+        {(provided) => (
+          <div
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <Box
+              w="12rem"
+              h="5rem"
+              bgColor={moduleColor}
+              alignContent="center"
+              margin="0"
+              marginBottom="0.4rem"
+              borderBottom="0.2rem"
+              borderRadius="0.4rem"
+              border="0px"
+              borderColor="grey.300"
+              padding="0.2rem 0.5rem"
+            >
+              <Flex>
+                <Text fontSize={"medium"} color="black.900" fontWeight="bold">
+                  {module.code.split(":")[0]}{" "}
+                </Text>
+                <Spacer />
+                {displayModuleClose && (
+                  <IconButton
+                    icon={<CloseIcon />}
+                    aria-label="Remove Module"
+                    size="xs"
+                    bgColor={moduleColor}
+                    color="black"
+                    colorScheme={moduleColor}
+                    onClick={() => {
+                      console.log("hi");
+                      handleModuleClose(module);
+                    }}
+                  />
+                )}
+              </Flex>
+              {modName}
+              {text}
+            </Box>
+            
+          </div>
+        )}
+      </Draggable>
     </div>
   );
 };
