@@ -36,5 +36,5 @@ export const applyPrereqValidation = (semesters: Semester[]): Semester[] => {
   return semesters;
 };
 
-// export const getNUSModsModulePage = (moduleCode: string): string =>
-//   "https://nusmods.com/modules/" + moduleCode;
+export const getNUSModsModulePage = (moduleCode: string): string =>
+  "https://nusmods.com/modules/" + moduleCode;

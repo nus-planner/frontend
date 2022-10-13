@@ -16,6 +16,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { primaries } from "../constants/dummyModuleData";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
+import { getNUSModsModulePage } from "../utils/moduleUtils";
 
 interface ModuleBoxProps {
   module: Module;
@@ -83,7 +84,7 @@ const ModuleBox = ({
     ? "red.300"
     : module.color ?? DEFAULT_MODULE_COLOR;
 
-  // const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
+  const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
 
   return (
     <div>
@@ -110,7 +111,12 @@ const ModuleBox = ({
             >
               <Flex>
                 <Text fontSize={"medium"} color="black.900" fontWeight="bold">
-                  {module.code.split(":")[0]}{" "}
+                  {isModuleCode && (
+                    <Link href={getNUSModsModulePage(module.code)} isExternal>
+                      {module.code}
+                    </Link>
+                  )}
+                  {!isModuleCode && <>{module.code.split(":")[0]}</>}
                 </Text>
                 <Spacer />
                 {displayModuleClose && (
