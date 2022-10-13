@@ -9,6 +9,7 @@ import {
   Spacer,
   Button,
   color,
+  Link,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
@@ -78,6 +79,12 @@ const ModuleBox = ({
     }
   }
 
+  const moduleColor = module.prereqsViolated?.length
+    ? "red.300"
+    : module.color ?? DEFAULT_MODULE_COLOR;
+
+  // const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
+
   return (
     <div>
       <Draggable key={module.code} draggableId={module.code} index={idx}>
@@ -91,7 +98,7 @@ const ModuleBox = ({
             <Box
               w="12rem"
               h="5rem"
-              bgColor={module.color ?? DEFAULT_MODULE_COLOR}
+              bgColor={moduleColor}
               alignContent="center"
               margin="0"
               marginBottom="0.4rem"
@@ -111,9 +118,9 @@ const ModuleBox = ({
                     icon={<CloseIcon />}
                     aria-label="Remove Module"
                     size="xs"
-                    bgColor={module.color ?? DEFAULT_MODULE_COLOR}
+                    bgColor={moduleColor}
                     color="black"
-                    colorScheme={module.color ?? DEFAULT_MODULE_COLOR}
+                    colorScheme={moduleColor}
                     onClick={() => {
                       console.log("hi");
                       handleModuleClose(module);

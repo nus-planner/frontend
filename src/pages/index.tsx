@@ -17,7 +17,7 @@ import {
   sampleModuleRequirements,
 } from "../constants/dummyModuleData";
 import { DragDropContext} from "react-beautiful-dnd";
-import { addColorToModules } from "../utils/moduleUtils";
+import { addColorToModules, applyPrereqValidation } from "../utils/moduleUtils";
 
 interface Container {
   id: string;
@@ -53,7 +53,7 @@ const Home = () => {
   });
 
   // list of all available modules
-  const moduleMap = new Map();
+  const moduleMap = new Map<string, Module>();
   for (let requirement of moduleRequirements) {
     for (let module of requirement.modules) {
       moduleMap.set(module.code, module);
@@ -70,8 +70,8 @@ const Home = () => {
         }
       }
 
-      console.log(modReqMap);
-      console.log(moduleRequirementsCodes);
+      // console.log(modReqMap);
+      // console.log(moduleRequirementsCodes);
 
       for (let i = 0; i < moduleRequirementsCodes.length; i++) {
         state.requirements[i].modules = [];
@@ -137,8 +137,8 @@ const Home = () => {
 
       if (!moduleMap.has(draggableId)) return state;
 
-      // Implementation Concerns:
       const mod = moduleMap.get(draggableId);
+      mod.prereqsViolated = [];
 
       // Adds module into planner or requirements list
       // Requirement can appear more than once, so just insert at the beginning and sort after
@@ -155,6 +155,7 @@ const Home = () => {
 
       console.log("state");
       console.log(state);
+      state.planner = applyPrereqValidation(state.planner);
 
       return state;
     });
@@ -164,12 +165,15 @@ const Home = () => {
   const handleModuleClose = (module: Module) => {
     console.log("handle module close", module.code);
     console.log(modulesState);
+    module.prereqsViolated = [];
     setModulesState((state) => {
       state.planner = state.planner.map((x) => ({
         ...x,
         modules: x.modules.filter((mod) => mod.code !== module.code),
       }));
       state.requirements[0].modules.push(module);
+      state.planner = applyPrereqValidation(state.planner);
+      
       forceUpdate();
       return state;
     });

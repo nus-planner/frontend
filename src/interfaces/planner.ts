@@ -4,6 +4,8 @@ export interface Module {
   name: string;
   credits: number;
   editable?: boolean;
+  prereqs?: string[];
+  prereqsViolated?: string[];
 };
 
 export interface Requirement {
