@@ -88,7 +88,6 @@ export const sampleModuleRequirements: Requirement[] = [
         code: "CS3203",
         name: "Software Engineering Project",
         credits: 8,
-        prereqs: ["CS1101S"],
       },
       {
         code: "CS3216",

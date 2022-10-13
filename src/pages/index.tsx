@@ -16,8 +16,14 @@ import {
   dummyModuleState,
   sampleModuleRequirements,
 } from "../constants/dummyModuleData";
-import { DragDropContext} from "react-beautiful-dnd";
-import { addColorToModules, applyPrereqValidation } from "../utils/moduleUtils";
+import { DragDropContext } from "react-beautiful-dnd";
+import {
+  addColorToModules,
+  applyPrereqValidation,
+  testPrereqTree,
+  testPrereqTreeMods,
+} from "../utils/moduleUtils";
+import { fetchModulePrereqs } from "../api/moduleAPI";
 
 interface Container {
   id: string;
@@ -32,8 +38,6 @@ interface Container {
 //
 // State Tracking of Modules:
 // The state of all modules displayed are tracked in `moduleMap`, where each module code is mapped to the module struct
-
-
 
 const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
@@ -59,7 +63,6 @@ const Home = () => {
       moduleMap.set(module.code, module);
     }
   }
-
 
   const sortRequirementModules = (): void => {
     const modReqMap = new Map();
@@ -110,7 +113,7 @@ const Home = () => {
     );
   };
 
-  const moveModule = (
+  const moveModule = async (
     sourceType,
     sourceId,
     sourceIndex,
@@ -119,68 +122,66 @@ const Home = () => {
     destinationIndex,
     draggableId
   ) => {
-    setModulesState((state) => {
-      // Removes module from planner or requirements list
-      // Note: You have to filter through everything when sourceType is requirement
-      // Reason: A mod (e.g. CS2103T) can appear more than once in requirements list
-      if (sourceType === "planner") {
-        state.planner[sourceId].modules = removeAtIndex(
-          state.planner[sourceId].modules,
-          sourceIndex
-        );
-      } else if (sourceType === "requirement") {
-        state.requirements = state.requirements.map((x) => ({
-          ...x,
-          modules: x.modules.filter((mod) => mod.code !== draggableId),
-        }));
-      }
+    const state = { ...modulesState };
 
-      if (!moduleMap.has(draggableId)) return state;
+    // Removes module from planner or requirements list
+    // Note: You have to filter through everything when sourceType is requirement
+    // Reason: A mod (e.g. CS2103T) can appear more than once in requirements list
+    if (sourceType === "planner") {
+      state.planner[sourceId].modules = removeAtIndex(
+        state.planner[sourceId].modules,
+        sourceIndex
+      );
+    } else if (sourceType === "requirement") {
+      state.requirements = state.requirements.map((x) => ({
+        ...x,
+        modules: x.modules.filter((mod) => mod.code !== draggableId),
+      }));
+    }
 
-      const mod = moduleMap.get(draggableId);
-      mod.prereqsViolated = [];
+    if (!moduleMap.has(draggableId)) return state;
 
-      // Adds module into planner or requirements list
-      // Requirement can appear more than once, so just insert at the beginning and sort after
-      if (destinationType == "requirement") {
-        state.requirements[0].modules.push(mod);
-      } else if (destinationType == "planner") {
-        console.log(destinationId, destinationIndex);
-        state.planner[destinationId].modules = insertAtIndex(
-          state.planner[destinationId].modules,
-          destinationIndex,
-          mod
-        );
-      }
+    const mod = moduleMap.get(draggableId);
+    mod.prereqsViolated = [];
 
-      console.log("state");
-      console.log(state);
-      state.planner = applyPrereqValidation(state.planner);
+    // Adds module into planner or requirements list
+    // Requirement can appear more than once, so just insert at the beginning and sort after
+    if (destinationType == "requirement") {
+      state.requirements[0].modules.push(mod);
+    } else if (destinationType == "planner") {
+      console.log(destinationId, destinationIndex);
+      state.planner[destinationId].modules = insertAtIndex(
+        state.planner[destinationId].modules,
+        destinationIndex,
+        mod
+      );
+    }
 
-      return state;
-    });
+    console.log("state");
+    console.log(state);
+    state.planner = await applyPrereqValidation(state.planner);
+
+    setModulesState(state);
     sortRequirementModules();
   };
 
-  const handleModuleClose = (module: Module) => {
+  const handleModuleClose = async (module: Module) => {
     console.log("handle module close", module.code);
     console.log(modulesState);
     module.prereqsViolated = [];
-    setModulesState((state) => {
-      state.planner = state.planner.map((x) => ({
-        ...x,
-        modules: x.modules.filter((mod) => mod.code !== module.code),
-      }));
-      state.requirements[0].modules.push(module);
-      state.planner = applyPrereqValidation(state.planner);
-      
-      forceUpdate();
-      return state;
-    });
+    const state = { ...modulesState };
+    state.planner = state.planner.map((x) => ({
+      ...x,
+      modules: x.modules.filter((mod) => mod.code !== module.code),
+    }));
+    state.requirements[0].modules.push(module);
+    state.planner = await applyPrereqValidation(state.planner);
 
-    console.log(modulesState);
-
+    console.log(state);
+    
+    setModulesState(state);
     sortRequirementModules();
+    forceUpdate();
   };
 
   return (
@@ -207,6 +208,11 @@ const Home = () => {
         <Select placeholder="Choose your focus areea" width={"15rem"}>
           <option>Algorithms & Theory</option>
         </Select>
+        <Button onClick={() => fetchModulePrereqs("CS3243")}>
+          Query nusmods api
+        </Button>
+        <Button onClick={testPrereqTree}>Test prereq tree validation</Button>
+        <Button onClick={testPrereqTreeMods}>Test prereq tree mods</Button>
       </HStack>
 
       <div />
