@@ -74,6 +74,7 @@ const evaluatePrereqTreeMods = (
   prereqTree: PrereqTree,
   moduleSet: Set<string>
 ): string[][] => {
+  console.log("hi");
   if (typeof prereqTree === "string") {
     return moduleSet.has(prereqTree) ? null : [[prereqTree]];
   }
@@ -87,7 +88,11 @@ const evaluatePrereqTreeMods = (
     const orNotFulfilled = prereqTree.or.every(
       (x) => !!evaluatePrereqTreeMods(x, moduleSet)
     );
-    return orNotFulfilled ? (prereqTree.or as string[][]) : null;
+    return orNotFulfilled
+      ? (prereqTree.or
+          .map((x) => evaluatePrereqTreeMods(x, moduleSet))
+          .flat(1) as string[][])
+      : null;
   }
 
   return null;
@@ -101,9 +106,11 @@ export const testPrereqTree = async () => {
   return;
 };
 
+// Odd test cases:
+// ACC3706: 'one of' has a 'one of' 
 export const testPrereqTreeMods = async () => {
-  const prereqTree = await fetchModulePrereqs("CS4248");
-  const modSet = new Set<string>(["CS2030", "CS1232"]);
+  const prereqTree = await fetchModulePrereqs("CS3263");
+  const modSet = new Set<string>(["CS2030", "CS1232", "ST2334"]);
   const res = evaluatePrereqTreeMods(prereqTree, modSet);
   console.log(res);
   return;

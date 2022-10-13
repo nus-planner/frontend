@@ -178,7 +178,7 @@ const Home = () => {
     state.planner = await applyPrereqValidation(state.planner);
 
     console.log(state);
-    
+
     setModulesState(state);
     sortRequirementModules();
     forceUpdate();
@@ -208,11 +208,6 @@ const Home = () => {
         <Select placeholder="Choose your focus areea" width={"15rem"}>
           <option>Algorithms & Theory</option>
         </Select>
-        <Button onClick={() => fetchModulePrereqs("CS3243")}>
-          Query nusmods api
-        </Button>
-        <Button onClick={testPrereqTree}>Test prereq tree validation</Button>
-        <Button onClick={testPrereqTreeMods}>Test prereq tree mods</Button>
       </HStack>
 
       <div />

@@ -3,7 +3,7 @@ import { PrereqTree } from "../interfaces/planner";
 const NUSMODS_API_URL = "https://api.nusmods.com/v2";
 
 // Temporary assignment
-const acadYear = "2019-2020";
+const acadYear = "2022-2023";
 
 
 // If module has prereqs -> return PrereqTree
