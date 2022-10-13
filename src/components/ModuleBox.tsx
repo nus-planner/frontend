@@ -22,17 +22,6 @@ interface ModuleBoxProps {
   idx: number;
 }
 
-function getStyle(style, snapshot) {
-  if (!snapshot.isDropAnimating) {
-    return style;
-  }
-  return {
-    ...style,
-    // cannot be 0, but make it super tiny
-    transitionDuration: `0.00001s`,
-  };
-}
-
 const ModuleBox = ({
   module,
   displayModuleClose,
@@ -95,12 +84,11 @@ const ModuleBox = ({
   return (
     <div>
       <Draggable key={module.code} draggableId={module.code} index={idx}>
-        {(provided, snapshot) => (
+        {(provided) => (
           <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            style={getStyle(provided.draggableProps.style, snapshot)}
           >
             <Box
               w="12rem"
@@ -138,6 +126,7 @@ const ModuleBox = ({
               {modName}
               {text}
             </Box>
+            
           </div>
         )}
       </Draggable>

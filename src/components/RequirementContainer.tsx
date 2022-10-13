@@ -1,10 +1,15 @@
 import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
   Flex,
   Container,
   Stack,
   Heading,
   Text,
-  Box,
   Grid,
   HStack,
   SimpleGrid,
@@ -22,48 +27,49 @@ const RequirementContainer = ({
   id: string;
 }) => {
   return (
-    <Droppable droppableId={id} direction="horizontal" isDropDisabled={true}>
-      {(provided) => (
-        <div {...provided.droppableProps} ref={provided.innerRef}>
+    <Accordion allowToggle>
+      <AccordionItem>
+        <h2>
+          <AccordionButton>
+            <Box flex="1" textAlign="left">
+              {requirement.title}
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4} borderRadius='0'>
           <HStack h="95px" backgroundColor={"purple.50"}>
-            <Flex align="flex-start">
-              <Stack spacing={0} mb={5} w="250px">
-                <Heading
-                  fontSize={"medium"}
-                  fontWeight={500}
-                  fontFamily={"body"}
-                >
-                  {requirement.title}
-                </Heading>
-                <Text pt={"2"} fontSize={"x-small"} color={"gray.500"}>
-                  {requirement.description}
-                </Text>
-              </Stack>
-            </Flex>
-            <div className="horiscroll">
-              <Box
-                alignContent={"baseline"}
-                alignItems="left"
-                color="black"
-                scrollBehavior={"auto"}
-              >
-                <HStack minH="5em" minW="20em">
-                  {requirement.modules.map((module, idx) => (
-                    <ModuleBox
-                      module={module}
-                      key={module.code}
-                      displayModuleClose={false}
-                      idx={idx}
-                    />
-                  ))}
-                </HStack>
-              </Box>
-            </div>
+            <Text pt={"2"} fontSize={"x-small"} color={"gray.500"} w="15rem">
+              {requirement.description}
+            </Text>
+            <Box
+              alignContent={"baseline"}
+              alignItems="left"
+              color="black"
+              scrollBehavior={"auto"}
+            >
+              <Droppable droppableId={id} direction="horizontal">
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    <HStack>
+                      {requirement.modules.map((module, idx) => (
+                        <ModuleBox
+                          module={module}
+                          key={module.code}
+                          displayModuleClose={false}
+                          idx={idx}
+                        />
+                      ))}
+                    </HStack>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </Box>
           </HStack>
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
+        </AccordionPanel>
+      </AccordionItem>
+    </Accordion>
   );
 };
 

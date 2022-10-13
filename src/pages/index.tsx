@@ -224,16 +224,10 @@ const Home = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="verscroll">
           <Box
-            bgColor="purple.50"
-            margin="1em 1em 4em"
+            bgColor="purple.500"
+            margin="0em 1em 0em 1em"
             borderColor="black"
-            padding="0.5em"
-            borderRadius="0.5em"
           >
-            <VStack
-              align="left"
-              divider={<StackDivider borderColor="purple.100" />}
-            >
               {modulesState.requirements.map((requirement, id) => (
                 <RequirementContainer
                   requirement={requirement}
@@ -241,7 +235,6 @@ const Home = () => {
                   key={id}
                 />
               ))}
-            </VStack>
           </Box>
         </div>
         <HStack padding="1.5em 1em 0.5em">
