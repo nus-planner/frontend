@@ -19,25 +19,25 @@ export const applyPrereqValidation = async (
 
   for (let i = 0; i < semesters.length; i++) {
     for (let j = 0; j < semesters[i].modules.length; j++) {
-      let module = semesters[i].modules[j];
-      module.prereqsViolated = [];
+      let mod = semesters[i].modules[j];
+      mod.prereqsViolated = [];
       // Fetch prereqs from NUSMods if property not found
-      if (module.prereqs === undefined) {
-        module.prereqs = await fetchModulePrereqs(module.code);
+      if (mod.prereqs === undefined) {
+        mod.prereqs = await fetchModulePrereqs(mod.code);
       }
       // Handles 2 cases:
       // module.prereqs is still undefined due to error
       // module.prereqs is null (no prereqs)
-      if (!!module.prereqs) {
-        module.prereqsViolated = evaluatePrereqTreeMods(
-          module.prereqs,
+      if (!!mod.prereqs) {
+        mod.prereqsViolated = evaluatePrereqTreeMods(
+          mod.prereqs,
           takenModuleSet
         );
-        console.log(`Pre-requisites violated for ${module.code}`);
-        console.log(module.prereqsViolated);
+        console.log(`Pre-requisites violated for ${mod.code}`);
+        console.log(mod.prereqsViolated);
       }
-      console.log(module);
-      semesters[i].modules[j] = module;
+      console.log(mod);
+      semesters[i].modules[j] = mod;
     }
     for (let j = 0; j < semesters[i].modules.length; j++) {
       takenModuleSet.add(semesters[i].modules[j].code);
@@ -74,7 +74,6 @@ const evaluatePrereqTreeMods = (
   prereqTree: PrereqTree,
   moduleSet: Set<string>
 ): string[][] => {
-  console.log("hi");
   if (typeof prereqTree === "string") {
     return moduleSet.has(prereqTree) ? null : [[prereqTree]];
   }

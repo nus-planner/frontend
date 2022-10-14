@@ -52,8 +52,8 @@ const ModuleBox = ({
           size="sm"
           marginTop={"2"}
         >
-          {primaries.map((primary) => (
-            <option> {primary} </option>
+          {primaries.map((primary, idx) => (
+            <option key={idx}> {primary} </option>
           ))}
         </Select>
       );
@@ -125,7 +125,6 @@ const ModuleBox = ({
               {modName}
               {text}
             </Box>
-            
           </div>
         )}
       </Draggable>

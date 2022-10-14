@@ -59,8 +59,8 @@ const Home = () => {
   // list of all available modules
   const moduleMap = new Map<string, Module>();
   for (let requirement of moduleRequirements) {
-    for (let module of requirement.modules) {
-      moduleMap.set(module.code, module);
+    for (let mod of requirement.modules) {
+      moduleMap.set(mod.code, mod);
     }
   }
 
@@ -68,8 +68,8 @@ const Home = () => {
     const modReqMap = new Map();
     setModulesState((state) => {
       for (let requirement of state.requirements) {
-        for (let module of requirement.modules) {
-          modReqMap.set(module.code, module);
+        for (let mod of requirement.modules) {
+          modReqMap.set(mod.code, mod);
         }
       }
 
