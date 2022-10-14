@@ -23,7 +23,7 @@ const PlannerContainer = ({
     //     <div {...provided.droppableProps} ref={provided.innerRef}>
     <Box
       alignItems="baseline"
-      bgColor="purple.500"
+      bgColor="purple.50"
       borderRadius="0.4rem"
       minH="22em"
       minW="13em"

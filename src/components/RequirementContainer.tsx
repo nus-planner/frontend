@@ -46,21 +46,25 @@ const RequirementContainer = ({
               alignContent={"baseline"}
               alignItems="left"
               color="black"
-              scrollBehavior={"auto"}
+              overflowY={"auto"}
+              overflowX={"hidden"}
+              w="100%"
             >
               <Droppable droppableId={id} direction="horizontal">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    <HStack>
-                      {requirement.modules.map((module, idx) => (
-                        <ModuleBox
-                          module={module}
-                          key={module.code}
-                          displayModuleClose={false}
-                          idx={idx}
-                        />
-                      ))}
-                    </HStack>
+                    
+                      <HStack>
+                        {requirement.modules.map((module, idx) => (
+                          <ModuleBox
+                            module={module}
+                            key={module.code}
+                            displayModuleClose={false}
+                            idx={idx}
+                          />
+                        ))}
+                      </HStack>
+                    
                     {provided.placeholder}
                   </div>
                 )}

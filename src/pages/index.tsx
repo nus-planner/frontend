@@ -1,6 +1,5 @@
 import {
   Button,
-
   Heading,
   Select,
   Box,
@@ -31,7 +30,6 @@ interface Container {
 // Concern: Do we care about special term?
 
 const Home = () => {
-
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
@@ -222,21 +220,17 @@ const Home = () => {
         Required Modules
       </Heading>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="verscroll">
-          <Box
-            bgColor="purple.500"
-            margin="0em 1em 0em 1em"
-            borderColor="black"
-          >
-              {modulesState.requirements.map((requirement, id) => (
-                <RequirementContainer
-                  requirement={requirement}
-                  id={"requirement:" + id.toString()}
-                  key={id}
-                />
-              ))}
+        
+          <Box bgColor="purple.50" margin="0em 1em 0em 1em" borderColor="black">
+            {modulesState.requirements.map((requirement, id) => (
+              <RequirementContainer
+                requirement={requirement}
+                id={"requirement:" + id.toString()}
+                key={id}
+              />
+            ))}
           </Box>
-        </div>
+        
         <HStack padding="1.5em 1em 0.5em">
           <Heading
             fontSize={"xl"}
