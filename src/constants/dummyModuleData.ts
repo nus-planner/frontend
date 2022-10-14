@@ -11,50 +11,42 @@ export const sampleModuleRequirements: Requirement[] = [
     totalCredits: 36,
     modules: [
       {
-        category: 1,
         code: "CS1101S",
         name: "Programming Methodology",
         credits: 4,
       },
-      { category: 1, code: "CS1231S", name: "Discrete Structures", credits: 4 },
+      { code: "CS1231S", name: "Discrete Structures", credits: 4 },
       {
-        category: 1,
         code: "CS2030S",
         name: "Programming Methodology II",
         credits: 4,
       },
       {
-        category: 1,
         code: "CS2040S",
         name: "Data Structures and Algorithms",
         credits: 4,
       },
       {
-        category: 1,
         code: "CS2100",
         name: "Computer Organisation",
         credits: 4,
       },
       {
-        category: 1,
         code: "CS2103T",
         name: "Software Engineering",
         credits: 4,
       },
       {
-        category: 1,
         code: "CS2105",
         name: "Introduction to Computer Networks",
         credits: 4,
       },
       {
-        category: 1,
         code: "CS2106",
         name: "Introduction to Operating Systems",
         credits: 4,
       },
       {
-        category: 1,
         code: "CS3230",
         name: "Design and Analysis of Algorithms",
         credits: 4,
@@ -69,19 +61,16 @@ export const sampleModuleRequirements: Requirement[] = [
     totalCredits: 24,
     modules: [
       {
-        category: 2,
         code: "Any Primary:1",
         name: "Select A Module",
         credits: null,
       },
       {
-        category: 2,
         code: "Any Primary:2",
         name: "Select A Module",
         credits: null,
       },
       {
-        category: 2,
         code: "Any Primary:3",
         name: "Select A Module",
         credits: null,
@@ -96,31 +85,26 @@ export const sampleModuleRequirements: Requirement[] = [
     totalCredits: 8,
     modules: [
       {
-        category: 3,
         code: "CS3203",
         name: "Software Engineering Project",
         credits: 8,
       },
       {
-        category: 3,
         code: "CS3216",
         name: "Software Product Engineering for Digital Markets",
         credits: 5,
       },
       {
-        category: 3,
         code: "CS3217",
         name: "Software Engineering on Modern Application Platforms",
         credits: 5,
       },
       {
-        category: 3,
         code: "CS3281",
         name: "Thematic Systems Project I",
         credits: 4,
       },
       {
-        category: 3,
         code: "CS3282",
         name: "Thematic Systems Project II",
         credits: 4,
@@ -133,19 +117,16 @@ export const sampleModuleRequirements: Requirement[] = [
     totalCredits: 12,
     modules: [
       {
-        category: 4,
         code: "IS1103/X",
         name: "IS Innovations in Organisations and Society",
         credits: 4,
       },
       {
-        category: 4,
         code: "CS2101",
         name: "Effective Communication for Computing Professionals",
         credits: 4,
       },
       {
-        category: 4,
         code: "ES2660",
         name: "Communicating in the Information Age",
         credits: 4,
@@ -158,19 +139,16 @@ export const sampleModuleRequirements: Requirement[] = [
     totalCredits: 16,
     modules: [
       {
-        category: 5,
         code: "MA1521",
         name: "Calculus for Computing",
         credits: 4,
       },
       {
-        category: 5,
         code: "MA1101R",
         name: "Linear Algebra I or MA2001 Linear Algebra I",
         credits: 4,
       },
       {
-        category: 5,
         code: "ST2334",
         name: "Probability and Statistics 5 and one Science Module",
         credits: 8,
@@ -182,14 +160,14 @@ export const sampleModuleRequirements: Requirement[] = [
     description: "",
     totalCredits: 32,
     modules: [
-      { category: 6, code: "Any UE:1", name: "Select A Module", credits: null },
-      { category: 6, code: "Any UE:2", name: "Select A Module", credits: null },
-      { category: 6, code: "Any UE:3", name: "Select A Module", credits: null },
-      { category: 6, code: "Any UE:4", name: "Select A Module", credits: null },
-      { category: 6, code: "Any UE:5", name: "Select A Module", credits: null },
-      { category: 6, code: "Any UE:6", name: "Select A Module", credits: null },
-      { category: 6, code: "Any UE:7", name: "Select A Module", credits: null },
-      { category: 6, code: "Any UE:8", name: "Select A Module", credits: null },
+      { code: "Any UE:1", name: "Select A Module", credits: null },
+      { code: "Any UE:2", name: "Select A Module", credits: null },
+      { code: "Any UE:3", name: "Select A Module", credits: null },
+      { code: "Any UE:4", name: "Select A Module", credits: null },
+      { code: "Any UE:5", name: "Select A Module", credits: null },
+      { code: "Any UE:6", name: "Select A Module", credits: null },
+      { code: "Any UE:7", name: "Select A Module", credits: null },
+      { code: "Any UE:8", name: "Select A Module", credits: null },
     ],
   },
 ];

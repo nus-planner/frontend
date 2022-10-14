@@ -9,11 +9,14 @@ import {
   Spacer,
   Button,
   color,
+  Link,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
 import { primaries } from "../constants/dummyModuleData";
 import { Draggable } from "react-beautiful-dnd";
+import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
+import { getNUSModsModulePage } from "../utils/moduleUtils";
 
 interface ModuleBoxProps {
   module: Module;
@@ -31,21 +34,6 @@ const ModuleBox = ({
   let text;
   if (module.credits != null) {
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
-  }
-
-  let moduleColor;
-  if (module.category == 1) {
-    moduleColor = "blue.100";
-  } else if (module.category == 2) {
-    moduleColor = "orange.100";
-  } else if (module.category == 3) {
-    moduleColor = "purple.100";
-  } else if (module.category == 4) {
-    moduleColor = "green.100";
-  } else if (module.category == 5) {
-    moduleColor = "red.100";
-  } else if (module.category == 6) {
-    moduleColor = "yellow.100";
   }
 
   let modName;
@@ -81,6 +69,12 @@ const ModuleBox = ({
     }
   }
 
+  const moduleColor = module.prereqsViolated?.length
+    ? "red.300"
+    : module.color ?? DEFAULT_MODULE_COLOR;
+
+  const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
+
   return (
     <div>
       <Draggable key={module.code} draggableId={module.code} index={idx}>
@@ -105,7 +99,12 @@ const ModuleBox = ({
             >
               <Flex>
                 <Text fontSize={"medium"} color="black.900" fontWeight="bold">
-                  {module.code.split(":")[0]}{" "}
+                  {isModuleCode && (
+                    <Link href={getNUSModsModulePage(module.code)} isExternal>
+                      {module.code}
+                    </Link>
+                  )}
+                  {!isModuleCode && <>{module.code.split(":")[0]}</>}
                 </Text>
                 <Spacer />
                 {displayModuleClose && (

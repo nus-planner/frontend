@@ -1,9 +1,13 @@
+export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
+
 export interface Module {
-  category: number;
+  color?: string;
   code: string;
   name: string;
   credits: number;
   editable?: boolean;
+  prereqs?: PrereqTree;
+  prereqsViolated?: string[][];
 };
 
 export interface Requirement {
