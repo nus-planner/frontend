@@ -1,17 +1,21 @@
 import { PrereqTree } from "../interfaces/planner";
 
+interface ModuleRequisites {
+  prereqs: PrereqTree;
+  preclusions: string[];
+}
+
 const NUSMODS_API_URL = "https://api.nusmods.com/v2";
 
 // Temporary assignment
 const acadYear = "2022-2023";
-
 
 // If module has prereqs -> return PrereqTree
 // If module has no prereqs -> return null
 // If error in querying -> return undefined
 export const fetchModulePrereqs = async (
   moduleCode: string
-): Promise<PrereqTree> => {
+): Promise<ModuleRequisites> => {
   const res = await fetch(
     NUSMODS_API_URL + `/${acadYear}/modules/${moduleCode}.json`
   ).then((resp) => {
@@ -27,10 +31,15 @@ export const fetchModulePrereqs = async (
   console.log(res?.prereqTree);
   console.log(JSON.stringify(res?.prereqTree));
 
-  if (res.prereqTree === undefined) {
-    console.log('return null')
-    return null;
+  let prereqs: PrereqTree = res.prereqTree;
+  let preclusions: string[] = null;
+
+  if (res.prereqTree === undefined) prereqs = null;
+  if (res.preclusion === undefined) {
+    preclusions = null;
+  } else {
+    preclusions = res.preclusion.match(/[A-Z]+\d+[A-Z]*/g);
   }
 
-  return res.prereqTree;
+  return { prereqs: prereqs, preclusions: preclusions };
 };

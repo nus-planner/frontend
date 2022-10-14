@@ -18,13 +18,21 @@ export const applyPrereqValidation = async (
   const takenModuleSet = new Set<string>();
 
   for (let i = 0; i < semesters.length; i++) {
+    const preclusions: string[] = [];
+
     for (let j = 0; j < semesters[i].modules.length; j++) {
       let mod = semesters[i].modules[j];
       mod.prereqsViolated = [];
+
       // Fetch prereqs from NUSMods if property not found
       if (mod.prereqs === undefined) {
-        mod.prereqs = await fetchModulePrereqs(mod.code);
+        const reqs = await fetchModulePrereqs(mod.code);
+        mod.prereqs = reqs.prereqs;
+        if (reqs.preclusions !== undefined) {
+          mod.preclusions = reqs.preclusions;
+        }
       }
+
       // Handles 2 cases:
       // module.prereqs is still undefined due to error
       // module.prereqs is null (no prereqs)
@@ -37,11 +45,15 @@ export const applyPrereqValidation = async (
         console.log(mod.prereqsViolated);
       }
       console.log(mod);
+      if (!!mod.preclusions) {
+        preclusions.push(...mod.preclusions);
+      }
       semesters[i].modules[j] = mod;
     }
     for (let j = 0; j < semesters[i].modules.length; j++) {
       takenModuleSet.add(semesters[i].modules[j].code);
     }
+    preclusions.forEach((preclusion) => takenModuleSet.add(preclusion));
   }
 
   console.log("Apply prereq validation");
@@ -100,17 +112,17 @@ const evaluatePrereqTreeMods = (
 export const testPrereqTree = async () => {
   const prereqTree = await fetchModulePrereqs("CS3243");
   const modSet = new Set<string>(["CS2040", "CS1231"]);
-  const res = evaluatePrereqTree(prereqTree, modSet);
+  const res = evaluatePrereqTree(prereqTree.prereqs, modSet);
   console.log(res);
   return;
 };
 
 // Odd test cases:
-// ACC3706: 'one of' has a 'one of' 
+// ACC3706: 'one of' has a 'one of'
 export const testPrereqTreeMods = async () => {
   const prereqTree = await fetchModulePrereqs("CS3263");
   const modSet = new Set<string>(["CS2030", "CS1232", "ST2334"]);
-  const res = evaluatePrereqTreeMods(prereqTree, modSet);
+  const res = evaluatePrereqTreeMods(prereqTree.prereqs, modSet);
   console.log(res);
   return;
 };

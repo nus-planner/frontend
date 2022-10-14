@@ -7,6 +7,7 @@ export interface Module {
   credits: number;
   editable?: boolean;
   prereqs?: PrereqTree;
+  preclusions?: string[];
   prereqsViolated?: string[][];
 };
 

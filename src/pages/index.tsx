@@ -195,11 +195,7 @@ const Home = () => {
         >
           NUS Planner
         </Heading>
-        <Select
-          placeholder="Choose your year"
-          width={"15rem"}
-          padding=""
-        >
+        <Select placeholder="Choose your year" width={"15rem"} padding="">
           <option>AY2019/2020</option>
         </Select>
         <Select placeholder="Choose your major" width={"15rem"} padding="">
@@ -220,17 +216,16 @@ const Home = () => {
         Required Modules
       </Heading>
       <DragDropContext onDragEnd={handleDragEnd}>
-        
-          <Box bgColor="purple.50" margin="0em 1em 0em 1em" borderColor="black">
-            {modulesState.requirements.map((requirement, id) => (
-              <RequirementContainer
-                requirement={requirement}
-                id={"requirement:" + id.toString()}
-                key={id}
-              />
-            ))}
-          </Box>
-        
+        <Box bgColor="purple.50" margin="0em 1em 0em 1em" borderColor="black">
+          {modulesState.requirements.map((requirement, id) => (
+            <RequirementContainer
+              requirement={requirement}
+              id={"requirement:" + id.toString()}
+              key={id}
+            />
+          ))}
+        </Box>
+
         <HStack padding="1.5em 1em 0.5em">
           <Heading
             fontSize={"xl"}
