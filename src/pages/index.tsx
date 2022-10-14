@@ -196,7 +196,7 @@ const Home = () => {
           NUS Planner
         </Heading>
         <Select
-          placeholder="Choose your enrollment year"
+          placeholder="Choose your year"
           width={"15rem"}
           padding=""
         >
@@ -205,7 +205,7 @@ const Home = () => {
         <Select placeholder="Choose your major" width={"15rem"} padding="">
           <option>Computer Science</option>
         </Select>
-        <Select placeholder="Choose your focus areea" width={"15rem"}>
+        <Select placeholder="Choose your focus area" width={"15rem"}>
           <option>Algorithms & Theory</option>
         </Select>
       </HStack>
@@ -241,7 +241,7 @@ const Home = () => {
             Study Plan
           </Heading>
           <Button size="sm" colorScheme={"white"} variant="outline">
-            + New Semester
+            + Populate Study Plan
           </Button>
         </HStack>
         <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
