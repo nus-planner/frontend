@@ -49,10 +49,12 @@ const Home = () => {
   );
 
   useEffect(() => {
-    mainViewModel.initializeFromURL(
-      "https://raw.githubusercontent.com/nus-planner/datastructures/main/requirements/cs-2019.json"
-    );
-  });
+    mainViewModel
+      .initializeFromURL(
+        "https://raw.githubusercontent.com/nus-planner/datastructures/main/requirements/cs-2019.json"
+      )
+      .then(forceUpdate);
+  }, []);
 
   const moduleRequirements = mainViewModel.requirements;
 

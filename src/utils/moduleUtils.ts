@@ -12,6 +12,14 @@ export const addColorToModules = (moduleRequirements: Requirement[]) => {
   }));
 };
 
+export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
+  for (const requirement of moduleRequirements) {
+    for (let i = 0; i < requirement.modules.length; i++) {
+      requirement.modules[i].color = moduleColor[i % moduleColor.length];
+    }
+  }
+};
+
 export const applyPrereqValidation = async (
   semesters: Semester[]
 ): Promise<Semester[]> => {

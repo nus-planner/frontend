@@ -1,5 +1,4 @@
 import yaml from "js-yaml";
-import * as fs from "fs";
 import * as baskets from "./basket";
 import * as log from "./log";
 import * as plan from "./plan";
@@ -252,15 +251,6 @@ export function convertConfigBasket(
     convertedConfig.states
   );
   return convertedConfig;
-}
-
-export function testLoadRequirements() {
-  const topLevelBasket = yaml.load(
-    fs.readFileSync("./requirements.json", "utf8")
-  ) as TopLevelBasket;
-
-  const convertedBasket = convertConfigBasket(topLevelBasket);
-  return convertedBasket;
 }
 
 export function fetchBasketFromRepo(url: string): Promise<TopLevelBasket> {
