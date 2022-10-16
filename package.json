@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "pre-commit": "next lint",
-    "test": "ts-node src/models/index.ts"
+    "test": "ts-node src/models/index.ts",
+    "pre-commit": "next lint && next build",
+    "export": "next export"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
@@ -24,6 +25,7 @@
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.6.0",
     "tailwindcss": "^3.1.8"
   },
   "devDependencies": {

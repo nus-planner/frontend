@@ -5,12 +5,12 @@ export interface Module {
   color?: string;
   code: string;
   name: string;
-  credits: number;
+  credits: number | null;
   editable?: boolean;
   prereqs?: PrereqTree | null;
   preclusions?: string[] | null;
   prereqsViolated?: string[][] | null;
-  getUnderlyingModule(): models.Module | undefined;
+  getUnderlyingModule?(): models.Module | undefined;
 }
 
 export interface Requirement {

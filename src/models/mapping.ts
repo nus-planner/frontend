@@ -42,20 +42,15 @@ export class ModuleViewModel implements frontend.Module {
 }
 
 export class MultiModuleViewModel implements frontend.Module {
-  static emptyLabel = "Select A Module";
   color?: string | undefined;
   code: string;
   name: string;
-  credits: number; // TODO: Not all modules have the same number of credits
+  credits: number;
   editable?: boolean | undefined;
   prereqs?: frontend.PrereqTree | undefined;
   prereqsViolated?: string[][] | undefined;
 
-  constructor(
-    code: string,
-    name: string = MultiModuleViewModel.emptyLabel,
-    credits: number = -1
-  ) {
+  constructor(code: string, name: string, credits: number) {
     this.code = code;
     this.name = name;
     this.credits = credits;
@@ -112,7 +107,11 @@ export class RequirementViewModel implements frontend.Requirement {
           );
         } else {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
-            new MultiModuleViewModel(basket.getEffectivePattern())
+            new MultiModuleViewModel(
+              basket.getEffectivePattern(),
+              "Select A Basket",
+              -1
+            )
           );
         }
       });
@@ -148,7 +147,7 @@ class SemesterViewModel implements frontend.Semester {
     this._trickle = new TrickleDownArray(
       this._modules,
       semPlan.modules,
-      (modViewModel) => modViewModel.getUnderlyingModule()!, // TODO: Deal with !
+      (modViewModel) => modViewModel.getUnderlyingModule!()!, // TODO: Deal with !
       (mod) => new ModuleViewModel(mod)
     );
   }
@@ -336,7 +335,7 @@ export class MainViewModel
     this._trickle = new TrickleDownMap(
       this.moduleViewModelsMap,
       this.validatorState.allModules,
-      (moduleViewModel) => moduleViewModel.getUnderlyingModule()!, // TODO: Resolve the !
+      (moduleViewModel) => moduleViewModel.getUnderlyingModule!()!, // TODO: Resolve the !
       (mod) => new ModuleViewModel(mod)
     );
   }
