@@ -89,12 +89,7 @@ const ModuleBox = ({
               h="5rem"
               bgColor={moduleColor}
               alignContent="center"
-              margin="0"
-              marginBottom="0.4rem"
-              borderBottom="0.2rem"
               borderRadius="0.4rem"
-              border="0px"
-              borderColor="grey.300"
               padding="0.2rem 0.5rem"
             >
               <Flex>

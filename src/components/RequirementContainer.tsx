@@ -26,50 +26,43 @@ const RequirementContainer = ({
   requirement: Requirement;
   id: string;
 }) => {
+  // If there is no requirement description, module lists align to leftmost, else, fix width.
+  const requirementWith = requirement.description ? "12rem" : "";
+
   return (
     <Accordion allowToggle>
       <AccordionItem>
-        <h2>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              {requirement.title}
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </h2>
-        <AccordionPanel pb={4} borderRadius='0'>
-          <HStack h="95px" backgroundColor={"purple.50"}>
-            <Text pt={"2"} fontSize={"x-small"} color={"gray.500"} w="15rem">
+        <AccordionButton>
+          <Box flex="1" textAlign="left">
+            {requirement.title}
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+        <AccordionPanel pb={2}>
+          <HStack h="-webkit-fit-content">
+          {requirement.description && (
+            <Text fontSize={"x-small"} color={"blackAlpha.700"} minW={requirementWith} w={requirementWith}>
               {requirement.description}
             </Text>
-            <Box
-              alignContent={"baseline"}
-              alignItems="left"
-              color="black"
-              overflowY={"auto"}
-              overflowX={"hidden"}
-              w="100%"
-            >
-              <Droppable droppableId={id} direction="horizontal">
-                {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    
-                      <HStack>
-                        {requirement.modules.map((module, idx) => (
-                          <ModuleBox
-                            module={module}
-                            key={module.code}
-                            displayModuleClose={false}
-                            idx={idx}
-                          />
-                        ))}
-                      </HStack>
-                    
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </Box>
+          )}
+            <Droppable droppableId={id} direction="horizontal">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  <HStack>
+                    {requirement.modules.map((module, idx) => (
+                      <ModuleBox
+                        module={module}
+                        key={module.code}
+                        displayModuleClose={false}
+                        idx={idx}
+                      />
+                    ))}
+                  </HStack>
+
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </HStack>
         </AccordionPanel>
       </AccordionItem>

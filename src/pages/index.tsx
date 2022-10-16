@@ -208,12 +208,12 @@ const Home = () => {
         fontSize={"xl"}
         fontWeight={"bold"}
         fontFamily={"body"}
-        padding="1em"
+        padding="1rem 0rem"
       >
         Required Modules
       </Heading>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Box bgColor="purple.50" margin="0em 1em 0em 1em" borderColor="black">
+        <Box bgColor="blackAlpha.50">
           {modulesState.requirements.map((requirement, id) => (
             <RequirementContainer
               requirement={requirement}
