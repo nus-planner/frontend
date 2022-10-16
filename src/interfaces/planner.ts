@@ -1,15 +1,17 @@
+import * as models from "../models";
 export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
 export interface Module {
   color?: string;
   code: string;
   name: string;
-  credits: number;
+  credits: number | null;
   editable?: boolean;
-  prereqs?: PrereqTree;
-  preclusions?: string[];
-  prereqsViolated?: string[][];
-};
+  prereqs?: PrereqTree | null;
+  preclusions?: string[] | null;
+  prereqsViolated?: string[][] | null;
+  getUnderlyingModule?(): models.Module | undefined;
+}
 
 export interface Requirement {
   title: string;
@@ -21,7 +23,7 @@ export interface Requirement {
 export interface Semester {
   year: number;
   semester: number;
-  modules: Module[]
+  modules: Module[];
 }
 
 export interface ModulesState {

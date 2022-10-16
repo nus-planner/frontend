@@ -31,12 +31,12 @@ const ModuleBox = ({
   handleModuleClose,
   idx,
 }: ModuleBoxProps) => {
-  let text;
+  let text: any;
   if (module.credits != null) {
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
   }
 
-  let modName;
+  let modName: any;
   if (module.name != "Select A Module") {
     modName = (
       <Text color="black.900" fontSize={"xs"}>
@@ -116,8 +116,9 @@ const ModuleBox = ({
                     color="black"
                     colorScheme={moduleColor}
                     onClick={() => {
-                      console.log("hi");
-                      handleModuleClose(module);
+                      if (handleModuleClose !== undefined) {
+                        handleModuleClose(module);
+                      }
                     }}
                   />
                 )}

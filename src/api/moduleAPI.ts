@@ -1,8 +1,8 @@
 import { PrereqTree } from "../interfaces/planner";
 
 interface ModuleRequisites {
-  prereqs: PrereqTree;
-  preclusions: string[];
+  prereqs?: PrereqTree | null;
+  preclusions?: string[] | null;
 }
 
 const NUSMODS_API_URL = "https://api.nusmods.com/v2";
@@ -24,15 +24,15 @@ export const fetchModulePrereqs = async (
     }
     return resp.json();
   });
-  if (!res) return undefined;
+  if (!res) return {};
 
   // TODO: Remove
   console.log(res);
   console.log(res?.prereqTree);
   console.log(JSON.stringify(res?.prereqTree));
 
-  let prereqs: PrereqTree = res.prereqTree;
-  let preclusions: string[] = null;
+  let prereqs: PrereqTree | null = res.prereqTree;
+  let preclusions: string[] | null = null;
 
   if (res.prereqTree === undefined) prereqs = null;
   if (res.preclusion === undefined) {

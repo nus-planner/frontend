@@ -24,6 +24,7 @@ import {
   testPrereqTreeMods,
 } from "../utils/moduleUtils";
 import { fetchModulePrereqs } from "../api/moduleAPI";
+import * as models from "../models";
 
 interface Container {
   id: string;
@@ -43,50 +44,53 @@ const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
-  const [moduleRequirements, setModuleRequirements] = useState(
-    addColorToModules(sampleModuleRequirements)
+  const [mainViewModel, setMainViewModel] = useState(
+    new models.MainViewModel(2020, 4)
   );
 
-  const moduleRequirementsCodes = sampleModuleRequirements.map((x) =>
+  useEffect(() => {
+    mainViewModel
+      .initializeFromURL(
+        "https://raw.githubusercontent.com/nus-planner/datastructures/main/requirements/cs-2019.json"
+      )
+      .then(forceUpdate);
+  }, []);
+
+  const moduleRequirements = mainViewModel.requirements;
+
+  const moduleRequirementsCodes = moduleRequirements.map((x) =>
     x.modules.map((mod) => mod.code)
   );
 
-  const [modulesState, setModulesState] = useState<ModulesState>({
-    ...dummyModuleState,
-    requirements: moduleRequirements,
-  });
-
   // list of all available modules
-  const moduleMap = new Map<string, Module>();
+  const moduleMap = mainViewModel.moduleViewModelsMap;
   for (let requirement of moduleRequirements) {
-    for (let mod of requirement.modules) {
-      moduleMap.set(mod.code, mod);
+    for (let moduleViewModel of requirement.modules) {
+      moduleMap.set(moduleViewModel.code, moduleViewModel);
     }
   }
 
   const sortRequirementModules = (): void => {
     const modReqMap = new Map();
-    setModulesState((state) => {
-      for (let requirement of state.requirements) {
-        for (let mod of requirement.modules) {
-          modReqMap.set(mod.code, mod);
+    const state = mainViewModel;
+    for (let requirement of state.requirements) {
+      for (let mod of requirement.modules) {
+        modReqMap.set(mod.code, mod);
+      }
+    }
+
+    // console.log(modReqMap);
+    // console.log(moduleRequirementsCodes);
+
+    for (let i = 0; i < moduleRequirementsCodes.length; i++) {
+      state.requirements[i].modules = [];
+      for (let code of moduleRequirementsCodes[i]) {
+        if (modReqMap.has(code)) {
+          state.requirements[i].modules.push(modReqMap.get(code));
         }
       }
+    }
 
-      // console.log(modReqMap);
-      // console.log(moduleRequirementsCodes);
-
-      for (let i = 0; i < moduleRequirementsCodes.length; i++) {
-        state.requirements[i].modules = [];
-        for (let code of moduleRequirementsCodes[i]) {
-          if (modReqMap.has(code)) {
-            state.requirements[i].modules.push(modReqMap.get(code));
-          }
-        }
-      }
-
-      return state;
-    });
     forceUpdate();
   };
 
@@ -122,65 +126,58 @@ const Home = () => {
     destinationIndex: number,
     draggableId: string,
   ) => {
-    const state = { ...modulesState };
+    const state = mainViewModel;
 
     // Removes module from planner or requirements list
     // Note: You have to filter through everything when sourceType is requirement
     // Reason: A mod (e.g. CS2103T) can appear more than once in requirements list
     if (sourceType === "planner") {
-      state.planner[sourceId].modules = removeAtIndex(
-        state.planner[sourceId].modules,
-        sourceIndex
-      );
+      state.planner[sourceId].removeAtIndex(sourceIndex);
     } else if (sourceType === "requirement") {
-      state.requirements = state.requirements.map((x) => ({
-        ...x,
-        modules: x.modules.filter((mod) => mod.code !== draggableId),
-      }));
+      for (const requirement of state.requirements) {
+        requirement.filtered((mod) => mod.code !== draggableId);
+      }
     }
 
     if (!moduleMap.has(draggableId)) return state;
 
-    const mod = moduleMap.get(draggableId);
-    if (mod === undefined) return
-    mod.prereqsViolated = [];
+    const modViewModel = moduleMap.get(draggableId);
+    if (modViewModel === undefined) return;
+    modViewModel.prereqsViolated = [];
 
     // Adds module into planner or requirements list
     // Requirement can appear more than once, so just insert at the beginning and sort after
     if (destinationType == "requirement") {
-      state.requirements[0].modules.push(mod);
+      state.requirements[0].modules.push(modViewModel);
     } else if (destinationType == "planner") {
       console.log(destinationId, destinationIndex);
-      state.planner[destinationId].modules = insertAtIndex(
-        state.planner[destinationId].modules,
-        destinationIndex,
-        mod
+      state.planner[destinationId].addModuleAtIndex(
+        modViewModel,
+        destinationIndex
       );
     }
 
     console.log("state");
     console.log(state);
-    state.planner = await applyPrereqValidation(state.planner);
+    await applyPrereqValidation(state.planner);
 
-    setModulesState(state);
+    forceUpdate();
     sortRequirementModules();
   };
 
   const handleModuleClose = async (module: Module) => {
     console.log("handle module close", module.code);
-    console.log(modulesState);
+
     module.prereqsViolated = [];
-    const state = { ...modulesState };
-    state.planner = state.planner.map((x) => ({
-      ...x,
-      modules: x.modules.filter((mod) => mod.code !== module.code),
-    }));
+    const state = mainViewModel;
+    for (const semester of state.planner) {
+      semester.filtered((mod) => mod.code !== module.code);
+    }
     state.requirements[0].modules.push(module);
-    state.planner = await applyPrereqValidation(state.planner);
+    await applyPrereqValidation(state.planner);
 
     console.log(state);
 
-    setModulesState(state);
     sortRequirementModules();
     forceUpdate();
   };
@@ -218,9 +215,9 @@ const Home = () => {
       </Heading>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Box bgColor="purple.50" margin="0em 1em 0em 1em" borderColor="black">
-          {modulesState.requirements.map((requirement, id) => (
+          {mainViewModel.requirements.map((requirementViewModel, id) => (
             <RequirementContainer
-              requirement={requirement}
+              requirement={requirementViewModel}
               id={"requirement:" + id.toString()}
               key={id}
             />
@@ -242,7 +239,7 @@ const Home = () => {
         </HStack>
         <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
           <HStack align="top">
-            {modulesState.planner.map((semester, id) => (
+            {mainViewModel.planner.map((semester, id) => (
               <PlannerContainer
                 semester={semester}
                 handleModuleClose={handleModuleClose}
