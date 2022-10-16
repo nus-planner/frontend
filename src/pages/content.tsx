@@ -47,3 +47,5 @@ import {
       {...props}
     />
   )
+
+export default Content;

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "pre-commit": "next lint"
+    "pre-commit": "next lint",
+    "export": "next export"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
