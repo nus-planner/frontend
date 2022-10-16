@@ -7,9 +7,9 @@ export interface Module {
   name: string;
   credits: number;
   editable?: boolean;
-  prereqs?: PrereqTree;
-  preclusions?: string[];
-  prereqsViolated?: string[][];
+  prereqs?: PrereqTree | null;
+  preclusions?: string[] | null;
+  prereqsViolated?: string[][] | null;
   getUnderlyingModule(): models.Module | undefined;
 }
 

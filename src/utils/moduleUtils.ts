@@ -74,15 +74,15 @@ export const applyPrereqValidation = async (
 const evaluatePrereqTree = (
   prereqTree: PrereqTree,
   moduleSet: Set<string>
-): boolean => {
+): boolean | undefined => {
   if (typeof prereqTree === "string") {
     return moduleSet.has(prereqTree);
   }
   if ("and" in prereqTree) {
-    return prereqTree.and.every((x) => evaluatePrereqTree(x, moduleSet));
+    return prereqTree.and?.every((x) => evaluatePrereqTree(x, moduleSet));
   }
   if ("or" in prereqTree) {
-    return prereqTree.or.some((x) => evaluatePrereqTree(x, moduleSet));
+    return prereqTree.or?.some((x) => evaluatePrereqTree(x, moduleSet));
   }
 };
 
@@ -93,22 +93,22 @@ const evaluatePrereqTree = (
 const evaluatePrereqTreeMods = (
   prereqTree: PrereqTree,
   moduleSet: Set<string>
-): string[][] => {
+): string[][] | null => {
   if (typeof prereqTree === "string") {
     return moduleSet.has(prereqTree) ? null : [[prereqTree]];
   }
   if ("and" in prereqTree) {
-    const unfulfilledMods = prereqTree.and
+    const unfulfilledMods = (prereqTree.and as PrereqTree[])
       .map((x) => evaluatePrereqTreeMods(x, moduleSet)?.flat(1))
-      .filter((x) => !!x);
+      .filter((x) => !!x) as string[][];
     return unfulfilledMods.length ? unfulfilledMods : null;
   }
   if ("or" in prereqTree) {
-    const orNotFulfilled = prereqTree.or.every(
+    const orNotFulfilled = (prereqTree.or as PrereqTree[]).every(
       (x) => !!evaluatePrereqTreeMods(x, moduleSet)
     );
     return orNotFulfilled
-      ? (prereqTree.or
+      ? ((prereqTree.or as PrereqTree[])
           .map((x) => evaluatePrereqTreeMods(x, moduleSet))
           .flat(1) as string[][])
       : null;
@@ -120,8 +120,11 @@ const evaluatePrereqTreeMods = (
 export const testPrereqTree = async () => {
   const prereqTree = await fetchModulePrereqs("CS3243");
   const modSet = new Set<string>(["CS2040", "CS1231"]);
-  const res = evaluatePrereqTree(prereqTree.prereqs, modSet);
-  console.log(res);
+  if (!!prereqTree.prereqs) {
+    const res = evaluatePrereqTree(prereqTree.prereqs, modSet);
+    console.log(res);
+  }
+
   return;
 };
 
@@ -130,8 +133,10 @@ export const testPrereqTree = async () => {
 export const testPrereqTreeMods = async () => {
   const prereqTree = await fetchModulePrereqs("CS3263");
   const modSet = new Set<string>(["CS2030", "CS1232", "ST2334"]);
-  const res = evaluatePrereqTreeMods(prereqTree.prereqs, modSet);
-  console.log(res);
+  if (!!prereqTree.prereqs) {
+    const res = evaluatePrereqTreeMods(prereqTree.prereqs, modSet);
+    console.log(res);
+  }
   return;
 };
 
