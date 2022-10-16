@@ -42,15 +42,20 @@ export class ModuleViewModel implements frontend.Module {
 }
 
 export class MultiModuleViewModel implements frontend.Module {
+  static emptyLabel = "Select A Module";
   color?: string | undefined;
   code: string;
   name: string;
-  credits: number;
+  credits: number; // TODO: Not all modules have the same number of credits
   editable?: boolean | undefined;
   prereqs?: frontend.PrereqTree | undefined;
   prereqsViolated?: string[][] | undefined;
 
-  constructor(code: string, name: string, credits: number) {
+  constructor(
+    code: string,
+    name: string = MultiModuleViewModel.emptyLabel,
+    credits: number = -1
+  ) {
     this.code = code;
     this.name = name;
     this.credits = credits;
@@ -107,11 +112,7 @@ export class RequirementViewModel implements frontend.Requirement {
           );
         } else {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
-            new MultiModuleViewModel(
-              basket.getEffectivePattern(),
-              "Select A Basket",
-              -1
-            )
+            new MultiModuleViewModel(basket.getEffectivePattern())
           );
         }
       });
