@@ -16,6 +16,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: Build
     steps:
       - uses: actions/checkout@v2
 
@@ -46,6 +47,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
+    needs: build
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
