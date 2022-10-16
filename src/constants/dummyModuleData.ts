@@ -216,9 +216,30 @@ export const dummyModuleState: ModulesState = {
       modules: [],
     },
   ],
-
+  exemptions: [],
   startYear: "",
 };
+
+export const majors = [
+  "Computer Science",
+  "Information Systems",
+  "Computer Engineering",
+  "Business Analytics",
+  "Information Security",
+];
+
+export const specialisations = [
+  "Algorithms & Theory",
+  "Artificial Intelligence",
+  "Computer Graphics and Games",
+  "Computer Security",
+  "Database Systems",
+  "Multimedia Information Retrieval",
+  "Networking and Distributed Systems",
+  "Parallel Computing",
+  "Programming Languages",
+  "Software Engineering",
+];
 
 export const primaries = [
   "CS3231 Theory of Computation",

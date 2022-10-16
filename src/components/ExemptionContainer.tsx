@@ -1,37 +1,28 @@
 import { IconButton, Text, Box, VStack } from "@chakra-ui/react";
 
-import DeleteIcon from "@chakra-ui/icons";
-
 import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
 
-interface PlannerContainerProps {
-  semester: Semester;
-  id: string;
+interface ExemptionContainerProps {
+  semester?: Semester;
+  id?: string;
   handleModuleClose: (module: Module) => void;
 }
 
-const PlannerContainer = ({
+const ExemptionContainer = ({
   semester,
   id,
   handleModuleClose,
-}: PlannerContainerProps) => {
+}: ExemptionContainerProps) => {
   return (
-    // <Droppable droppableId={id}>
-    //   {(provided) => (
-    //     <div {...provided.droppableProps} ref={provided.innerRef}>
     <Box
       alignItems="baseline"
       bgColor="purple.50"
       borderRadius="0.4rem"
       minH="22em"
-      minW="13em"
     >
       <VStack>
-        <Text padding="2" fontSize={"sm"} fontWeight="bold" color={"black.900"}>
-          Year {semester.year} Sem {semester.semester}
-        </Text>
         <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -52,11 +43,7 @@ const PlannerContainer = ({
         </Droppable>
       </VStack>
     </Box>
-    //       {provided.placeholder}
-    //     </div>
-    //   )}
-    // </Droppable>
   );
 };
 
-export default PlannerContainer;
+export default ExemptionContainer;

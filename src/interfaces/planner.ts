@@ -27,5 +27,6 @@ export interface Semester {
 export interface ModulesState {
   requirements: Requirement[];
   planner: Semester[];
+  exemptions: Module[];
   startYear: string;
 }

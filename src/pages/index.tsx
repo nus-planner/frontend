@@ -4,14 +4,18 @@ import {
   Select,
   Box,
   HStack,
+  Stack,
   StackDivider,
   VStack,
+  Divider,
 } from "@chakra-ui/react";
 import { useState, useCallback, useEffect } from "react";
 import { Module, Requirement, ModulesState } from "../interfaces/planner";
 import { insertAtIndex, removeAtIndex } from "../utils/dndUtils";
 import RequirementContainer from "../components/RequirementContainer";
 import PlannerContainer from "../components/PlannerContainer";
+import ExemptionContainer from "../components/ExemptionContainer";
+import BasicInfo from "../components/BasicInfo";
 import {
   dummyModuleState,
   sampleModuleRequirements,
@@ -24,6 +28,7 @@ import {
   testPrereqTreeMods,
 } from "../utils/moduleUtils";
 import { fetchModulePrereqs } from "../api/moduleAPI";
+import MiddlewarePlugin from "next/dist/build/webpack/plugins/middleware-plugin";
 
 interface Container {
   id: string;
@@ -185,33 +190,25 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <HStack padding="1em 0.8em 0.1em 1.2em">
+    <Stack spacing={"1"} padding="1rem">
+      <HStack spacing={"3rem"}>
         <Heading
           fontSize={"2xl"}
           fontWeight={"bold"}
           fontFamily={"body"}
-          paddingRight="1em"
         >
           NUS Planner
         </Heading>
-        <Select placeholder="Choose your year" width={"15rem"} padding="">
-          <option>AY2019/2020</option>
-        </Select>
-        <Select placeholder="Choose your major" width={"15rem"} padding="">
-          <option>Computer Science</option>
-        </Select>
-        <Select placeholder="Choose your focus area" width={"15rem"}>
-          <option>Algorithms & Theory</option>
-        </Select>
+        <BasicInfo />
       </HStack>
 
       <div />
+      <Divider />
       <Heading
         fontSize={"xl"}
         fontWeight={"bold"}
         fontFamily={"body"}
-        padding="1em 1em 0.5em"
+        padding="1em"
       >
         Required Modules
       </Heading>
@@ -251,8 +248,27 @@ const Home = () => {
             ))}
           </HStack>
         </Box>
+      
+      <div>
+        <Heading
+          fontSize={"xl"}
+          fontWeight={"bold"}
+          fontFamily={"body"}
+          padding="0em 1em 0.5em"
+        >
+          Exemptions
+        </Heading>
+        {modulesState.planner.map((semester, id) => (
+          <ExemptionContainer
+            semester={semester}
+            handleModuleClose={handleModuleClose}
+            id={"exemption:" + id.toString()}
+            key={id}
+          />
+        ))}
+      </div>
       </DragDropContext>
-    </div>
+    </Stack>
   );
 };
 
