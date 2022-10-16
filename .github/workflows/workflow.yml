@@ -25,11 +25,17 @@ jobs:
           node-version: 16
           include-prerelease: true
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Check for linting errors
         run: npm run lint
 
       - name: Build
         run: npm run build
+
+      - name: Export
+        run: npm run export
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -39,7 +45,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    name: Build and Deploy
+    name: Deploy
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
