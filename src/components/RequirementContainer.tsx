@@ -40,11 +40,16 @@ const RequirementContainer = ({
         </AccordionButton>
         <AccordionPanel pb={2}>
           <HStack h="-webkit-fit-content">
-          {requirement.description && (
-            <Text fontSize={"x-small"} color={"blackAlpha.700"} minW={requirementWith} w={requirementWith}>
-              {requirement.description}
-            </Text>
-          )}
+            {requirement.description && (
+              <Text
+                fontSize={"x-small"}
+                color={"blackAlpha.700"}
+                minW={requirementWith}
+                w={requirementWith}
+              >
+                {requirement.description}
+              </Text>
+            )}
             <Droppable droppableId={id} direction="horizontal">
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -58,7 +63,6 @@ const RequirementContainer = ({
                       />
                     ))}
                   </HStack>
-
                   {provided.placeholder}
                 </div>
               )}

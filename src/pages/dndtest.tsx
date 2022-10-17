@@ -1,6 +1,6 @@
 import { Box, HStack } from "@chakra-ui/react";
 import { useState } from "react";
-import PlannerContainer from "../components/PlannerContainer";
+import PlannerContainer from "../components/OldPlannerContainer";
 import RequirementContainer from "../components/RequirementContainer";
 import { Module, Requirement, ModulesState } from "../interfaces/planner";
 import { DragDropContext } from "react-beautiful-dnd";

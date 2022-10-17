@@ -8,6 +8,7 @@ import {
   StackDivider,
   VStack,
   Divider,
+  FormControl,
 } from "@chakra-ui/react";
 import { useState, useCallback, useEffect } from "react";
 import { Module, Requirement, ModulesState } from "../interfaces/planner";
@@ -19,6 +20,8 @@ import BasicInfo from "../components/BasicInfo";
 import {
   dummyModuleState,
   sampleModuleRequirements,
+  majors,
+  specialisations,
 } from "../constants/dummyModuleData";
 import { DragDropContext } from "react-beautiful-dnd";
 import {
@@ -189,17 +192,73 @@ const Home = () => {
     forceUpdate();
   };
 
+  // Basic info of the user
+  const years = [];
+  const currYear = new Date().getFullYear();
+  // Assume a student stays in NUS for at most 5 years
+  for (let i = 0; i < 5; i++) {
+    years.push(currYear - i);
+  }
+  // Assume standard max 4 years since no double degree
+  const plannerYear = [1,2,3,4];
+  const [year, setYear] = useState("");
+  const [major, setMajor] = useState("");
+  const [specialisation, setSpecialisation] = useState("");
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+    console.log(plannerYear);
+  };
+  const handleMajorChange = (event) => {
+    setMajor(event.target.value);
+  };
+  const handleSpecialisationChange = (event) => {
+    setSpecialisation(event.target.value);
+  };
+
   return (
-    <Stack spacing={"1"} padding="1rem">
+    <Stack padding="1rem">
       <HStack spacing={"3rem"}>
-        <Heading
-          fontSize={"2xl"}
-          fontWeight={"bold"}
-          fontFamily={"body"}
-        >
+        <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
           NUS Planner
         </Heading>
-        <BasicInfo />
+          <FormControl w="-moz-fit-content">
+            <Select
+              placeholder="Choose your enrollment year"
+              onChange={handleYearChange}
+            >
+              {years.map((year) => (
+                <option key={year}>
+                  AY{year}/{year + 1}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+
+          {year && (
+            <FormControl w="-moz-fit-content">
+              <Select
+                placeholder="Choose your major"
+                onChange={handleMajorChange}
+              >
+                {majors.map((major) => (
+                  <option key={major}>{major}</option>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          {year && major && (
+            <FormControl w="-moz-fit-content">
+              <Select
+                placeholder="Choose your focus area"
+                onChange={handleSpecialisationChange}
+              >
+                {specialisations.map((specialisation) => (
+                  <option key={specialisation}>{specialisation}</option>
+                ))}
+              </Select>
+            </FormControl>
+          )}
       </HStack>
 
       <div />
@@ -238,35 +297,35 @@ const Home = () => {
         </HStack>
         <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
           <HStack align="top">
-            {modulesState.planner.map((semester, id) => (
+            {plannerYear.map((year) => (
               <PlannerContainer
-                semester={semester}
+                year={year}
                 handleModuleClose={handleModuleClose}
-                id={"planner:" + id.toString()}
-                key={id}
+                id={"planner:" + year.toString()}
+                key={year}
               />
             ))}
           </HStack>
         </Box>
-      
-      <div>
-        <Heading
-          fontSize={"xl"}
-          fontWeight={"bold"}
-          fontFamily={"body"}
-          padding="0em 1em 0.5em"
-        >
-          Exemptions
-        </Heading>
-        {modulesState.planner.map((semester, id) => (
-          <ExemptionContainer
-            semester={semester}
-            handleModuleClose={handleModuleClose}
-            id={"exemption:" + id.toString()}
-            key={id}
-          />
-        ))}
-      </div>
+
+        {/* <div>
+          <Heading
+            fontSize={"xl"}
+            fontWeight={"bold"}
+            fontFamily={"body"}
+            padding="0em 1em 0.5em"
+          >
+            Exemptions
+          </Heading>
+          {modulesState.planner.map((semester, id) => (
+            <ExemptionContainer
+              semester={semester}
+              handleModuleClose={handleModuleClose}
+              id={"exemption:" + id.toString()}
+              key={id}
+            />
+          ))}
+        </div> */}
       </DragDropContext>
     </Stack>
   );
