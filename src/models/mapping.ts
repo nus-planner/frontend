@@ -427,4 +427,8 @@ export class MainViewModel
   async initializeFromURL(url: string) {
     return this.validatorState.initializeFromURL(url);
   }
+
+  async initializeFromString(text: string) {
+    return this.validatorState.initializeFromString(text);
+  }
 }

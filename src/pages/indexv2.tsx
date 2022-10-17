@@ -25,6 +25,7 @@ import {
 } from "../utils/moduleUtils";
 import { fetchModulePrereqs } from "../api/moduleAPI";
 import * as models from "../models";
+import reqStr from "../constants/moduleReq";
 
 interface Container {
   id: string;
@@ -50,9 +51,10 @@ const Home = () => {
 
   useEffect(() => {
     mainViewModel
-      .initializeFromURL(
-        "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
-      )
+      .initializeFromString(reqStr)
+      // .initializeFromURL(
+      //   "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
+      // )
       .then(forceUpdate);
   }, []);
 

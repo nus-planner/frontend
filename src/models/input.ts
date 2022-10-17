@@ -65,7 +65,12 @@ export class ValidatorState {
     this.tags.clear();
     this.initialize(topLevelBasket);
     // debugger;
-    console.assert(this.tags.size === 0);
+  }
+
+  async initializeFromString(text: string) {
+    const topLevelBasket = yaml.load(text) as TopLevelBasket;
+    this.tags.clear();
+    this.initialize(topLevelBasket);
   }
 
   isUninitialized(): boolean {
@@ -202,7 +207,6 @@ export class ValidatorState {
     }
 
     if (basketOption.tag) {
-      // debugger;
       this.tags.delete(basketOption.tag);
     }
 
