@@ -10,6 +10,7 @@ export interface Module {
   prereqs?: PrereqTree | null;
   preclusions?: string[] | null;
   prereqsViolated?: string[][] | null;
+  tags?: string[];
   getUnderlyingModule?(): models.Module | undefined;
 }
 

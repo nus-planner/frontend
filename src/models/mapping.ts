@@ -32,6 +32,10 @@ export class ModuleViewModel implements frontend.Module {
     return this.module.credits;
   }
 
+  public get tags(): string[] {
+    return Array.from(this.module.tags);
+  }
+
   constructor(module: plan.Module) {
     this.module = module;
   }
@@ -55,6 +59,11 @@ export class MultiModuleViewModel implements frontend.Module {
     this.name = name;
     this.credits = credits;
   }
+
+  public get tags(): string[] {
+    return [];
+  }
+
   preclusions?: string[];
   getUnderlyingModule() {
     return undefined;
@@ -129,10 +138,7 @@ export class RequirementViewModel implements frontend.Requirement {
     this.totalCredits = -1; // I don't think this is possible?
 
     const tagSet = new TagGatherer().visit(basket);
-    this.allTags = [];
-    for (const tag of tagSet) {
-      this.allTags.push(tag);
-    }
+    this.allTags = Array.from(tagSet);
 
     this.allModules = new BasketFlattener()
       .visit(basket)
