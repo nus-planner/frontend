@@ -214,12 +214,6 @@ export class ValidatorState {
     basket.title = label;
     return basket;
   }
-
-  // convertConfigBasket(topLevelBasket: TopLevelBasket): ValidatorState {
-  //   const convertedConfig = new ValidatorState();
-  //   convertedConfig.convertBasketOptionRecord(topLevelBasket);
-  //   return convertedConfig;
-  // }
 }
 
 export function fetchBasketFromRepo(url: string): Promise<TopLevelBasket> {

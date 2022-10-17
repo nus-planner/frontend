@@ -65,7 +65,7 @@ type ModuleSpecifier = basket.ModuleBasket | basket.MultiModuleBasket;
 
 class TagGatherer extends basket.BasketVisitor<Set<string>> {
   visitStatefulBasket(basket: basket.StatefulBasket): Set<string> {
-    return this.visit(basket);
+    return this.visit(basket.basket);
   }
   visitArrayBasket(basket: basket.ArrayBasket): Set<string> {
     const set = new Set<string>();
@@ -80,7 +80,7 @@ class TagGatherer extends basket.BasketVisitor<Set<string>> {
   visitFulfillmentResultBasket(
     basket: basket.FulfillmentResultBasket,
   ): Set<string> {
-    return this.visit(basket);
+    return this.visit(basket.basket);
   }
   visitModuleBasket(basket: basket.ModuleBasket): Set<string> {
     return basket.module.tags;
