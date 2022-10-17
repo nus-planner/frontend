@@ -10,7 +10,9 @@
     "prepare": "husky install",
     "test": "ts-node src/models/index.ts",
     "pre-commit": "next lint && next build",
-    "export": "next export"
+    "export": "next export",
+    "debug": "ts-node src/index.ts",
+    "windows-debug": "Powershell.exe -File .\\scripts\\Debug.ps1"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",

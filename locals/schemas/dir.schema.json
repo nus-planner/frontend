@@ -1,0 +1,62 @@
+{
+  "properties": {
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cohort", "faculty", "filename", "course"],
+        "properties": {
+          "cohort": {
+            "type": "number"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "resource": {
+            "type": "string",
+            "description": "Link to primary online source for this requirement designation"
+          },
+          "other_resources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Links to more online resources for this requirement designation"
+          }
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "faculty": {
+                "enum": ["Computing"]
+              },
+              "course": {
+                "enum": ["Computer Science", "Information Systems"]
+              }
+            }
+          },
+          {
+            "properties": {
+              "faculty": {
+                "enum": ["Engineering"]
+              },
+              "course": {
+                "enum": ["Computer Engineering", "Mechanical Engineering"]
+              }
+            }
+          },
+          {
+            "properties": {
+              "faculty": {
+                "enum": ["Science"]
+              },
+              "course": {
+                "enum": ["Applied Mathematics", "Mathematics", "Physics"]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

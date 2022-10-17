@@ -1,0 +1,169 @@
+{
+  "MechEng2020": {
+    "and": [
+      {
+        "ulr": {
+          "state": "overallDegreeState",
+          "title": "University Level Requirements",
+          "and": [
+            {
+              "geh": {
+                "title": "GEH modules",
+                "module": {
+                  "code_pattern": "^GEH"
+                }
+              }
+            },
+            "GEQ1000",
+            "GER1000",
+            {
+              "ges": {
+                "title": "GES modules",
+                "module": {
+                  "code_pattern": "^GES"
+                }
+              }
+            },
+            {
+              "get": {
+                "module": {
+                  "code_pattern": "^GET"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "fac": {
+          "state": "overallDegreeState",
+          "title": "Faculty Requirements",
+          "and": [
+            "ES2531",
+            {
+              "": {
+                "module": { "code": "EG2401A", "mc": 2 }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "maj": {
+          "state": "overallDegreeState",
+          "title": "Major Requirements",
+          "and": [
+            {
+              "Foundational Requirements": {
+                "and": [
+                  "MA1505",
+                  "MA1512",
+                  "MA1513",
+                  "CS1010E",
+                  "ME1102",
+                  "ME2104",
+                  "IE2141",
+                  "EG1311",
+                  "EE2211",
+                  "MLE1010"
+                ]
+              }
+            },
+            {
+              "Internship": {
+                "module": { "code": "EG3611A", "mc": 10 }
+              }
+            },
+            {
+              "ME Discipline Specific Mods": {
+                "and": [
+                  "ME2102",
+                  "ME2112",
+                  "ME2115",
+                  "ME2121",
+                  "ME2134",
+                  "ME3162",
+                  {
+                    "Design Project or FYP": {
+                      "or": [
+                        {
+                          "Design Project": {
+                            "module": { "code": "ME4101B", "mc": 8 }
+                          }
+                        },
+                        {
+                          "FYP": {
+                            "module": { "code": "ME4101A", "mc": 8 }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "Technical Electives": {
+                      "at_least_n_mcs": 12,
+                      "at_least_n_of": {
+                        "n": 3,
+                        "baskets": [
+                          "ME2114",
+                          "ME2135",
+                          "ME3000",
+                          "ME3001",
+                          "ME3122",
+                          "ME3163",
+                          "ME3211",
+                          "ME3163",
+                          "ME3211",
+                          "ME3221",
+                          "ME3241",
+                          "ME3242",
+                          "ME3243",
+                          "ME3252",
+                          "ME3261",
+                          "ME3263",
+                          "ME3281",
+                          "ME3291",
+                          "ME4105",
+                          "ME4212",
+                          "ME4223",
+                          "ME4225",
+                          "ME4226",
+                          "ME4227",
+                          "ME4231",
+                          "ME4232",
+                          "ME4233",
+                          "ME4241",
+                          "ME4242",
+                          "ME4245",
+                          "ME4248",
+                          "ME4252",
+                          "ME4253",
+                          "ME4255",
+                          "ME4261",
+                          "ME4262",
+                          "ME4263",
+                          "ME4291"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "ue": {
+          "state": "overallDegreeState",
+          "title": "Unrestricted Electives",
+          "module": {
+            "code_pattern": ".",
+            "required_mcs": 8,
+            "early_terminate": false
+          }
+        }
+      }
+    ]
+  }
+}
