@@ -45,13 +45,13 @@ const Home = () => {
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
   const [mainViewModel, setMainViewModel] = useState(
-    new models.MainViewModel(2020, 4)
+    new models.MainViewModel(2020, 4),
   );
 
   useEffect(() => {
     mainViewModel
       .initializeFromURL(
-        "https://raw.githubusercontent.com/nus-planner/datastructures/main/requirements/cs-2019.json"
+        "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
       )
       .then(forceUpdate);
   }, []);
@@ -59,7 +59,7 @@ const Home = () => {
   const moduleRequirements = mainViewModel.requirements;
 
   const moduleRequirementsCodes = moduleRequirements.map((x) =>
-    x.modules.map((mod) => mod.code)
+    x.modules.map((mod) => mod.code),
   );
 
   // list of all available modules
@@ -113,7 +113,7 @@ const Home = () => {
       destinationType,
       parseInt(destinationId),
       destination.index,
-      draggableId
+      draggableId,
     );
   };
 
@@ -153,7 +153,7 @@ const Home = () => {
       console.log(destinationId, destinationIndex);
       state.planner[destinationId].addModuleAtIndex(
         modViewModel,
-        destinationIndex
+        destinationIndex,
       );
     }
 

@@ -110,6 +110,7 @@
       },
       {
         "cs_breadth_and_depth": {
+          "tag": "B&D",
           "state": "overallDegreeState",
           "at_least_n_mcs": 24,
           "and": [
@@ -120,6 +121,7 @@
                   {
                     "swe_focus_area_primaries": {
                       "at_least_n_modules": 3,
+                      "tag": "swe",
                       "and": [
                         {
                           "SWE FA at least 1 Level 4000": {
@@ -158,6 +160,7 @@
                   },
                   {
                     "algo_focus_area_primaries": {
+                      "tag": "algo",
                       "at_least_n_of": {
                         "n": 3,
                         "baskets": [
