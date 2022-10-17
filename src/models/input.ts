@@ -64,6 +64,7 @@ export class ValidatorState {
     const topLevelBasket = await fetchBasketFromRepo(url);
     this.tags.clear();
     this.initialize(topLevelBasket);
+    // debugger;
     console.assert(this.tags.size === 0);
   }
 
@@ -201,6 +202,7 @@ export class ValidatorState {
     }
 
     if (basketOption.tag) {
+      // debugger;
       this.tags.delete(basketOption.tag);
     }
 
