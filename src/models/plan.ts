@@ -8,6 +8,7 @@ export class ModuleState {
 }
 export class Module {
   state: ModuleState = new ModuleState();
+  tags: Set<string> = new Set();
   prefix: string;
   suffix: string;
   code: string;
@@ -148,7 +149,7 @@ export class AcademicPlanView {
   withOriginalPlan(): AcademicPlanView {
     return new AcademicPlanView(
       this.academicPlan,
-      this.academicPlan.getModules()
+      this.academicPlan.getModules(),
     );
   }
 }
