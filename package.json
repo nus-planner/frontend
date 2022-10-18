@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "pre-commit": "next lint"
+    "test": "ts-node src/models/index.ts",
+    "pre-commit": "next lint && next build",
+    "export": "next export"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
@@ -18,21 +20,28 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "framer-motion": "^6.5.1",
+    "js-yaml": "^4.1.0",
     "next": "12.3.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.6.0",
     "tailwindcss": "^3.1.8"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
     "@types/node": "18.8.0",
     "@types/react": "18.0.21",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "autoprefixer": "^10.4.12",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1",
     "husky": "^8.0.1",
+    "json2yaml": "^1.1.0",
+    "nodemon": "^2.0.20",
     "postcss": "^8.4.16",
     "prettier": "2.7.1",
+    "ts-node": "^10.9.1",
     "typescript": "4.8.4"
   }
 }

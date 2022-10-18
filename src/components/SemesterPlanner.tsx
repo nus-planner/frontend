@@ -1,33 +1,45 @@
-import { IconButton, Text, Box, VStack } from "@chakra-ui/react";
+import {
+  Spacer,
+  Flex,
+  IconButton,
+  Text,
+  Box,
+  VStack,
+  HStack,
+} from "@chakra-ui/react";
+
+import DeleteIcon from "@chakra-ui/icons";
 
 import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
+import React, { useState } from "react";
 
-interface ExemptionContainerProps {
-  semester: Semester;
+interface SemesterPlannerProps {
+  sem: number;
   id: string;
   handleModuleClose: (module: Module) => void;
 }
 
-const ExemptionContainer = ({
-  semester,
+const SemesterPlanner = ({
+  sem,
   id,
   handleModuleClose,
-}: ExemptionContainerProps) => {
+}: SemesterPlannerProps) => {
+  const [semester, setSemeter] = useState([]);
+  console.log(id);
+
   return (
-    <Box
-      alignItems="baseline"
-      bgColor="purple.50"
-      borderRadius="0.4rem"
-      minH="22em"
-    >
-      <VStack>
+    <Box>
+      <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
+        Semester {sem}
+      </Text>
+      <Box border="dotted" borderColor={"blackAlpha.400"} minW="13rem">
         <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               <VStack minW="12rem" minH="18em">
-                {semester.modules.map((module, idx) => (
+                {semester.map((module: Module, idx) => (
                   <ModuleBox
                     module={module}
                     key={module.code}
@@ -41,9 +53,9 @@ const ExemptionContainer = ({
             </div>
           )}
         </Droppable>
-      </VStack>
+      </Box>
     </Box>
   );
 };
 
-export default ExemptionContainer;
+export default SemesterPlanner;

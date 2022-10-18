@@ -12,28 +12,23 @@ import { majors, specialisations } from "../constants/dummyModuleData";
 
 import React, { useState} from "react";
 
-const years = [];
+const years = [1,2,3,4];
 const currYear = new Date().getFullYear();
 
-// Assume a student stays in NUS for at most 5 years
-for (let i = 0; i < 5; i++) {
-  years.push(currYear - i);
-}
-
-const BasicInfo = (currYear) => {
+const BasicInfo = (currYear: number) => {
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
   const [specialisation, setSpecialisation] = useState("");
 
-  const handleYearChange = (event) => {
+  const handleYearChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setYear(event.target.value);
   };
 
-  const handleMajorChange = (event) => {
+  const handleMajorChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setMajor(event.target.value);
   };
 
-  const handleSpecialisationChange = (event) => {
+  const handleSpecialisationChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setSpecialisation(event.target.value);
   };
 

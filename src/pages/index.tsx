@@ -10,7 +10,7 @@ import {
   Divider,
   FormControl,
 } from "@chakra-ui/react";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, SetStateAction } from "react";
 import { Module, Requirement, ModulesState } from "../interfaces/planner";
 import { insertAtIndex, removeAtIndex } from "../utils/dndUtils";
 import RequirementContainer from "../components/RequirementContainer";
@@ -98,7 +98,7 @@ const Home = () => {
     forceUpdate();
   };
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event: any) => {
     const { source, destination, draggableId } = event;
     // e.g.
     // source = { index: 0, droppableId: "requirement:4" }
@@ -112,23 +112,23 @@ const Home = () => {
 
     moveModule(
       sourceType,
-      sourceId,
+      parseInt(sourceId),
       source.index,
       destinationType,
-      destinationId,
+      parseInt(destinationId),
       destination.index,
       draggableId
     );
   };
 
   const moveModule = async (
-    sourceType,
-    sourceId,
-    sourceIndex,
-    destinationType,
-    destinationId,
-    destinationIndex,
-    draggableId
+    sourceType: string,
+    sourceId: number,
+    sourceIndex: number,
+    destinationType: string,
+    destinationId: number,
+    destinationIndex: number,
+    draggableId: string,
   ) => {
     const state = { ...modulesState };
 
@@ -150,6 +150,7 @@ const Home = () => {
     if (!moduleMap.has(draggableId)) return state;
 
     const mod = moduleMap.get(draggableId);
+    if (mod === undefined) return
     mod.prereqsViolated = [];
 
     // Adds module into planner or requirements list
@@ -201,17 +202,19 @@ const Home = () => {
   }
   // Assume standard max 4 years since no double degree
   const plannerYear = [1,2,3,4];
+  const plannerSemester = [[1,2], [1,2], [1,2], [1,2]];
+
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
   const [specialisation, setSpecialisation] = useState("");
-  const handleYearChange = (event) => {
+  const handleYearChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setYear(event.target.value);
     console.log(plannerYear);
   };
-  const handleMajorChange = (event) => {
+  const handleMajorChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setMajor(event.target.value);
   };
-  const handleSpecialisationChange = (event) => {
+  const handleSpecialisationChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setSpecialisation(event.target.value);
   };
 
@@ -300,8 +303,9 @@ const Home = () => {
             {plannerYear.map((year) => (
               <PlannerContainer
                 year={year}
+                semesters={plannerSemester[year - 1]}
                 handleModuleClose={handleModuleClose}
-                id={"planner:" + year.toString()}
+                id={year.toString()}
                 key={year}
               />
             ))}

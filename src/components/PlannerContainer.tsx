@@ -14,17 +14,20 @@ import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
 import React, { useState } from "react";
+import SemesterPlanner from "./SemesterPlanner";
 
 // Fix starting with 4 years (since we are not doing double degree for now)
 // Ay is retrieved from the enrollment year from basic info
 interface PlannerContainerProps {
   year: number;
+  semesters: number[];
   id: string;
   handleModuleClose: (module: Module) => void;
 }
 
 const PlannerContainer = ({
   year,
+  semesters,
   id,
   handleModuleClose,
 }: PlannerContainerProps) => {
@@ -36,7 +39,7 @@ const PlannerContainer = ({
       bgColor="blackAlpha.200"
       borderRadius="0.3rem"
       minH="22em"
-      minW="26em"
+      minW="28em"
       padding={3}
     >
       <Flex>
@@ -47,63 +50,20 @@ const PlannerContainer = ({
         </Box>
         <Spacer />
         <Box>
-
           <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"}>
             MCs
           </Text>
         </Box>
       </Flex>
       <HStack scrollBehavior={"auto"} w="100%">
-        <Box>
-          <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
-            Semester 1
-          </Text>
-          <Box border="dotted" borderColor={"blackAlpha.400"}>
-            <Droppable droppableId={id}>
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  <VStack minW="12rem" minH="18em">
-                    {semester.map((module, idx) => (
-                      <ModuleBox
-                        module={module}
-                        key={module.code}
-                        displayModuleClose={true}
-                        handleModuleClose={handleModuleClose}
-                        idx={idx}
-                      />
-                    ))}
-                  </VStack>
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </Box>
-        </Box>
-        <Box>
-          <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"}  pb={1}>
-            Semester 2
-          </Text>
-          <Box border="dotted" borderColor={"blackAlpha.400"}>
-            <Droppable droppableId={id}>
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  <VStack minW="12rem" minH="18em">
-                    {semester.map((module, idx) => (
-                      <ModuleBox
-                        module={module}
-                        key={module.code}
-                        displayModuleClose={true}
-                        handleModuleClose={handleModuleClose}
-                        idx={idx}
-                      />
-                    ))}
-                  </VStack>
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </Box>
-        </Box>
+        {semesters.map((semester) => (
+          <SemesterPlanner
+            sem={semester}
+            id={"planner:" + (2*(Number(id)-1)+Number(semester)).toString()}
+            handleModuleClose={handleModuleClose}
+            key={semester}
+          ></SemesterPlanner>
+        ))}
       </HStack>
     </Box>
   );
