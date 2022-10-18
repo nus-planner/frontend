@@ -13,7 +13,7 @@ class CriterionFulfillmentResult {
   constructor(
     isFulfilled: boolean = false,
     matchedMCs: number = 0,
-    matchedModules: Set<Module> = new Set()
+    matchedModules: Set<Module> = new Set(),
   ) {
     this.isFulfilled = isFulfilled;
     this.matchedMCs = matchedMCs;
@@ -71,7 +71,7 @@ export abstract class Basket implements Criterion, CriterionEventDelegate {
   }
 
   abstract accept<ReturnValue>(
-    visitor: BasketVisitor<ReturnValue>
+    visitor: BasketVisitor<ReturnValue>,
   ): ReturnValue;
 
   isTopLevelBasket(): boolean {
@@ -79,11 +79,11 @@ export abstract class Basket implements Criterion, CriterionEventDelegate {
   }
 
   abstract isFulfilled(
-    academicPlan: AcademicPlanView
+    academicPlan: AcademicPlanView,
   ): CriterionFulfillmentResult;
 
   isFulfilledWithState(
-    academicPlan: AcademicPlanView
+    academicPlan: AcademicPlanView,
   ): CriterionFulfillmentResult {
     const fulfilled = this.isFulfilled(academicPlan);
     this.criterionState.mergeResult(fulfilled);
@@ -184,7 +184,7 @@ export abstract class BasketVisitor<ReturnValue> {
   abstract visitStatefulBasket(basket: StatefulBasket): ReturnValue;
   abstract visitArrayBasket(basket: ArrayBasket): ReturnValue;
   abstract visitFulfillmentResultBasket(
-    basket: FulfillmentResultBasket
+    basket: FulfillmentResultBasket,
   ): ReturnValue;
   abstract visitModuleBasket(basket: ModuleBasket): ReturnValue;
   abstract visitMultiModuleBasket(basket: MultiModuleBasket): ReturnValue;
@@ -215,8 +215,8 @@ export class StatefulBasket extends Basket {
   isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult {
     return this.basket.isFulfilledWithState(
       academicPlan.withModulesFilteredBy(
-        new PropertySetFilter("code", this.state.moduleCodesAlreadyMatched)
-      )
+        new PropertySetFilter("code", this.state.moduleCodesAlreadyMatched),
+      ),
     );
   }
 
@@ -239,7 +239,7 @@ export class ArrayBasket extends Basket {
     baskets: Array<Basket>,
     binaryOp: BinaryOp,
     n: number,
-    earlyTerminate: boolean
+    earlyTerminate: boolean,
   ) {
     super(name);
     this.baskets = baskets;
@@ -325,7 +325,7 @@ export class FulfillmentResultBasket extends Basket {
   constructor(
     name: string,
     basket: Basket,
-    predicate: typeof FulfillmentResultBasket.prototype.predicate
+    predicate: typeof FulfillmentResultBasket.prototype.predicate,
   ) {
     super(name);
     this.basket = basket;
@@ -336,19 +336,19 @@ export class FulfillmentResultBasket extends Basket {
     return new FulfillmentResultBasket(
       name,
       basket,
-      (result) => result.matchedMCs >= numMCs
+      (result) => result.matchedMCs >= numMCs,
     );
   }
 
   static atLeastNModules(
     name: string,
     numberOfModules: number,
-    basket: Basket
+    basket: Basket,
   ) {
     return new FulfillmentResultBasket(
       name,
       basket,
-      (result) => result.matchedModules.size >= numberOfModules
+      (result) => result.matchedModules.size >= numberOfModules,
     );
   }
 
@@ -366,7 +366,7 @@ export class FulfillmentResultBasket extends Basket {
       return new CriterionFulfillmentResult(
         false,
         fulfilled.matchedMCs,
-        fulfilled.matchedModules
+        fulfilled.matchedModules,
       );
     } else {
       return fulfilled;
@@ -402,7 +402,7 @@ export class ModuleBasket extends Basket {
       ? new CriterionFulfillmentResult(
           true,
           this.module.credits,
-          new Set([this.module])
+          new Set([this.module]),
         )
       : new CriterionFulfillmentResult(false);
   }
@@ -506,7 +506,7 @@ export class MultiModuleBasket extends Basket {
     return new CriterionFulfillmentResult(
       isFulfilled,
       totalMCs,
-      new Set(filteredModules)
+      new Set(filteredModules),
     );
   }
   // /(?<prefix>[A-Z]+)(?<codeNumber>\d)\d+(?<suffix>[A-Z]*)/

@@ -8,6 +8,7 @@ export class ModuleState {
 }
 export class Module {
   state: ModuleState = new ModuleState();
+  tags: Set<string> = new Set();
   prefix: string;
   suffix: string;
   code: string;
@@ -43,7 +44,7 @@ export class AcademicPlan {
     this.startYear = startYear;
     this.plans = new Array(numYears);
     for (let i = 0; i < numYears * 4; i++) {
-      this.plans[i] = new SemPlan(i, i % 4, []);
+      this.plans[i] = new SemPlan(Math.floor(i / 4) + 1, (i % 4) + 1, []);
     }
   }
 
@@ -148,7 +149,7 @@ export class AcademicPlanView {
   withOriginalPlan(): AcademicPlanView {
     return new AcademicPlanView(
       this.academicPlan,
-      this.academicPlan.getModules()
+      this.academicPlan.getModules(),
     );
   }
 }

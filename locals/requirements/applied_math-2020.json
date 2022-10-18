@@ -1,0 +1,121 @@
+{
+  "AppliedMaths2020": {
+    "and": [
+      {
+        "ulr": {
+          "state": "overallDegreeState",
+          "title": "University Level Requirements",
+          "and": [
+            {
+              "geh": {
+                "title": "GEH modules",
+                "module": {
+                  "code_pattern": "^GEH"
+                }
+              }
+            },
+            "GEQ1000",
+            "GER1000",
+            {
+              "ges": {
+                "title": "GES modules",
+                "module": {
+                  "code_pattern": "^GES"
+                }
+              }
+            },
+            {
+              "get": {
+                "module": {
+                  "code_pattern": "^GET"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Level 1000": {
+          "and": [
+            {
+              "Discrete Maths": {
+                "or": ["MA1100", "MA1100T", "CS1231", "CS1231S"]
+              }
+            },
+            {
+              "Linear Algebra": {
+                "or": ["MA1101R", "MA2001"]
+              }
+            },
+            {
+              "Calculus": {
+                "or": ["MA1102R", "MA2002"]
+              }
+            },
+            {
+              "Programming Methodology": {
+                "or": ["CS1010", "CS1010E", "CS1010S", "CS1010X", "CS1101S"]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Level 2000": {
+          "and": [
+            {
+              "Linear Algebra 2": {
+                "or": [
+                  "MA2101",
+                  {
+                    "MA2101S": {
+                      "module": { "code": "MA2101S", "mc": 5 }
+                    }
+                  }
+                ]
+              }
+            },
+            "MA2104",
+            {
+              "Analysis 1": {
+                "or": [
+                  "MA2108",
+                  {
+                    "MA2108S": {
+                      "module": { "code": "MA2108S", "mc": 5 }
+                    }
+                  }
+                ]
+              }
+            },
+            "MA2213",
+            {
+              "Statistics": {
+                "or": ["MA2216", "MA2116", "ST2131"]
+              }
+            },
+            {
+              "Lists 2 to 4": {
+                "or": [
+                  {
+                    "listII": {
+                      "or": ["PC2130", "PC2132", "ST2132", "EC2101"]
+                    }
+                  },
+                  {
+                    "listIII": {}
+                  },
+                  {
+                    "listIV": {}
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      { "Level 3000": {} },
+      { "Level 4000": {} }
+    ]
+  }
+}

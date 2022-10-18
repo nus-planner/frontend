@@ -120,6 +120,7 @@ const ModuleBox = ({
               </Flex>
               {modName}
               {text}
+              <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
             </Box>
           </div>
         )}

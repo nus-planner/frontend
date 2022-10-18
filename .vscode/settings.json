@@ -1,0 +1,18 @@
+{
+  "yaml.schemas": {
+    "locals/schemas/requirements.schema.json": "locals/requirements/*.yaml"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/locals/requirements/*.json",
+        "!/locals/requirements/dir.*"
+      ],
+      "url": "/locals/schemas/requirements.schema.json"
+    },
+    {
+      "fileMatch": ["/locals/requirements/dir.json"],
+      "url": "/locals/schemas/dir.schema.json"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ import * as plan from "./plan";
 interface GlobalModuleViewModelStateDelegate {
   addModuleViewModelToGlobalState: (
     moduleViewModel: frontend.Module,
-    addIfExists?: boolean
+    addIfExists?: boolean,
   ) => frontend.Module;
   removeModuleViewModelFromGlobalState: (code: string) => void;
 }
@@ -30,6 +30,10 @@ export class ModuleViewModel implements frontend.Module {
 
   public get credits(): number {
     return this.module.credits;
+  }
+
+  public get tags(): string[] {
+    return Array.from(this.module.tags);
   }
 
   constructor(module: plan.Module) {
@@ -55,6 +59,11 @@ export class MultiModuleViewModel implements frontend.Module {
     this.name = name;
     this.credits = credits;
   }
+
+  public get tags(): string[] {
+    return [];
+  }
+
   preclusions?: string[];
   getUnderlyingModule() {
     return undefined;
@@ -62,6 +71,34 @@ export class MultiModuleViewModel implements frontend.Module {
 }
 
 type ModuleSpecifier = basket.ModuleBasket | basket.MultiModuleBasket;
+
+class TagGatherer extends basket.BasketVisitor<Set<string>> {
+  visitStatefulBasket(basket: basket.StatefulBasket): Set<string> {
+    return this.visit(basket.basket);
+  }
+  visitArrayBasket(basket: basket.ArrayBasket): Set<string> {
+    const set = new Set<string>();
+    for (const child of basket.childBaskets()) {
+      const childSet = this.visit(child);
+      for (const tag of childSet) {
+        set.add(tag);
+      }
+    }
+    return set;
+  }
+  visitFulfillmentResultBasket(
+    basket: basket.FulfillmentResultBasket,
+  ): Set<string> {
+    return this.visit(basket.basket);
+  }
+  visitModuleBasket(basket: basket.ModuleBasket): Set<string> {
+    return basket.module.tags;
+  }
+  visitMultiModuleBasket(basket: basket.MultiModuleBasket): Set<string> {
+    return new Set();
+  }
+}
+
 class BasketFlattener extends basket.BasketVisitor<Array<ModuleSpecifier>> {
   visitStatefulBasket(basket: basket.StatefulBasket): Array<ModuleSpecifier> {
     return this.visit(basket.basket);
@@ -70,7 +107,7 @@ class BasketFlattener extends basket.BasketVisitor<Array<ModuleSpecifier>> {
     return basket.baskets.flatMap((basket) => this.visit(basket));
   }
   visitFulfillmentResultBasket(
-    basket: basket.FulfillmentResultBasket
+    basket: basket.FulfillmentResultBasket,
   ): Array<ModuleSpecifier> {
     return this.visit(basket.basket);
   }
@@ -78,7 +115,7 @@ class BasketFlattener extends basket.BasketVisitor<Array<ModuleSpecifier>> {
     return [basket];
   }
   visitMultiModuleBasket(
-    basket: basket.MultiModuleBasket
+    basket: basket.MultiModuleBasket,
   ): Array<ModuleSpecifier> {
     return [basket];
   }
@@ -87,31 +124,36 @@ class BasketFlattener extends basket.BasketVisitor<Array<ModuleSpecifier>> {
 export class RequirementViewModel implements frontend.Requirement {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   totalCredits: number;
+  allTags: string[];
   allModules: frontend.Module[];
   modules: frontend.Module[];
   private basket: basket.Basket;
 
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
-    basket: basket.Basket
+    basket: basket.Basket,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
     this.basket = basket;
     this.totalCredits = -1; // I don't think this is possible?
+
+    const tagSet = new TagGatherer().visit(basket);
+    this.allTags = Array.from(tagSet);
+
     this.allModules = new BasketFlattener()
       .visit(basket)
       .map((basket): frontend.Module => {
         if ("module" in basket) {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
-            new ModuleViewModel(basket.module)
+            new ModuleViewModel(basket.module),
           );
         } else {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
             new MultiModuleViewModel(
               basket.getEffectivePattern(),
               "Select A Basket",
-              -1
-            )
+              -1,
+            ),
           );
         }
       });
@@ -139,7 +181,7 @@ class SemesterViewModel implements frontend.Semester {
   private _modules: frontend.Module[];
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
-    semPlan: plan.SemPlan
+    semPlan: plan.SemPlan,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
     this.semPlan = semPlan;
@@ -148,7 +190,7 @@ class SemesterViewModel implements frontend.Semester {
       this._modules,
       semPlan.modules,
       (modViewModel) => modViewModel.getUnderlyingModule!()!, // TODO: Deal with !
-      (mod) => new ModuleViewModel(mod)
+      (mod) => new ModuleViewModel(mod),
     );
   }
   get year(): number {
@@ -192,7 +234,7 @@ class TrickleDownMap<K, V1, V2> {
     map1: Map<K, V1>,
     map2: Map<K, V2>,
     convertDown: (v1: V1) => V2,
-    convertUp?: (t2: V2) => V1
+    convertUp?: (t2: V2) => V1,
   ) {
     this.map1 = map1;
     this.map2 = map2;
@@ -233,7 +275,7 @@ class TrickleDownArray<T1, T2> {
     arr1: Array<T1>,
     arr2: Array<T2>,
     convertDown: (t1: T1) => T2,
-    convertUp?: (t2: T2) => T1
+    convertUp?: (t2: T2) => T1,
   ) {
     this.arr1 = arr1;
     this.arr2 = arr2;
@@ -286,7 +328,7 @@ class AcademicPlanViewModel {
   private academicPlan: plan.AcademicPlan;
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
-    academicPlan: plan.AcademicPlan
+    academicPlan: plan.AcademicPlan,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
     this.academicPlan = academicPlan;
@@ -295,7 +337,7 @@ class AcademicPlanViewModel {
       this.semesterViewModels,
       this.academicPlan.plans,
       (model) => model.getUnderlyingSemPlan(),
-      (semPlan) => new SemesterViewModel(moduleStateDelegate, semPlan)
+      (semPlan) => new SemesterViewModel(moduleStateDelegate, semPlan),
     );
   }
 
@@ -328,7 +370,7 @@ export class MainViewModel
   constructor(startYear: number, numYears = 4) {
     this.academicPlanViewModel = new AcademicPlanViewModel(
       this,
-      new plan.AcademicPlan(startYear, numYears)
+      new plan.AcademicPlan(startYear, numYears),
     );
     this.moduleViewModelsMap = new Map();
     this.validatorState = new input.ValidatorState();
@@ -336,14 +378,14 @@ export class MainViewModel
       this.moduleViewModelsMap,
       this.validatorState.allModules,
       (moduleViewModel) => moduleViewModel.getUnderlyingModule!()!, // TODO: Resolve the !
-      (mod) => new ModuleViewModel(mod)
+      (mod) => new ModuleViewModel(mod),
     );
   }
   exemptions!: frontend.Module[];
 
   addModuleViewModelToGlobalState(
     moduleViewModel: frontend.Module,
-    addIfExists: boolean = false
+    addIfExists: boolean = false,
   ): frontend.Module {
     if (!addIfExists && this._trickle.containsKey(moduleViewModel.code)) {
       return this._trickle.getByKey(moduleViewModel.code)!;
@@ -385,5 +427,9 @@ export class MainViewModel
 
   async initializeFromURL(url: string) {
     return this.validatorState.initializeFromURL(url);
+  }
+
+  async initializeFromString(text: string) {
+    return this.validatorState.initializeFromString(text);
   }
 }
