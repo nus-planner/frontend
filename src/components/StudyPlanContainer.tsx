@@ -63,6 +63,7 @@ const StudyPlanContainer = ({
               "planner:" + (2 * (Number(id) - 1) + Number(semester)).toString()
             }
             semester={plannerSemesters[2 * (Number(id) - 1) + Number(semester)]}
+            semesterIdx={2 * (Number(id) - 1) + Number(semester)}
             handleModuleClose={handleModuleClose}
             key={semester}
           ></SemesterPlanner>
