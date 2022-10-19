@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up node
         uses: actions/setup-node@v3
@@ -38,7 +38,7 @@ jobs:
         run: npm run export
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: static-site
           path: ${{ env.APP_ARTIFACT_LOCATION }}
