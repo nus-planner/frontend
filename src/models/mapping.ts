@@ -360,6 +360,10 @@ class AcademicPlanViewModel {
   removeAtIndex(index: number) {
     this._trickle.removeAtIndex(index);
   }
+
+  validate(config: input.ValidatorState) {
+    return this.academicPlan.checkAgainstConfig(config);
+  }
 }
 
 export class MainViewModel
@@ -435,5 +439,9 @@ export class MainViewModel
 
   async initializeFromString(text: string) {
     return this.validatorState.initializeFromString(text);
+  }
+
+  validate() {
+    return this.academicPlanViewModel.validate(this.validatorState);
   }
 }
