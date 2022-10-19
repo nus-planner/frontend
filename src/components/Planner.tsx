@@ -117,13 +117,13 @@ const Planner = ({
       state.planner[sourceId].removeAtIndex(sourceIndex);
     } else if (sourceType === "requirement") {
       for (const requirement of state.requirements) {
-        requirement.filtered((mod) => mod.code !== draggableId);
+        requirement.filtered((mod) => mod.code !== draggableId.split("|")[0]);
       }
     }
 
-    if (!moduleMap.has(draggableId)) return state;
+    if (!moduleMap.has(draggableId.split("|")[0])) return state;
 
-    const modViewModel = moduleMap.get(draggableId);
+    const modViewModel = moduleMap.get(draggableId.split("|")[0]);
     if (modViewModel === undefined) return;
     modViewModel.prereqsViolated = [];
 

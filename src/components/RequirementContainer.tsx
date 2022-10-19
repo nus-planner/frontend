@@ -57,9 +57,10 @@ const RequirementContainer = ({
                     {requirement.modules.map((module, idx) => (
                       <ModuleBox
                         module={module}
-                        key={module.code}
+                        key={module.code + idx.toString()}
                         displayModuleClose={false}
                         idx={idx}
+                        parentStr={requirement.title}
                       />
                     ))}
                   </HStack>
