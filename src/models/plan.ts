@@ -42,7 +42,7 @@ export class AcademicPlan {
 
   constructor(startYear: number, numYears: number = 4) {
     this.startYear = startYear;
-    this.plans = new Array(numYears);
+    this.plans = new Array(numYears * 4);
     for (let i = 0; i < numYears * 4; i++) {
       this.plans[i] = new SemPlan(Math.floor(i / 4) + 1, (i % 4) + 1, []);
     }
@@ -54,6 +54,10 @@ export class AcademicPlan {
 
   public get numSemesters(): number {
     return this.plans.length;
+  }
+
+  getSemPlan(year: number, semester: SemesterNumber) {
+    return this.plans[(year - 1) * 4 + semester];
   }
 
   preprocess() {

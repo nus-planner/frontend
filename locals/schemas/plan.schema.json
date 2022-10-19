@@ -1,0 +1,33 @@
+{
+  "required": ["starting_year", "years", "semesters"],
+  "properties": {
+    "starting_year": {
+      "type": "number"
+    },
+    "years": {
+      "enum": [2, 3, 4, 5]
+    },
+    "semesters": {
+      "type": "array",
+      "items": {
+        "required": ["year", "semester", "modules"],
+        "properties": {
+          "year": {
+            "enum": [1, 2, 3, 4, 5]
+          },
+          "semester": {
+            "enum": [1, 2, "ST1", "ST2"]
+          },
+          "modules": {
+            "type": "array",
+            "description": "An array of module codes",
+            "items": {
+              "type": "string",
+              "pattern": "(?<prefix>[A-Z]+)(?<codeNumber>\\d)\\d+(?<suffix>[A-Z]*)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

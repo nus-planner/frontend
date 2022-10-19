@@ -48,12 +48,14 @@ type TopLevelBasket = BasketOptionRecord;
 export class ValidatorState {
   static emptyBasket = new baskets.EmptyBasket();
   basket: baskets.Basket;
-  allModules: Map<string, plan.Module>;
-  doubleCountedModules: Map<string, Array<baskets.ModuleBasket>>;
-  states: Map<string, baskets.BasketState>;
-  private tags: Set<string>;
+  readonly allBaskets: Map<string, baskets.Basket>;
+  readonly allModules: Map<string, plan.Module>;
+  readonly doubleCountedModules: Map<string, Array<baskets.ModuleBasket>>;
+  readonly states: Map<string, baskets.BasketState>;
+  private readonly tags: Set<string>;
   constructor() {
     this.basket = ValidatorState.emptyBasket;
+    this.allBaskets = new Map();
     this.allModules = new Map();
     this.doubleCountedModules = new Map();
     this.states = new Map();
@@ -81,7 +83,7 @@ export class ValidatorState {
     this.basket = this.convertBasketOptionRecord(topLevelBasket);
   }
 
-  private getAndAddIfNotExists(moduleCode: string, mc: number = 4) {
+  getAndAddIfNotExists(moduleCode: string, mc: number = 4) {
     if (!this.allModules.has(moduleCode)) {
       this.allModules.set(moduleCode, new plan.Module(moduleCode, "", mc)); // TODO
     }
@@ -217,7 +219,12 @@ export class ValidatorState {
     const label = Object.keys(basketOptionRecord)[0];
     const basketOption = basketOptionRecord[label] as BasketOption;
     const basket = this.convertBasketOption(basketOption);
-    basket.title = label;
+    this.allBaskets.set(label, basket);
+    // If no title is explicitly specified, the label will be used.
+    // In other words, an explicitly specified title will be able to override the label
+    if (basket.title === "") {
+      basket.title = label;
+    }
     return basket;
   }
 }

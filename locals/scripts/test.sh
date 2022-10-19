@@ -1,0 +1,1 @@
+npm run test -- ./locals/requirements/cs-2019.json ./locals/plans/cs-2019-1.json | less

@@ -13,6 +13,10 @@
     {
       "fileMatch": ["/locals/requirements/dir.json"],
       "url": "/locals/schemas/dir.schema.json"
+    },
+    {
+      "fileMatch": ["/locals/plans/*.json"],
+      "url": "/locals/schemas/plan.schema.json"
     }
   ]
 }
