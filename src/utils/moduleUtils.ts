@@ -13,15 +13,16 @@ export const addColorToModules = (moduleRequirements: Requirement[]) => {
 };
 
 export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
-  for (const requirement of moduleRequirements) {
-    for (let i = 0; i < requirement.modules.length; i++) {
-      requirement.modules[i].color = moduleColor[i % moduleColor.length];
+  for (let i = 0; i < moduleRequirements.length; i++) {
+    for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
+      moduleRequirements[i].modules[j].color =
+        moduleColor[i % moduleColor.length];
     }
   }
 };
 
 export const applyPrereqValidation = async (
-  semesters: Semester[]
+  semesters: Semester[],
 ): Promise<Semester[]> => {
   const takenModuleSet = new Set<string>();
 
@@ -47,7 +48,7 @@ export const applyPrereqValidation = async (
       if (!!mod.prereqs) {
         mod.prereqsViolated = evaluatePrereqTreeMods(
           mod.prereqs,
-          takenModuleSet
+          takenModuleSet,
         );
         console.log(`Pre-requisites violated for ${mod.code}`);
         console.log(mod.prereqsViolated);
@@ -73,7 +74,7 @@ export const applyPrereqValidation = async (
 // Returns true if all prerequisites are fulfilled, false otherwise.
 const evaluatePrereqTree = (
   prereqTree: PrereqTree,
-  moduleSet: Set<string>
+  moduleSet: Set<string>,
 ): boolean | undefined => {
   if (typeof prereqTree === "string") {
     return moduleSet.has(prereqTree);
@@ -92,7 +93,7 @@ const evaluatePrereqTree = (
 // means ("CS3243" OR "CS3245") AND ("ST2131" OR "ST2334" OR "MA2216") required
 const evaluatePrereqTreeMods = (
   prereqTree: PrereqTree,
-  moduleSet: Set<string>
+  moduleSet: Set<string>,
 ): string[][] | null => {
   if (typeof prereqTree === "string") {
     return moduleSet.has(prereqTree) ? null : [[prereqTree]];
@@ -105,7 +106,7 @@ const evaluatePrereqTreeMods = (
   }
   if ("or" in prereqTree) {
     const orNotFulfilled = (prereqTree.or as PrereqTree[]).every(
-      (x) => !!evaluatePrereqTreeMods(x, moduleSet)
+      (x) => !!evaluatePrereqTreeMods(x, moduleSet),
     );
     return orNotFulfilled
       ? ((prereqTree.or as PrereqTree[])
