@@ -26,7 +26,7 @@ interface PlannerContainerProps {
   handleModuleClose: (module: Module) => void;
 }
 
-const PlannerContainer = ({
+const StudyPlanContainer = ({
   year,
   semesters,
   id,
@@ -72,4 +72,4 @@ const PlannerContainer = ({
   );
 };
 
-export default PlannerContainer;
+export default StudyPlanContainer;
