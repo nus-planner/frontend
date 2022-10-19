@@ -51,10 +51,10 @@ const Home = () => {
 
   useEffect(() => {
     mainViewModel
-      .initializeFromString(reqStr)
-      // .initializeFromURL(
-      //   "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
-      // )
+      // .initializeFromString(reqStr)
+      .initializeFromURL(
+        "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
+      )
       .then(forceUpdate);
   }, []);
 
