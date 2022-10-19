@@ -2,7 +2,7 @@
   "CS-2019": {
     "and": [
       {
-        "ulr": {
+        "University Level Requirements": {
           "state": "overallDegreeState",
           "title": "University Level Requirements",
           "and": [
@@ -35,7 +35,7 @@
         }
       },
       {
-        "cs_foundation": {
+        "CS Foundation": {
           "state": "overallDegreeState",
           "title": "CS foundation",
           "and": [
@@ -57,7 +57,7 @@
         }
       },
       {
-        "cs_team_project": {
+        "Team Project Requirement": {
           "state": "overallDegreeState",
           "or": [
             "CS3203",
@@ -75,7 +75,7 @@
         }
       },
       {
-        "it_professionalism": {
+        "IT Professionalism": {
           "state": "overallDegreeState",
           "and": [
             {
@@ -89,7 +89,7 @@
         }
       },
       {
-        "cs_industry_exp": {
+        "Industry Experience Requirement": {
           "state": "overallDegreeState",
           "or": [
             "CP3880",
@@ -109,7 +109,7 @@
         }
       },
       {
-        "cs_breadth_and_depth": {
+        "CS Breadth and Depth": {
           "tag": "B&D",
           "state": "overallDegreeState",
           "at_least_n_mcs": 24,
@@ -210,7 +210,7 @@
         }
       },
       {
-        "math_and_sci": {
+        "Math and Science Requirement": {
           "state": "overallDegreeState",
           "and": [
             {
@@ -227,7 +227,7 @@
         }
       },
       {
-        "ue": {
+        "Unrestricted Electives": {
           "state": "overallDegreeState",
           "module": {
             "code_pattern": ".",
