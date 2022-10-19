@@ -584,17 +584,14 @@ export function testCS2019Plan(useRequirementsJSONOrYAML: boolean = false) {
   ]);
 
   let config: input.ValidatorState;
-  if (useRequirementsJSONOrYAML) {
-    config = input.testLoadRequirements();
-  } else {
-    config = new input.ValidatorState();
-    config.basket = csDegree;
-    config.doubleCountedModules = new Map();
-    config.doubleCountedModules.set("CS2103T", [
-      foundation_cs2103tBasket,
-      swe_cs2103tBasket,
-    ]);
-  }
+
+  config = new input.ValidatorState();
+  config.basket = csDegree;
+  config.doubleCountedModules.set("CS2103T", [
+    foundation_cs2103tBasket,
+    swe_cs2103tBasket,
+  ]);
+
   const academicPlan = new AcademicPlan(4);
   // Dummy UE
   const ue1 = new Module("UE0001", "", 4);
