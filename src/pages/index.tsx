@@ -52,11 +52,11 @@ const Home = () => {
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
   const [moduleRequirements, setModuleRequirements] = useState(
-    addColorToModules(sampleModuleRequirements)
+    addColorToModules(sampleModuleRequirements),
   );
 
   const moduleRequirementsCodes = sampleModuleRequirements.map((x) =>
-    x.modules.map((mod) => mod.code)
+    x.modules.map((mod) => mod.code),
   );
 
   const [modulesState, setModulesState] = useState<ModulesState>({
@@ -117,7 +117,7 @@ const Home = () => {
       destinationType,
       parseInt(destinationId),
       destination.index,
-      draggableId
+      draggableId,
     );
   };
 
@@ -138,7 +138,7 @@ const Home = () => {
     if (sourceType === "planner") {
       state.planner[sourceId].modules = removeAtIndex(
         state.planner[sourceId].modules,
-        sourceIndex
+        sourceIndex,
       );
     } else if (sourceType === "requirement") {
       state.requirements = state.requirements.map((x) => ({
@@ -150,7 +150,7 @@ const Home = () => {
     if (!moduleMap.has(draggableId)) return state;
 
     const mod = moduleMap.get(draggableId);
-    if (mod === undefined) return
+    if (mod === undefined) return;
     mod.prereqsViolated = [];
 
     // Adds module into planner or requirements list
@@ -162,7 +162,7 @@ const Home = () => {
       state.planner[destinationId].modules = insertAtIndex(
         state.planner[destinationId].modules,
         destinationIndex,
-        mod
+        mod,
       );
     }
 
@@ -172,6 +172,7 @@ const Home = () => {
 
     setModulesState(state);
     sortRequirementModules();
+    forceUpdate();
   };
 
   const handleModuleClose = async (module: Module) => {
@@ -201,20 +202,31 @@ const Home = () => {
     years.push(currYear - i);
   }
   // Assume standard max 4 years since no double degree
-  const plannerYear = [1,2,3,4];
-  const plannerSemester = [[1,2], [1,2], [1,2], [1,2]];
+  const plannerYear = [1, 2, 3, 4];
+  const plannerSemester = [
+    [1, 2],
+    [1, 2],
+    [1, 2],
+    [1, 2],
+  ];
 
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
   const [specialisation, setSpecialisation] = useState("");
-  const handleYearChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+  const handleYearChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setYear(event.target.value);
     console.log(plannerYear);
   };
-  const handleMajorChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+  const handleMajorChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setMajor(event.target.value);
   };
-  const handleSpecialisationChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+  const handleSpecialisationChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setSpecialisation(event.target.value);
   };
 
@@ -224,44 +236,44 @@ const Home = () => {
         <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
           NUS Planner
         </Heading>
+        <FormControl w="-moz-fit-content">
+          <Select
+            placeholder="Choose your enrollment year"
+            onChange={handleYearChange}
+          >
+            {years.map((year) => (
+              <option key={year}>
+                AY{year}/{year + 1}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+
+        {year && (
           <FormControl w="-moz-fit-content">
             <Select
-              placeholder="Choose your enrollment year"
-              onChange={handleYearChange}
+              placeholder="Choose your major"
+              onChange={handleMajorChange}
             >
-              {years.map((year) => (
-                <option key={year}>
-                  AY{year}/{year + 1}
-                </option>
+              {majors.map((major) => (
+                <option key={major}>{major}</option>
               ))}
             </Select>
           </FormControl>
+        )}
 
-          {year && (
-            <FormControl w="-moz-fit-content">
-              <Select
-                placeholder="Choose your major"
-                onChange={handleMajorChange}
-              >
-                {majors.map((major) => (
-                  <option key={major}>{major}</option>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-
-          {year && major && (
-            <FormControl w="-moz-fit-content">
-              <Select
-                placeholder="Choose your focus area"
-                onChange={handleSpecialisationChange}
-              >
-                {specialisations.map((specialisation) => (
-                  <option key={specialisation}>{specialisation}</option>
-                ))}
-              </Select>
-            </FormControl>
-          )}
+        {year && major && (
+          <FormControl w="-moz-fit-content">
+            <Select
+              placeholder="Choose your focus area"
+              onChange={handleSpecialisationChange}
+            >
+              {specialisations.map((specialisation) => (
+                <option key={specialisation}>{specialisation}</option>
+              ))}
+            </Select>
+          </FormControl>
+        )}
       </HStack>
 
       <div />
@@ -304,6 +316,7 @@ const Home = () => {
               <PlannerContainer
                 year={year}
                 semesters={plannerSemester[year - 1]}
+                plannerSemesters={modulesState.planner}
                 handleModuleClose={handleModuleClose}
                 id={year.toString()}
                 key={year}

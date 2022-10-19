@@ -176,6 +176,12 @@ export const dummyModuleState: ModulesState = {
   requirements: JSON.parse(JSON.stringify(sampleModuleRequirements)),
   planner: [
     {
+      // Exemptions
+      year: 0,
+      semester: 0,
+      modules: [],
+    },
+    {
       year: 1,
       semester: 1,
       modules: [],

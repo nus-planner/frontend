@@ -22,6 +22,7 @@ interface PlannerContainerProps {
   year: number;
   semesters: number[];
   id: string;
+  plannerSemesters: Semester[];
   handleModuleClose: (module: Module) => void;
 }
 
@@ -29,10 +30,9 @@ const PlannerContainer = ({
   year,
   semesters,
   id,
+  plannerSemesters,
   handleModuleClose,
 }: PlannerContainerProps) => {
-  const [semester, setSemeter] = useState([]);
-
   return (
     <Box
       alignItems="baseline"
@@ -58,8 +58,11 @@ const PlannerContainer = ({
       <HStack scrollBehavior={"auto"} w="100%">
         {semesters.map((semester) => (
           <SemesterPlanner
-            sem={semester}
-            id={"planner:" + (2*(Number(id)-1)+Number(semester)).toString()}
+            semesterNumber={semester}
+            id={
+              "planner:" + (2 * (Number(id) - 1) + Number(semester)).toString()
+            }
+            semester={plannerSemesters[2 * (Number(id) - 1) + Number(semester)]}
             handleModuleClose={handleModuleClose}
             key={semester}
           ></SemesterPlanner>

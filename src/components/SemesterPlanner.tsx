@@ -16,30 +16,31 @@ import { Droppable } from "react-beautiful-dnd";
 import React, { useState } from "react";
 
 interface SemesterPlannerProps {
-  sem: number;
+  semesterNumber: number;
   id: string;
+  semester: Semester;
   handleModuleClose: (module: Module) => void;
 }
 
 const SemesterPlanner = ({
-  sem,
+  semesterNumber,
   id,
+  semester,
   handleModuleClose,
 }: SemesterPlannerProps) => {
-  const [semester, setSemeter] = useState([]);
   console.log(id);
 
   return (
     <Box>
       <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
-        Semester {sem}
+        Semester {semesterNumber}
       </Text>
       <Box border="dotted" borderColor={"blackAlpha.400"} minW="13rem">
         <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               <VStack minW="12rem" minH="18em">
-                {semester.map((module: Module, idx) => (
+                {semester.modules.map((module: Module, idx) => (
                   <ModuleBox
                     module={module}
                     key={module.code}
