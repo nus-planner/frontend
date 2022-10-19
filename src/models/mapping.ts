@@ -349,6 +349,10 @@ class AcademicPlanViewModel {
     this._trickle.push(semester);
   }
 
+  addSemesters(semesters: SemesterViewModel[]) {
+    semesters.forEach((semester) => this._trickle.push(semester));
+  }
+
   addSemesterAtIndex(semester: SemesterViewModel, index: number) {
     this._trickle.insertAtIndex(semester, index);
   }

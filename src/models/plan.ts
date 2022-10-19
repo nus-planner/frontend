@@ -100,10 +100,11 @@ export class AcademicPlan {
 }
 
 enum SemesterNumber {
-  ONE = 0,
-  TWO = 1,
-  SPECIAL_TERM_ONE = 2,
-  SPECIAL_TERM_TWO = 3,
+  EXEMPTION = 0,
+  ONE = 1,
+  TWO = 2,
+  SPECIAL_TERM_ONE = 3,
+  SPECIAL_TERM_TWO = 4,
 }
 
 export class SemPlan {

@@ -81,9 +81,6 @@ const Home = () => {
       }
     }
 
-    // console.log(modReqMap);
-    // console.log(moduleRequirementsCodes);
-
     for (let i = 0; i < moduleRequirementsCodes.length; i++) {
       state.requirements[i].modules = [];
       for (let code of moduleRequirementsCodes[i]) {
@@ -184,6 +181,15 @@ const Home = () => {
     forceUpdate();
   };
 
+  const plannerYear = [1, 2, 3, 4];
+  const plannerSemester = [
+    [1, 2],
+    [1, 2],
+    [1, 2],
+    [1, 2],
+  ];
+
+
   return (
     <div>
       <HStack padding="1em 0.8em 0.1em 1.2em">
@@ -241,6 +247,16 @@ const Home = () => {
         </HStack>
         <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
           <HStack align="top">
+            {plannerYear.map((year) => (
+              <PlannerContainer
+                year={year}
+                semesters={plannerSemester[year - 1]}
+                plannerSemesters={mainViewModel.planner}
+                handleModuleClose={handleModuleClose}
+                id={year.toString()}
+                key={year}
+              />
+            ))}
           </HStack>
         </Box>
       </DragDropContext>

@@ -325,7 +325,7 @@ const Home = () => {
           </HStack>
         </Box>
 
-        {/* <div>
+        <div>
           <Heading
             fontSize={"xl"}
             fontWeight={"bold"}
@@ -334,15 +334,14 @@ const Home = () => {
           >
             Exemptions
           </Heading>
-          {modulesState.planner.map((semester, id) => (
+          <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em" w='16rem'>
             <ExemptionContainer
-              semester={semester}
+              exemptedModules={modulesState.planner[0].modules}
               handleModuleClose={handleModuleClose}
-              id={"exemption:" + id.toString()}
-              key={id}
+              id={"planner:0"}
             />
-          ))}
-        </div> */}
+          </Box>
+        </div>
       </DragDropContext>
     </Stack>
   );
