@@ -5,10 +5,10 @@ import {
   ModuleBasket,
   MultiModuleBasket,
   StatefulBasket,
-} from "./basket";
-import { AcademicPlan, Module } from "./plan";
-import * as log from "./log";
-import * as input from "./input";
+} from "../models/basket";
+import { AcademicPlan, Module } from "../models/plan";
+import * as log from "../models/log";
+import * as input from "../models/input";
 
 /**
  * With specialization in operations research and applied mathematics

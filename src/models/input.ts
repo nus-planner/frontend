@@ -81,7 +81,7 @@ export class ValidatorState {
     this.basket = this.convertBasketOptionRecord(topLevelBasket);
   }
 
-  private getAndAddIfNotExists(moduleCode: string, mc: number = 4) {
+  getAndAddIfNotExists(moduleCode: string, mc: number = 4) {
     if (!this.allModules.has(moduleCode)) {
       this.allModules.set(moduleCode, new plan.Module(moduleCode, "", mc)); // TODO
     }

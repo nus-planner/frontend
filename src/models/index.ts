@@ -1,4 +1,4 @@
-import { testCS2019Plan } from "./test";
+import { testCS2019Plan } from "../tests/test";
 // testCS2019Plan(true);
 
 export * from "./basket";
