@@ -220,6 +220,11 @@ export class ValidatorState {
     const basketOption = basketOptionRecord[label] as BasketOption;
     const basket = this.convertBasketOption(basketOption);
     this.allBaskets.set(label, basket);
+    // If no title is explicitly specified, the label will be used.
+    // In other words, an explicitly specified title will be able to override the label
+    if (basket.title === "") {
+      basket.title = label;
+    }
     return basket;
   }
 }
