@@ -1,35 +1,27 @@
+import { Button, Heading, Box, HStack } from "@chakra-ui/react";
 import {
-  Button,
-  Heading,
-  Select,
-  Box,
-  HStack,
-  StackDivider,
-  VStack,
-} from "@chakra-ui/react";
-import { useState, useCallback, useEffect } from "react";
-import { Module, Requirement, ModulesState } from "../interfaces/planner";
-import { insertAtIndex, removeAtIndex } from "../utils/dndUtils";
-import RequirementContainer from "../components/RequirementContainer";
-import StudyPlanContainer from "../components/StudyPlanContainer";
+  useState,
+  useCallback,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import { Module } from "../interfaces/planner";
+import RequirementContainer from "./RequirementContainer";
+import StudyPlanContainer from "./StudyPlanContainer";
+import ExemptionContainer from "./ExemptionContainer";
 import {
   dummyModuleState,
   sampleModuleRequirements,
 } from "../constants/dummyModuleData";
 import { DragDropContext } from "react-beautiful-dnd";
-import {
-  addColorToModules,
-  applyPrereqValidation,
-  testPrereqTree,
-  testPrereqTreeMods,
-} from "../utils/moduleUtils";
-import { fetchModulePrereqs } from "../api/moduleAPI";
-import * as models from "../models";
-import reqStr from "../constants/moduleReq";
+import { addColorToModules, applyPrereqValidation } from "../utils/moduleUtils";
 
-interface Container {
-  id: string;
-  containerType: "requirement" | "planner" | "";
+import { MainViewModel } from "../models";
+
+interface PlannerProps {
+  mainViewModel: MainViewModel;
+  setMainViewModel: Dispatch<SetStateAction<MainViewModel>>;
 }
 
 // Notes about design:
@@ -41,22 +33,13 @@ interface Container {
 // State Tracking of Modules:
 // The state of all modules displayed are tracked in `moduleMap`, where each module code is mapped to the module struct
 
-const Home = () => {
+const Planner = ({
+  mainViewModel,
+  setMainViewModel,
+}: PlannerProps) => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
-  const [mainViewModel, setMainViewModel] = useState(
-    new models.MainViewModel(2020, 4),
-  );
-
-  useEffect(() => {
-    mainViewModel
-      // .initializeFromString(reqStr)
-      .initializeFromURL(
-        "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
-      )
-      .then(forceUpdate);
-  }, []);
 
   const moduleRequirements = mainViewModel.requirements;
 
@@ -181,51 +164,30 @@ const Home = () => {
     forceUpdate();
   };
 
-  const plannerYear = [1, 2, 3, 4];
-  const plannerSemester = [
+  // Assume standard max 4 years since no double degree
+  const plannerYears = [1, 2, 3, 4];
+  const [plannerSemesters, setPlannerSemesters] = useState<number[][]>([
     [1, 2],
     [1, 2],
     [1, 2],
     [1, 2],
-  ];
-
+  ]);
 
   return (
     <div>
-      <HStack padding="1em 0.8em 0.1em 1.2em">
-        <Heading
-          fontSize={"2xl"}
-          fontWeight={"bold"}
-          fontFamily={"body"}
-          paddingRight="1em"
-        >
-          NUS Planner
-        </Heading>
-        <Select placeholder="Choose your year" width={"15rem"} padding="">
-          <option>AY2019/2020</option>
-        </Select>
-        <Select placeholder="Choose your major" width={"15rem"} padding="">
-          <option>Computer Science</option>
-        </Select>
-        <Select placeholder="Choose your focus area" width={"15rem"}>
-          <option>Algorithms & Theory</option>
-        </Select>
-      </HStack>
-
-      <div />
       <Heading
         fontSize={"xl"}
         fontWeight={"bold"}
         fontFamily={"body"}
-        padding="1em 1em 0.5em"
+        padding="1rem 0rem"
       >
         Required Modules
       </Heading>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Box bgColor="purple.50" margin="0em 1em 0em 1em" borderColor="black">
-          {mainViewModel.requirements.map((requirementViewModel, id) => (
+        <Box bgColor="blackAlpha.50">
+          {mainViewModel.requirements.map((requirement, id) => (
             <RequirementContainer
-              requirement={requirementViewModel}
+              requirement={requirement}
               id={"requirement:" + id.toString()}
               key={id}
             />
@@ -247,10 +209,10 @@ const Home = () => {
         </HStack>
         <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
           <HStack align="top">
-            {plannerYear.map((year) => (
+            {plannerYears.map((year) => (
               <StudyPlanContainer
                 year={year}
-                semesters={plannerSemester[year - 1]}
+                semesters={plannerSemesters[year - 1]}
                 plannerSemesters={mainViewModel.planner}
                 handleModuleClose={handleModuleClose}
                 id={year.toString()}
@@ -259,9 +221,32 @@ const Home = () => {
             ))}
           </HStack>
         </Box>
+
+        <div>
+          <Heading
+            fontSize={"xl"}
+            fontWeight={"bold"}
+            fontFamily={"body"}
+            padding="0em 1em 0.5em"
+          >
+            Exemptions
+          </Heading>
+          <Box
+            margin="0em 0.5em 4em"
+            borderColor="black"
+            padding="0.5em"
+            w="16rem"
+          >
+            <ExemptionContainer
+              exemptedModules={mainViewModel.planner[0].modules}
+              handleModuleClose={handleModuleClose}
+              id={"planner:0"}
+            />
+          </Box>
+        </div>
       </DragDropContext>
     </div>
   );
 };
 
-export default Home;
+export default Planner;
