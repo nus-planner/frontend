@@ -12,6 +12,7 @@ export interface Module {
   prereqsViolated?: string[][] | null;
   tags?: string[];
   getUnderlyingModule?(): models.Module | undefined;
+  getMatchedRequirements?(): models.RequirementViewModel[];
 }
 
 export interface Requirement {

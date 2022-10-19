@@ -5,15 +5,20 @@ import * as basket from "./basket";
 import * as input from "./input";
 import * as plan from "./plan";
 
+interface RequirementDelegate {
+  getRequirement(forBasket: basket.Basket): RequirementViewModel | undefined;
+}
+
 interface GlobalModuleViewModelStateDelegate {
-  addModuleViewModelToGlobalState: (
+  addModuleViewModelToGlobalState(
     moduleViewModel: frontend.Module,
     addIfExists?: boolean,
-  ) => frontend.Module;
-  removeModuleViewModelFromGlobalState: (code: string) => void;
+  ): frontend.Module;
+  removeModuleViewModelFromGlobalState(code: string): void;
 }
 
 export class ModuleViewModel implements frontend.Module {
+  requirementDelegate: RequirementDelegate;
   color?: string | undefined;
   editable?: boolean | undefined;
   prereqs?: frontend.PrereqTree | undefined;
@@ -36,12 +41,30 @@ export class ModuleViewModel implements frontend.Module {
     return Array.from(this.module.tags);
   }
 
-  constructor(module: plan.Module) {
+  public get matchedBaskets(): basket.Basket[] {
+    return this.module.state.matchedBaskets;
+  }
+
+  constructor(requirementDelegate: RequirementDelegate, module: plan.Module) {
+    this.requirementDelegate = requirementDelegate;
     this.module = module;
   }
 
   getUnderlyingModule(): plan.Module {
     return this.module;
+  }
+
+  getMatchedRequirements(): RequirementViewModel[] {
+    const matches: RequirementViewModel[] = [];
+    for (const matchedBasket of this.matchedBaskets) {
+      const requirement =
+        this.requirementDelegate.getRequirement(matchedBasket);
+      if (requirement !== undefined) {
+        matches.push(requirement);
+      }
+    }
+
+    return matches;
   }
 }
 
@@ -99,7 +122,7 @@ class TagGatherer extends basket.BasketVisitor<Set<string>> {
   }
 }
 
-class BasketFlattener extends basket.BasketVisitor<Array<ModuleSpecifier>> {
+class ModuleGatherer extends basket.BasketVisitor<Array<ModuleSpecifier>> {
   visitStatefulBasket(basket: basket.StatefulBasket): Array<ModuleSpecifier> {
     return this.visit(basket.basket);
   }
@@ -121,6 +144,35 @@ class BasketFlattener extends basket.BasketVisitor<Array<ModuleSpecifier>> {
   }
 }
 
+class BasketGatherer extends basket.BasketVisitor<Array<basket.Basket>> {
+  visitStatefulBasket(basket: basket.StatefulBasket): basket.Basket[] {
+    const result = this.visit(basket.basket);
+    result.push(basket);
+    return result;
+  }
+  visitArrayBasket(basket: basket.ArrayBasket): basket.Basket[] {
+    const result = [];
+    for (const b of basket.baskets) {
+      result.push(...this.visit(b));
+    }
+    result.push(basket);
+    return result;
+  }
+  visitFulfillmentResultBasket(
+    basket: basket.FulfillmentResultBasket,
+  ): basket.Basket[] {
+    const result = this.visit(basket.basket);
+    result.push(basket);
+    return result;
+  }
+  visitModuleBasket(basket: basket.ModuleBasket): basket.Basket[] {
+    return [basket];
+  }
+  visitMultiModuleBasket(basket: basket.MultiModuleBasket): basket.Basket[] {
+    return [basket];
+  }
+}
+
 export class RequirementViewModel implements frontend.Requirement {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   totalCredits: number;
@@ -131,6 +183,7 @@ export class RequirementViewModel implements frontend.Requirement {
 
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
+    requirementDelegate: RequirementDelegate,
     basket: basket.Basket,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
@@ -140,12 +193,12 @@ export class RequirementViewModel implements frontend.Requirement {
     const tagSet = new TagGatherer().visit(basket);
     this.allTags = Array.from(tagSet);
 
-    this.allModules = new BasketFlattener()
+    this.allModules = new ModuleGatherer()
       .visit(basket)
       .map((basket): frontend.Module => {
         if ("module" in basket) {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
-            new ModuleViewModel(basket.module),
+            new ModuleViewModel(requirementDelegate, basket.module),
           );
         } else {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
@@ -169,6 +222,10 @@ export class RequirementViewModel implements frontend.Requirement {
     return this.basket.description || "";
   }
 
+  public get allBaskets(): basket.Basket[] {
+    return new BasketGatherer().visit(this.basket);
+  }
+
   filtered(filter: (mod: frontend.Module) => boolean) {
     this.modules = this.modules.filter(filter);
   }
@@ -176,21 +233,24 @@ export class RequirementViewModel implements frontend.Requirement {
 
 class SemesterViewModel implements frontend.Semester {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
+  private requirementDelegate: RequirementDelegate;
   private _trickle: TrickleDownArray<frontend.Module, plan.Module>;
   private semPlan: plan.SemPlan;
   private _modules: frontend.Module[];
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
+    requirementDelegate: RequirementDelegate,
     semPlan: plan.SemPlan,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
+    this.requirementDelegate = requirementDelegate;
     this.semPlan = semPlan;
     this._modules = [];
     this._trickle = new TrickleDownArray(
       this._modules,
       semPlan.modules,
       (modViewModel) => modViewModel.getUnderlyingModule!()!, // TODO: Deal with !
-      (mod) => new ModuleViewModel(mod),
+      (mod) => new ModuleViewModel(this.requirementDelegate, mod),
     );
   }
   get year(): number {
@@ -328,6 +388,7 @@ class AcademicPlanViewModel {
   private academicPlan: plan.AcademicPlan;
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
+    requirementDelegate: RequirementDelegate,
     academicPlan: plan.AcademicPlan,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
@@ -337,7 +398,12 @@ class AcademicPlanViewModel {
       this.semesterViewModels,
       this.academicPlan.plans,
       (model) => model.getUnderlyingSemPlan(),
-      (semPlan) => new SemesterViewModel(moduleStateDelegate, semPlan),
+      (semPlan) =>
+        new SemesterViewModel(
+          moduleStateDelegate,
+          requirementDelegate,
+          semPlan,
+        ),
     );
   }
 
@@ -367,16 +433,24 @@ class AcademicPlanViewModel {
 }
 
 export class MainViewModel
-  implements frontend.ModulesState, GlobalModuleViewModelStateDelegate
+  implements
+    frontend.ModulesState,
+    GlobalModuleViewModelStateDelegate,
+    RequirementDelegate
 {
   private _trickle: TrickleDownMap<string, frontend.Module, plan.Module>;
   private _requirements?: Array<RequirementViewModel>;
   readonly academicPlanViewModel: AcademicPlanViewModel;
   readonly moduleViewModelsMap: Map<string, frontend.Module>;
+  private basketToRequirementViewModelMap: Map<
+    basket.Basket,
+    RequirementViewModel
+  >;
   private validatorState: input.ValidatorState;
 
   constructor(startYear: number, numYears = 4) {
     this.academicPlanViewModel = new AcademicPlanViewModel(
+      this,
       this,
       new plan.AcademicPlan(startYear, numYears),
     );
@@ -386,9 +460,11 @@ export class MainViewModel
       this.moduleViewModelsMap,
       this.validatorState.allModules,
       (moduleViewModel) => moduleViewModel.getUnderlyingModule!()!, // TODO: Resolve the !
-      (mod) => new ModuleViewModel(mod),
+      (mod) => new ModuleViewModel(this, mod),
     );
+    this.basketToRequirementViewModelMap = new Map();
   }
+
   exemptions!: frontend.Module[];
 
   addModuleViewModelToGlobalState(
@@ -406,6 +482,10 @@ export class MainViewModel
     this._trickle.deleteByKey(code);
   }
 
+  getRequirement(forBasket: basket.Basket): RequirementViewModel | undefined {
+    return this.basketToRequirementViewModelMap.get(forBasket);
+  }
+
   public get planner() {
     return this.academicPlanViewModel.semesterViewModels;
   }
@@ -418,7 +498,12 @@ export class MainViewModel
     if (this._requirements === undefined) {
       this._requirements = this.validatorState.basket
         .childBaskets()
-        .map((basket) => new RequirementViewModel(this, basket));
+        .map((basket) => new RequirementViewModel(this, this, basket));
+      for (const requirement of this._requirements) {
+        for (const basket of requirement.allBaskets) {
+          this.basketToRequirementViewModelMap.set(basket, requirement);
+        }
+      }
       addColorToModulesv2(this._requirements);
     }
 
