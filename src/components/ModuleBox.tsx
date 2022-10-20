@@ -10,6 +10,8 @@ import {
   Button,
   color,
   Link,
+  UnorderedList,
+  Divider,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
@@ -17,6 +19,7 @@ import { primaries } from "../constants/dummyModuleData";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 import { getNUSModsModulePage } from "../utils/moduleUtils";
+import { ReactElement, JSXElementConstructor, ReactFragment } from "react";
 
 interface ModuleBoxProps {
   module: Module;
@@ -71,11 +74,30 @@ const ModuleBox = ({
     }
   }
 
-  const moduleColor = module.prereqsViolated?.length
-    ? "red.300"
-    : module.color ?? DEFAULT_MODULE_COLOR;
+  const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
 
   const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
+
+  let prereqsViolationText: any;
+
+  if (module.prereqsViolated?.length) {
+    let violations: string[] = [];
+    for (let or of module.prereqsViolated) {
+      violations.push(or.join(" or "));
+    }
+    prereqsViolationText = (
+      <div>
+        <Text fontSize={"xx-small"} color={"red.500"} pt="1">
+          These modules need to be taken first:
+        </Text>
+        <UnorderedList fontSize={"xx-small"} color={"red.500"}>
+          {violations.map((v, idx) => (
+            <li key={idx}>{v}</li>
+          ))}
+        </UnorderedList>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -92,7 +114,7 @@ const ModuleBox = ({
           >
             <Box
               w="12rem"
-              h="5rem"
+              minH="5rem"
               bgColor={moduleColor}
               alignContent="center"
               borderRadius="0.4rem"
@@ -126,6 +148,7 @@ const ModuleBox = ({
               </Flex>
               {modName}
               {text}
+              {prereqsViolationText}
               <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
             </Box>
           </div>

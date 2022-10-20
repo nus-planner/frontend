@@ -30,7 +30,6 @@ const SemesterPlanner = ({
   semesterIdx,
   handleModuleClose,
 }: SemesterPlannerProps) => {
-  console.log(id);
 
   return (
     <Box>
