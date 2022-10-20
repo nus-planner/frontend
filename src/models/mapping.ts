@@ -1,4 +1,11 @@
-import { Exclude, Expose } from "class-transformer";
+import {
+  classToPlain,
+  Exclude,
+  Expose,
+  instanceToPlain,
+  plainToClass,
+  plainToInstance,
+} from "class-transformer";
 import * as frontend from "../interfaces/planner";
 import { addColorToModulesv2 } from "../utils/moduleUtils";
 import * as basket from "./basket";
@@ -631,9 +638,22 @@ export class MainViewModel
     return this.academicPlanViewModel.validate(this.validatorState);
   }
 
-  hydrate(stored: this): void {
+  hydrate(stored: MainViewModel): void {
     this.validatorState.hydrate(stored.validatorState);
     this.academicPlanViewModel.hydrate(stored.academicPlanViewModel);
     this._requirements = undefined;
+  }
+
+  hydrateWithStorageString(storedString: string) {
+    const instance = plainToInstance(MainViewModel, storedString);
+    this.hydrate(instance);
+  }
+
+  toStorageObject() {
+    return instanceToPlain(this);
+  }
+
+  toStorageString() {
+    return JSON.stringify(this.toStorageObject());
   }
 }
