@@ -23,6 +23,15 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Storage Test",
+      "skipFiles": ["<node_internals>/**"],
+      "preLaunchTask": "tsc",
+      "program": "${workspaceFolder}/src/tests/storage.ts",
+      "outFiles": ["${workspaceFolder}/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Plan Test",
       "skipFiles": ["<node_internals>/**"],
       "preLaunchTask": "tsc",

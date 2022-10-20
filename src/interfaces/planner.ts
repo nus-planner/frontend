@@ -34,3 +34,7 @@ export interface ModulesState {
   exemptions: Module[];
   startYear: string;
 }
+
+export interface Hydratable {
+  hydrate(stored: this): void;
+}

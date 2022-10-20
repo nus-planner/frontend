@@ -1,6 +1,3 @@
-import { testCS2019Plan } from "../tests/test";
-// testCS2019Plan(true);
-
 export * from "./basket";
 export * from "./input";
 export * from "./mapping";

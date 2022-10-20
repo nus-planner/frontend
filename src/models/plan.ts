@@ -1,13 +1,16 @@
 import * as input from "./input";
 import { Basket } from "./basket";
-import { Semester } from "../interfaces/planner";
+import { Hydratable, Semester } from "../interfaces/planner";
+import { Exclude, Type } from "class-transformer";
 export const moduleRegex =
   /(?<prefix>[A-Z]+)(?<codeNumber>\d)\d+(?<suffix>[A-Z]*)/;
 export class ModuleState {
   matchedBaskets: Array<Basket> = [];
 }
 export class Module {
+  @Exclude()
   state: ModuleState = new ModuleState();
+  @Exclude()
   tags: Set<string> = new Set();
   prefix: string;
   suffix: string;
@@ -33,11 +36,15 @@ export class Module {
     this.state = new ModuleState();
   }
 }
+
 export class AcademicPlan {
   startYear: number;
   plans: Array<SemPlan>;
 
+  @Exclude()
   private modules: Array<Module> = [];
+
+  @Exclude()
   private moduleCodeToModuleMap: Map<string, Module> = new Map();
 
   constructor(startYear: number, numYears: number = 4) {
@@ -54,6 +61,10 @@ export class AcademicPlan {
 
   public get numSemesters(): number {
     return this.plans.length;
+  }
+
+  public set numSemesters(newValue: number) {
+    this.plans.length = newValue;
   }
 
   getSemPlan(year: number, semester: SemesterNumber) {
@@ -114,8 +125,10 @@ enum SemesterNumber {
 export class SemPlan {
   year: number;
   semester: SemesterNumber;
+  @Type(() => Module)
   modules: Array<Module>;
 
+  @Exclude()
   private moduleCodeToModuleMap: Map<string, Module> = new Map();
 
   constructor(year: number, semester: SemesterNumber, modules: Array<Module>) {
@@ -131,6 +144,8 @@ export class SemPlan {
     }
   }
 }
+
+@Exclude()
 export class AcademicPlanView {
   private academicPlan: AcademicPlan;
   modules: Array<Module>;
@@ -159,6 +174,7 @@ export class AcademicPlanView {
   }
 }
 
+@Exclude()
 export abstract class Filter {
   abstract filter(module: Module): boolean;
 
@@ -167,6 +183,7 @@ export abstract class Filter {
   }
 }
 
+@Exclude()
 class PropertyFilter<K extends keyof Module> extends Filter {
   propertyName: K;
   equals: Module[K];
@@ -185,6 +202,7 @@ class PropertyFilter<K extends keyof Module> extends Filter {
   }
 }
 
+@Exclude()
 class PropertyArrayFilter<K extends keyof Module> extends Filter {
   propertyName: K;
   arr: Array<Module[K]>;
@@ -200,6 +218,7 @@ class PropertyArrayFilter<K extends keyof Module> extends Filter {
   }
 }
 
+@Exclude()
 export class PropertySetFilter<K extends keyof Module> extends Filter {
   propertyName: K;
   set: Set<Module[K]>;

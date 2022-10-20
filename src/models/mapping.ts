@@ -1,6 +1,6 @@
+import { Exclude, Expose } from "class-transformer";
 import * as frontend from "../interfaces/planner";
-import { filterInPlace, insertAtIndex, removeAtIndex } from "../utils/dndUtils";
-import { addColorToModules, addColorToModulesv2 } from "../utils/moduleUtils";
+import { addColorToModulesv2 } from "../utils/moduleUtils";
 import * as basket from "./basket";
 import * as input from "./input";
 import * as plan from "./plan";
@@ -14,15 +14,22 @@ interface GlobalModuleViewModelStateDelegate {
     moduleViewModel: frontend.Module,
     addIfExists?: boolean,
   ): frontend.Module;
+  addModuleToGlobalState(
+    module: plan.Module,
+    addIfExists?: boolean,
+  ): plan.Module;
   removeModuleViewModelFromGlobalState(code: string): void;
 }
 
+@Exclude()
 export class ModuleViewModel implements frontend.Module {
   requirementDelegate: RequirementDelegate;
-  color?: string | undefined;
-  editable?: boolean | undefined;
-  prereqs?: frontend.PrereqTree | undefined;
-  prereqsViolated?: string[][] | undefined;
+  color?: string;
+  editable?: boolean;
+  prereqs?: frontend.PrereqTree;
+  prereqsViolated?: string[][];
+
+  @Expose()
   private module: plan.Module;
 
   public get code(): string {
@@ -68,14 +75,15 @@ export class ModuleViewModel implements frontend.Module {
   }
 }
 
+@Exclude()
 export class MultiModuleViewModel implements frontend.Module {
-  color?: string | undefined;
+  color?: string;
   code: string;
   name: string;
   credits: number;
-  editable?: boolean | undefined;
-  prereqs?: frontend.PrereqTree | undefined;
-  prereqsViolated?: string[][] | undefined;
+  editable?: boolean;
+  prereqs?: frontend.PrereqTree;
+  prereqsViolated?: string[][];
 
   constructor(code: string, name: string, credits: number) {
     this.code = code;
@@ -173,6 +181,7 @@ class BasketGatherer extends basket.BasketVisitor<Array<basket.Basket>> {
   }
 }
 
+@Exclude()
 export class RequirementViewModel implements frontend.Requirement {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   totalCredits: number;
@@ -231,7 +240,8 @@ export class RequirementViewModel implements frontend.Requirement {
   }
 }
 
-class SemesterViewModel implements frontend.Semester {
+@Exclude()
+class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   private requirementDelegate: RequirementDelegate;
   private _trickle: TrickleDownArray<frontend.Module, plan.Module>;
@@ -253,6 +263,29 @@ class SemesterViewModel implements frontend.Semester {
       (mod) => new ModuleViewModel(this.requirementDelegate, mod),
     );
   }
+
+  hydrate(stored: this): void {
+    this.semPlan.year = stored.year;
+    this.semPlan.semester = stored.semester;
+
+    for (const storedMod of stored.modules) {
+      if (!storedMod.getUnderlyingModule) {
+        continue;
+      }
+      const mod = storedMod.getUnderlyingModule();
+      if (mod === undefined) {
+        continue;
+      }
+      this.moduleStateDelegate.addModuleToGlobalState(mod);
+      this.addModule(
+        this.moduleStateDelegate.addModuleViewModelToGlobalState(
+          storedMod,
+          false,
+        ),
+      );
+    }
+  }
+
   get year(): number {
     return this.semPlan.year;
   }
@@ -285,11 +318,12 @@ class SemesterViewModel implements frontend.Semester {
   }
 }
 
+@Exclude()
 class TrickleDownMap<K, V1, V2> {
-  map1: Map<K, V1>;
-  map2: Map<K, V2>;
-  convertDown: (v1: V1) => V2;
-  convertUp?: (t2: V2) => V1;
+  readonly map1: Map<K, V1>;
+  readonly map2: Map<K, V2>;
+  readonly convertDown: (v1: V1) => V2;
+  readonly convertUp?: (t2: V2) => V1;
   constructor(
     map1: Map<K, V1>,
     map2: Map<K, V2>,
@@ -299,12 +333,21 @@ class TrickleDownMap<K, V1, V2> {
     this.map1 = map1;
     this.map2 = map2;
     this.convertDown = convertDown;
-    if (convertUp) {
-      for (const [k, v] of map2.entries()) {
-        map1.set(k, convertUp(v));
+    this.convertUp = convertUp;
+    this.hydrate();
+  }
+
+  hydrate() {
+    if (this.convertUp) {
+      for (const [k, v] of this.map2.entries()) {
+        this.map1.set(k, this.convertUp(v));
       }
-      this.convertUp = convertUp;
     }
+  }
+
+  clear() {
+    this.map1.clear();
+    this.map2.clear();
   }
 
   containsKey(key: K) {
@@ -326,11 +369,12 @@ class TrickleDownMap<K, V1, V2> {
   }
 }
 
+@Exclude()
 class TrickleDownArray<T1, T2> {
-  arr1: Array<T1>;
-  arr2: Array<T2>;
-  convertDown: (t1: T1) => T2;
-  convertUp?: (t2: T2) => T1;
+  readonly arr1: Array<T1>;
+  readonly arr2: Array<T2>;
+  readonly convertDown: (t1: T1) => T2;
+  readonly convertUp?: (t2: T2) => T1;
   constructor(
     arr1: Array<T1>,
     arr2: Array<T2>,
@@ -340,12 +384,21 @@ class TrickleDownArray<T1, T2> {
     this.arr1 = arr1;
     this.arr2 = arr2;
     this.convertDown = convertDown;
-    if (convertUp) {
-      for (const ele of arr2) {
-        arr1.push(convertUp(ele));
+    this.convertUp = convertUp;
+    this.hydrate();
+  }
+
+  hydrate() {
+    if (this.convertUp) {
+      for (const ele of this.arr2) {
+        this.arr1.push(this.convertUp(ele));
       }
-      this.convertUp = convertUp;
     }
+  }
+
+  clear() {
+    this.arr1.length = 0;
+    this.arr2.length = 0;
   }
 
   push(t1: T1) {
@@ -381,17 +434,26 @@ class TrickleDownArray<T1, T2> {
   }
 }
 
-class AcademicPlanViewModel {
+@Exclude()
+class AcademicPlanViewModel implements frontend.Hydratable {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
-  private _trickle: TrickleDownArray<SemesterViewModel, plan.SemPlan>;
+  private requirementDelegate: RequirementDelegate;
+
+  private readonly _trickle: TrickleDownArray<SemesterViewModel, plan.SemPlan>;
+
+  @Expose()
   readonly semesterViewModels: Array<SemesterViewModel>;
+
+  @Expose()
   private academicPlan: plan.AcademicPlan;
+
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
     requirementDelegate: RequirementDelegate,
     academicPlan: plan.AcademicPlan,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
+    this.requirementDelegate = requirementDelegate;
     this.academicPlan = academicPlan;
     this.semesterViewModels = [];
     this._trickle = new TrickleDownArray(
@@ -407,8 +469,25 @@ class AcademicPlanViewModel {
     );
   }
 
+  hydrate(stored: this): void {
+    this.clearSemesters();
+    for (const semesterViewModel of stored.semesterViewModels) {
+      const newSemesterViewModel = new SemesterViewModel(
+        this.moduleStateDelegate,
+        this.requirementDelegate,
+        new plan.SemPlan(0, 0, []),
+      );
+      newSemesterViewModel.hydrate(semesterViewModel);
+      this.addSemester(newSemesterViewModel);
+    }
+  }
+
   public get startYear(): string {
     return this.academicPlan.startYear.toString();
+  }
+
+  clearSemesters() {
+    this._trickle.clear();
   }
 
   addSemester(semester: SemesterViewModel) {
@@ -432,20 +511,29 @@ class AcademicPlanViewModel {
   }
 }
 
+@Exclude()
 export class MainViewModel
   implements
     frontend.ModulesState,
     GlobalModuleViewModelStateDelegate,
-    RequirementDelegate
+    RequirementDelegate,
+    frontend.Hydratable
 {
   private _trickle: TrickleDownMap<string, frontend.Module, plan.Module>;
+
   private _requirements?: Array<RequirementViewModel>;
+
+  @Expose()
   readonly academicPlanViewModel: AcademicPlanViewModel;
+
   readonly moduleViewModelsMap: Map<string, frontend.Module>;
+
   private basketToRequirementViewModelMap: Map<
     basket.Basket,
     RequirementViewModel
   >;
+
+  @Expose()
   private validatorState: input.ValidatorState;
 
   constructor(startYear: number, numYears = 4) {
@@ -478,6 +566,19 @@ export class MainViewModel
     this._trickle.setKeyValue(moduleViewModel.code, moduleViewModel);
     return moduleViewModel;
   }
+
+  addModuleToGlobalState(
+    module: plan.Module,
+    addIfExists: boolean = false,
+  ): plan.Module {
+    if (!addIfExists && this.validatorState.allModules.has(module.code)) {
+      return this.validatorState.allModules.get(module.code)!;
+    }
+
+    this.validatorState.allModules.set(module.code, module);
+    return module;
+  }
+
   removeModuleViewModelFromGlobalState(code: string): void {
     this._trickle.deleteByKey(code);
   }
@@ -528,5 +629,11 @@ export class MainViewModel
 
   validate() {
     return this.academicPlanViewModel.validate(this.validatorState);
+  }
+
+  hydrate(stored: this): void {
+    this.validatorState.hydrate(stored.validatorState);
+    this.academicPlanViewModel.hydrate(stored.academicPlanViewModel);
+    this._requirements = undefined;
   }
 }
