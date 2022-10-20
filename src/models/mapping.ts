@@ -248,6 +248,10 @@ export class RequirementViewModel implements frontend.Requirement {
     return new BasketGatherer().visit(this.basket);
   }
 
+  public get isFulfilled(): boolean {
+    return this.basket.criterionState.isFulfilled;
+  }
+
   filtered(filter: (mod: frontend.Module) => boolean) {
     this.modules = this.modules.filter(filter);
   }
