@@ -19,6 +19,7 @@ interface SemesterPlannerProps {
   semesterNumber: number;
   id: string;
   semester: Semester;
+  semesterIdx: number;
   handleModuleClose: (module: Module) => void;
 }
 
@@ -26,6 +27,7 @@ const SemesterPlanner = ({
   semesterNumber,
   id,
   semester,
+  semesterIdx,
   handleModuleClose,
 }: SemesterPlannerProps) => {
   console.log(id);
@@ -43,8 +45,9 @@ const SemesterPlanner = ({
                 {semester.modules.map((module: Module, idx) => (
                   <ModuleBox
                     module={module}
-                    key={module.code}
+                    key={module.code + idx.toString()}
                     displayModuleClose={true}
+                    parentStr={semesterIdx.toString()}
                     handleModuleClose={handleModuleClose}
                     idx={idx}
                   />

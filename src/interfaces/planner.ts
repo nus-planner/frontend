@@ -12,6 +12,7 @@ export interface Module {
   prereqsViolated?: string[][] | null;
   tags?: string[];
   getUnderlyingModule?(): models.Module | undefined;
+  getMatchedRequirements?(): models.RequirementViewModel[];
 }
 
 export interface Requirement {
@@ -32,4 +33,8 @@ export interface ModulesState {
   planner: Semester[];
   exemptions: Module[];
   startYear: string;
+}
+
+export interface Hydratable {
+  hydrate(stored: this): void;
 }

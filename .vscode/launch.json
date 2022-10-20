@@ -19,6 +19,28 @@
       "preLaunchTask": "tsc",
       "program": "${file}",
       "outFiles": ["${workspaceFolder}/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Storage Test",
+      "skipFiles": ["<node_internals>/**"],
+      "preLaunchTask": "tsc",
+      "program": "${workspaceFolder}/src/tests/storage.ts",
+      "outFiles": ["${workspaceFolder}/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Plan Test",
+      "skipFiles": ["<node_internals>/**"],
+      "preLaunchTask": "tsc",
+      "program": "${workspaceFolder}/src/tests/index.ts",
+      "args": [
+        "./locals/requirements/cs-2019.json",
+        "./locals/plans/cs-2019-2.json"
+      ],
+      "outFiles": ["${workspaceFolder}/**/*.js"]
     }
   ]
 }

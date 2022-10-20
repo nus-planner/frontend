@@ -37,9 +37,10 @@ const ExemptionContainer = ({
               {exemptedModules.map((module, idx) => (
                 <ModuleBox
                   module={module}
-                  key={module.code}
+                  key={idx}
                   displayModuleClose={true}
                   handleModuleClose={handleModuleClose}
+                  parentStr={'exemption'}
                   idx={idx}
                 />
               ))}

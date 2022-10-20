@@ -22,6 +22,7 @@ interface ModuleBoxProps {
   module: Module;
   displayModuleClose: boolean;
   handleModuleClose?: (module: Module) => void;
+  parentStr: string;
   idx: number;
 }
 
@@ -29,6 +30,7 @@ const ModuleBox = ({
   module,
   displayModuleClose,
   handleModuleClose,
+  parentStr,
   idx,
 }: ModuleBoxProps) => {
   let text: any;
@@ -77,7 +79,11 @@ const ModuleBox = ({
 
   return (
     <div>
-      <Draggable key={module.code} draggableId={module.code} index={idx}>
+      <Draggable
+        key={module.code + "|" + parentStr}
+        draggableId={module.code + "|" + parentStr}
+        index={idx}
+      >
         {(provided) => (
           <div
             {...provided.draggableProps}
