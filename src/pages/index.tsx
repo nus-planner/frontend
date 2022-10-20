@@ -7,19 +7,15 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 import { useState, useCallback, useEffect, SetStateAction } from "react";
-import {
-  majors,
-  specialisations,
-} from "../constants/dummyModuleData";
+import { majors, specialisations } from "../constants/dummyModuleData";
 import PlannerComponent from "../components/Planner";
 import * as models from "../models";
-
+import { labelModules } from "../utils/plannerUtils";
 
 const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
-
 
   // Basic info of the user
   const years = [];
@@ -59,7 +55,11 @@ const Home = () => {
       .initializeFromURL(
         "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
       )
-      .then(forceUpdate);
+      .then(() => {
+        forceUpdate();
+        const moduleArr = Array.from(mainViewModel.modulesMap.values());
+        labelModules(moduleArr);
+      });
   }, []);
 
   return (
