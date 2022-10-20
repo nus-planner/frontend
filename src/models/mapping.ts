@@ -6,6 +6,7 @@ import {
   plainToClass,
   plainToInstance,
 } from "class-transformer";
+import { Module } from "module";
 import * as frontend from "../interfaces/planner";
 import { addColorToModulesv2 } from "../utils/moduleUtils";
 import * as basket from "./basket";
@@ -91,6 +92,7 @@ export class MultiModuleViewModel implements frontend.Module {
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: string[][];
+  selectedModule?: plan.Module;
 
   constructor(code: string, name: string, credits: number) {
     this.code = code;
@@ -104,7 +106,11 @@ export class MultiModuleViewModel implements frontend.Module {
 
   preclusions?: string[];
   getUnderlyingModule() {
-    return undefined;
+    return this.selectedModule;
+  }
+
+  selectModule(module: plan.Module): void {
+    this.selectedModule = module;
   }
 }
 
