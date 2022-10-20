@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Module, AcademicPlanView, PropertySetFilter } from "./plan";
 
 enum BinaryOp {
@@ -5,6 +6,7 @@ enum BinaryOp {
   GT,
 }
 
+@Exclude()
 class CriterionFulfillmentResult {
   isFulfilled: boolean;
   matchedMCs: number;
@@ -60,6 +62,7 @@ export interface Criterion {
   isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult;
 }
 
+@Exclude()
 export abstract class Basket implements Criterion, CriterionEventDelegate {
   title: string;
   description?: string;

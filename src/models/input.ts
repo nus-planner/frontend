@@ -1,7 +1,9 @@
 import yaml from "js-yaml";
+import { Exclude, Expose } from "class-transformer";
 import * as baskets from "./basket";
 import * as log from "./log";
 import * as plan from "./plan";
+import { Hydratable } from "../interfaces/planner";
 
 type Shared<T> = T & {
   tag?: string;
@@ -45,7 +47,8 @@ type ArrayBasket = Array<ArrayBasketElement>;
 
 type TopLevelBasket = BasketOptionRecord;
 
-export class ValidatorState {
+@Exclude()
+export class ValidatorState implements Hydratable {
   static emptyBasket = new baskets.EmptyBasket();
   basket: baskets.Basket;
   readonly allBaskets: Map<string, baskets.Basket>;
@@ -53,6 +56,10 @@ export class ValidatorState {
   readonly doubleCountedModules: Map<string, Array<baskets.ModuleBasket>>;
   readonly states: Map<string, baskets.BasketState>;
   private readonly tags: Set<string>;
+
+  @Expose()
+  private text?: string;
+
   constructor() {
     this.basket = ValidatorState.emptyBasket;
     this.allBaskets = new Map();
@@ -62,14 +69,20 @@ export class ValidatorState {
     this.tags = new Set();
   }
 
+  hydrate(stored: this): void {
+    if (stored.text !== undefined) {
+      this.initializeFromString(stored.text);
+    }
+  }
+
   async initializeFromURL(url: string) {
-    const topLevelBasket = await fetchBasketFromRepo(url);
-    this.tags.clear();
-    this.initialize(topLevelBasket);
-    // debugger;
+    return this.initializeFromString(
+      await fetch(url).then((res) => res.text()),
+    );
   }
 
   async initializeFromString(text: string) {
+    this.text = text;
     const topLevelBasket = yaml.load(text) as TopLevelBasket;
     this.tags.clear();
     this.initialize(topLevelBasket);
@@ -227,10 +240,4 @@ export class ValidatorState {
     }
     return basket;
   }
-}
-
-export function fetchBasketFromRepo(url: string): Promise<TopLevelBasket> {
-  return fetch(url)
-    .then((res) => res.text())
-    .then((text) => yaml.load(text) as TopLevelBasket);
 }
