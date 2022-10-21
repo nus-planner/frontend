@@ -31,12 +31,7 @@ import {
   useState,
   useEffect,
 } from "react";
-import {
-  AsyncCreatableSelect,
-  AsyncSelect,
-  CreatableSelect,
-  Select,
-} from "chakra-react-select";
+import Select from "react-select";
 
 interface ModuleBoxProps {
   module: Module;
@@ -69,23 +64,31 @@ const ModuleBox = ({
   useEffect(() => {
     getGEs();
   }, []);
-  
+
   if (module.name == "Select A Basket") {
     if (module.code.startsWith("^GE")) {
       for (let GE of GEs) {
         GEOptions.push({
-          label: GE.code+" "+GE.name,
+          label: GE.code + " " + GE.name,
+          value: GE.code,
         });
       }
-      const selectStyles = { menu: (styles: any) => ({ ...styles, zIndex: 999 }) }; 
+      const customStyles = {
+        option: (provided, state) => ({
+          ...provided,
+          padding: "0.3rem",
+          fontSize: "0.7rem",
+          lineHeight: "1rem",
+        }),
+      };
       modName = (
         <FormControl>
           <Select
-            size="sm"
-            options={[{ options: GEOptions }]}
+            options={[{ options: GEOptions, label: module.code.slice(1, 4) }]}
             placeholder="Select a module"
             closeMenuOnSelect={true}
-            styles={selectStyles}
+            styles={customStyles}
+            menuPosition="fixed"
           />
         </FormControl>
       );
@@ -97,61 +100,6 @@ const ModuleBox = ({
       </Text>
     );
   }
-
-  //       modName = (
-  //         <FormControl></FormControl>
-  //         <Select
-  // </FormControl>
-  //       )
-  //     } else {
-  //     const moduleList = await fetchModulePrereqs(module.code);
-  //       (mod: { moduleCode: string; title: string; semesters: number[] }) => {
-  //         return {
-  //           label: mod.moduleCode + " " + mod.title,
-  //           value: mod.moduleCode,
-  //         };
-  //       },
-  //     );
-  //     modName = (
-  //       <FormControl>
-  //         <Select
-  //           size="sm"
-  //           options={moduleList}
-  //           placeholder="Select a module"
-  //           closeMenuOnSelect={false}
-  //           colorScheme={moduleColor.split(".")[0]}
-  //         />
-  //       </FormControl>
-  //     );
-  //     }
-  //
-  // }
-
-  // else {
-  //   if (module.code.split(":")[0] == "Any Primary") {
-  //     modName = (
-  //       <Select
-  //         placeholder="Select A Module"
-  //         borderColor={"black"}
-  //         size="sm"
-  //         marginTop={"2"}
-  //       >
-  //         {primaries.map((primary, idx) => (
-  //           <option key={idx}> {primary} </option>
-  //         ))}
-  //       </Select>
-  //     );
-  //   } else if (module.code.split(":")[0] == "Any UE") {
-  //     modName = (
-  //       <Input
-  //         borderColor={"black"}
-  //         size="sm"
-  //         marginTop={"2"}
-  //         placeholder="Key in a module"
-  //       ></Input>
-  //     );
-  //   }
-  // }
 
   const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
 
