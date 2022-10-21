@@ -3321,7 +3321,7 @@
     "use-callback-ref" "^1.3.0"
     "use-sidecar" "^1.1.2"
 
-"react-select@^5.5.0":
+"react-select@^5.5.0", "react-select@^5.5.4":
   "integrity" "sha512-lyr19joBUm/CNJgjZMBSnFvJ/MeHCmBYvQ050qYAP3EPa7Oenlnx9guhU+SW0goYgxLQyqwRvkFllQpFAp8tmQ=="
   "resolved" "https://registry.npmjs.org/react-select/-/react-select-5.5.4.tgz"
   "version" "5.5.4"
