@@ -88,7 +88,7 @@ const ModuleBox = ({
             placeholder="Select a module"
             closeMenuOnSelect={true}
             styles={customStyles}
-            menuPosition="fixed"
+            menuPosition='fixed'
           />
         </FormControl>
       );
