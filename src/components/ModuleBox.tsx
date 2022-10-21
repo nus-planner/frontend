@@ -74,7 +74,7 @@ const ModuleBox = ({
         });
       }
       const customStyles = {
-        option: (provided, state) => ({
+        option: (provided: any, state: any): any => ({
           ...provided,
           padding: "0.3rem",
           fontSize: "0.7rem",
