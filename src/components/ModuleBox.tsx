@@ -54,6 +54,10 @@ const ModuleBox = ({
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
   }
 
+  const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
+  const isGE = module.code.startsWith("^GE");
+  const isUE = module.code.startsWith(".");
+
   let modName: any;
   let GEOptions = [];
   const [GEs, setGEs] = useState<Module[]>([]);
@@ -66,7 +70,7 @@ const ModuleBox = ({
   }, []);
 
   if (module.name == "Select A Basket") {
-    if (module.code.startsWith("^GE")) {
+    if (isGE) {
       for (let GE of GEs) {
         GEOptions.push({
           label: GE.code + " " + GE.name,
@@ -101,10 +105,7 @@ const ModuleBox = ({
     );
   }
 
-  const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
-
   let prereqsViolationText: any;
-
   if (module.prereqsViolated?.length) {
     let violations: string[] = [];
     for (let or of module.prereqsViolated) {
@@ -152,7 +153,8 @@ const ModuleBox = ({
                       {module.code}
                     </Link>
                   )}
-                  {!isModuleCode && <>{module.code.split(":")[0]}</>}
+                  {isGE && <>{"Any " + module.code.slice(1,4)}</>}
+                  {!isModuleCode && !isGE && "Any UE"}
                 </Text>
                 <Spacer />
                 {displayModuleClose && (
