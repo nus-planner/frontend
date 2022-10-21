@@ -7,11 +7,13 @@ import PlannerComponent from "../components/Planner";
 import * as models from "../models";
 import { labelModules } from "../utils/plannerUtils";
 import BasicInfo from "../components/BasicInfo";
+import { useAppContext } from "../components/AppContext";
 
 const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
+  const { mainViewModel, setMainViewModel } = useAppContext();
 
   // Basic info of the user
   const years = [];
@@ -41,9 +43,6 @@ const Home = () => {
   };
 
   // TODO: Set up the following to change when corresponding plan is selected
-  const [mainViewModel, setMainViewModel] = useState(
-    new models.MainViewModel(2020, 4),
-  );
 
   useEffect(() => {
     mainViewModel
@@ -65,7 +64,6 @@ const Home = () => {
       <Divider />
       <PlannerComponent
         mainViewModel={mainViewModel}
-        setMainViewModel={setMainViewModel}
       />
     </Stack>
   );

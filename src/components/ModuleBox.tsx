@@ -17,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
-import { primaries } from "../constants/dummyModuleData";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 import {
@@ -25,9 +24,6 @@ import {
   getNUSModsModulePage,
 } from "../utils/moduleUtils";
 import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactFragment,
   useState,
   useEffect,
 } from "react";
@@ -35,6 +31,8 @@ import { SingleValue, ActionMeta } from "react-select";
 import * as models from "../models";
 import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import Select from "react-select";
+import { useAppContext } from "./AppContext";
+
 
 interface ModuleBoxProps {
   module: Module;
@@ -51,6 +49,7 @@ const ModuleBox = ({
   parentStr,
   idx,
 }: ModuleBoxProps) => {
+  const { mainViewModel, setMainViewModel } = useAppContext();
   const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
   let text: any;
   if (module.credits != null && module.credits > 0) {
@@ -96,7 +95,13 @@ const ModuleBox = ({
     }
 
     if (module.selectModule !== undefined) {
+      if (underlyingModule !== null) {
+        mainViewModel.removeModuleViewModelFromGlobalState(underlyingModule.code);
+      }
+
+      underlyingModule = newUnderlyingModule;
       module.selectModule(newUnderlyingModule);
+      mainViewModel.addModuleToGlobalState(newUnderlyingModule);
     }
   };
 

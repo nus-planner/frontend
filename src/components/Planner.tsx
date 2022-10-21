@@ -18,7 +18,6 @@ import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
-  setMainViewModel: Dispatch<SetStateAction<MainViewModel>>;
 }
 
 // Notes about design:
@@ -30,7 +29,7 @@ interface PlannerProps {
 // State Tracking of Modules:
 // The state of all modules displayed are tracked in `moduleMap`, where each module code is mapped to the module struct
 
-const Planner = ({ mainViewModel, setMainViewModel }: PlannerProps) => {
+const Planner = ({ mainViewModel }: PlannerProps) => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
