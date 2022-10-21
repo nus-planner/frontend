@@ -10,14 +10,11 @@ import { Module } from "../interfaces/planner";
 import RequirementContainer from "./RequirementContainer";
 import StudyPlanContainer from "./StudyPlanContainer";
 import ExemptionContainer from "./ExemptionContainer";
-import {
-  dummyModuleState,
-  sampleModuleRequirements,
-} from "../constants/dummyModuleData";
 import { DragDropContext } from "react-beautiful-dnd";
-import { addColorToModules, applyPrereqValidation } from "../utils/moduleUtils";
+import { applyPrereqValidation } from "../utils/moduleUtils";
 
 import { MainViewModel } from "../models";
+import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -33,10 +30,7 @@ interface PlannerProps {
 // State Tracking of Modules:
 // The state of all modules displayed are tracked in `moduleMap`, where each module code is mapped to the module struct
 
-const Planner = ({
-  mainViewModel,
-  setMainViewModel,
-}: PlannerProps) => {
+const Planner = ({ mainViewModel, setMainViewModel }: PlannerProps) => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
@@ -206,6 +200,7 @@ const Planner = ({
           <Button size="sm" colorScheme={"white"} variant="outline">
             + Populate Study Plan
           </Button>
+          <ValidateStudyPlanButton mainViewModel={mainViewModel} />
         </HStack>
         <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
           <HStack align="top">

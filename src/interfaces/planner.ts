@@ -3,7 +3,7 @@ export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
 export interface Module {
   color?: string;
-  code: string;
+  readonly code: string;
   name: string;
   credits: number | null;
   editable?: boolean;
@@ -13,6 +13,7 @@ export interface Module {
   tags?: string[];
   getUnderlyingModule?(): models.Module | undefined;
   getMatchedRequirements?(): models.RequirementViewModel[];
+  selectModule?(module: models.Module): void; // specific to MultiModule
 }
 
 export interface Requirement {
