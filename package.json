@@ -20,6 +20,7 @@
     "@dnd-kit/sortable": "^7.0.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "chakra-react-select": "^4.3.0",
     "class-transformer": "^0.5.1",
     "framer-motion": "^6.5.1",
     "js-yaml": "^4.1.0",

@@ -1,4 +1,4 @@
-import { PrereqTree } from "../interfaces/planner";
+import { Module, PrereqTree } from "../interfaces/planner";
 
 interface ModuleRequisites {
   prereqs?: PrereqTree | null;
@@ -43,3 +43,20 @@ export const fetchModulePrereqs = async (
 
   return { prereqs: prereqs, preclusions: preclusions };
 };
+
+export const fetchModuleList = async (): Promise<Module[]> => {
+  const res = await fetch(NUSMODS_API_URL + `/${acadYear}/moduleList.json`).then(
+    (resp) => {
+      if (resp.status != 200) {
+        return undefined;
+      }
+      return resp.json();
+    }
+  );
+  let moduleList: Module[] = [];
+  if (!res) return moduleList;
+  for (let i = 0; i < res.length; i++) {
+    moduleList.push({ code: res[i].moduleCode, name: res[i].title, credits: null});
+  }
+  return moduleList;
+}

@@ -1,4 +1,4 @@
-import { fetchModulePrereqs } from "../api/moduleAPI";
+import { fetchModuleList, fetchModulePrereqs } from "../api/moduleAPI";
 import { moduleColor } from "../constants/moduleColor";
 import { Requirement, Semester, PrereqTree } from "../interfaces/planner";
 
@@ -143,3 +143,9 @@ export const testPrereqTreeMods = async () => {
 
 export const getNUSModsModulePage = (moduleCode: string): string =>
   "https://nusmods.com/modules/" + moduleCode;
+
+export const getGEsFromModuleList = async (GE: string) => {
+  const allModules = await fetchModuleList();
+  const filteredModules = allModules.filter((mod) => mod.code.startsWith(GE));
+  return filteredModules;
+}
