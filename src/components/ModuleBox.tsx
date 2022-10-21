@@ -37,6 +37,9 @@ import {
   CreatableSelect,
   Select,
 } from "chakra-react-select";
+import { SingleValue, ActionMeta } from "react-select";
+import * as models from "../models";
+import { fetchBasicModuleInfo } from "../api/moduleAPI";
 
 interface ModuleBoxProps {
   module: Module;
@@ -69,24 +72,68 @@ const ModuleBox = ({
   useEffect(() => {
     getGEs();
   }, []);
-  
+
+  let underlyingModule: models.Module | null = null;
+
+  if (module.getUnderlyingModule) {
+    const tempModule = module.getUnderlyingModule();
+    if (tempModule !== undefined) {
+      underlyingModule = tempModule;
+    }
+  }
+
+  const handleChange = async (
+    selectedModule: SingleValue<{ label: string; value: string }>,
+    _: ActionMeta<{ label: string; value: string }>,
+  ) => {
+    if (selectedModule === null || selectedModule.value === undefined) return;
+
+    const basicModuleInfo = await fetchBasicModuleInfo(selectedModule.value);
+    let newUnderlyingModule: models.Module;
+    if (basicModuleInfo === undefined) {
+      newUnderlyingModule = new models.Module(selectedModule.value, "", 4);
+    } else {
+      newUnderlyingModule = new models.Module(
+        basicModuleInfo.moduleCode,
+        basicModuleInfo.title,
+        basicModuleInfo.moduleCredit,
+      );
+    }
+
+    if (module.selectModule !== undefined) {
+      module.selectModule(newUnderlyingModule);
+    }
+  };
+
   if (module.name == "Select A Basket") {
     if (module.code.startsWith("^GE")) {
       for (let GE of GEs) {
         GEOptions.push({
-          label: GE.code+" "+GE.name,
+          label: GE.code + " " + GE.name,
+          value: GE.code,
         });
       }
-      const selectStyles = { menu: (styles: any) => ({ ...styles, zIndex: 999 }) }; 
+      const selectStyles = {
+        menu: (styles: any) => ({ ...styles, zIndex: 999 }),
+      };
       modName = (
         <FormControl>
           <Select
             size="sm"
             options={[{ options: GEOptions }]}
             placeholder="Select a module"
+            value={
+              !!underlyingModule
+                ? {
+                    label: `${underlyingModule.code} ${underlyingModule.name}`,
+                    value: underlyingModule.code,
+                  }
+                : undefined
+            }
             closeMenuOnSelect={true}
             styles={selectStyles}
-            menuPosition='fixed'
+            menuPosition="fixed"
+            onChange={handleChange}
           />
         </FormControl>
       );
@@ -154,7 +201,7 @@ const ModuleBox = ({
   //   }
   // }
 
-  const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
+  const isValidModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
 
   let prereqsViolationText: any;
 
@@ -200,12 +247,12 @@ const ModuleBox = ({
             >
               <Flex>
                 <Text fontSize={"medium"} color="black.900" fontWeight="bold">
-                  {isModuleCode && (
+                  {isValidModuleCode && (
                     <Link href={getNUSModsModulePage(module.code)} isExternal>
                       {module.code}
                     </Link>
                   )}
-                  {!isModuleCode && <>{module.code.split(":")[0]}</>}
+                  {!isValidModuleCode && <>{module.code.split(":")[0]}</>}
                 </Text>
                 <Spacer />
                 {displayModuleClose && (

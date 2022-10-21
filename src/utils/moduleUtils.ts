@@ -21,6 +21,10 @@ export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
   }
 };
 
+export const isValidModuleCode = (code: string) => {
+  return !!code.match(/[A-Z]+\d+[A-Z]*/);
+};
+
 export const applyPrereqValidation = async (
   semesters: Semester[],
 ): Promise<Semester[]> => {
@@ -148,4 +152,4 @@ export const getGEsFromModuleList = async (GE: string) => {
   const allModules = await fetchModuleList();
   const filteredModules = allModules.filter((mod) => mod.code.startsWith(GE));
   return filteredModules;
-}
+};
