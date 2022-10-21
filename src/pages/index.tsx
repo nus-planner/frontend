@@ -1,7 +1,4 @@
-import {
-  Stack,
-  Divider,
-} from "@chakra-ui/react";
+import { Stack, Divider } from "@chakra-ui/react";
 import { useState, useCallback, useEffect, SetStateAction } from "react";
 import PlannerComponent from "../components/Planner";
 import * as models from "../models";
@@ -59,12 +56,10 @@ const Home = () => {
 
   return (
     <Stack padding="1rem">
-      <BasicInfo/>
+      <BasicInfo />
       <div />
       <Divider />
-      <PlannerComponent
-        mainViewModel={mainViewModel}
-      />
+      <PlannerComponent />
     </Stack>
   );
 };
