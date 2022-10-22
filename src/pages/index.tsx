@@ -1,7 +1,6 @@
 import { Stack, Divider } from "@chakra-ui/react";
 import { useState, useCallback, useEffect, SetStateAction } from "react";
 import PlannerComponent from "../components/Planner";
-import * as models from "../models";
 import { labelModules } from "../utils/plannerUtils";
 import BasicInfo from "../components/BasicInfo";
 import { useAppContext } from "../components/AppContext";
@@ -40,7 +39,6 @@ const Home = () => {
   };
 
   // TODO: Set up the following to change when corresponding plan is selected
-
   useEffect(() => {
     mainViewModel
       // .initializeFromString(reqStr)
