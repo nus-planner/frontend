@@ -188,7 +188,7 @@ const Planner = () => {
             Study Plan
           </Heading>
           <Button size="sm" colorScheme={"white"} variant="outline">
-            + Populate Study Plan
+            Populate Study Plan
           </Button>
           <ValidateStudyPlanButton mainViewModel={mainViewModel} />
         </HStack>

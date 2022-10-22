@@ -163,7 +163,6 @@ const ModuleBox = ({
             value: UE.code,
           });
         }
-        console.log(UEOptions);
         const customStyles = {
           option: (provided: any, state: any): any => ({
             ...provided,
