@@ -21,6 +21,10 @@ export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
   }
 };
 
+export const isValidModuleCode = (code: string) => {
+  return !!code.match(/[A-Z]+\d+[A-Z]*/);
+};
+
 export const applyPrereqValidation = async (
   semesters: Semester[],
 ): Promise<Semester[]> => {
@@ -148,4 +152,19 @@ export const getGEsFromModuleList = async (GE: string) => {
   const allModules = await fetchModuleList();
   const filteredModules = allModules.filter((mod) => mod.code.startsWith(GE));
   return filteredModules;
-}
+};
+
+// TODO: cater for cases where there are duplicates from multi-select mods
+export const getNonDuplicateUEs = async (requirements: Requirement[]) => {
+  const allModules = await fetchModuleList();
+  const existingModules: string[] = [];
+  for (let i = 0; i < requirements.length; i++) {
+    for (let j = 0; j < requirements[i].modules.length; j++) {
+      existingModules.push(requirements[i].modules[j].code);
+    }
+  }
+  const filteredModules = allModules.filter(
+    (mod) => !existingModules.includes(mod.code),
+  );
+  return filteredModules;
+};
