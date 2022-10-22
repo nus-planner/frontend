@@ -155,14 +155,8 @@ export const getGEsFromModuleList = async (GE: string) => {
 };
 
 // TODO: cater for cases where there are duplicates from multi-select mods
-export const getNonDuplicateUEs = async (requirements: Requirement[]) => {
+export const getNonDuplicateUEs = async (existingModules: string[]) => {
   const allModules = await fetchModuleList();
-  const existingModules: string[] = [];
-  for (let i = 0; i < requirements.length; i++) {
-    for (let j = 0; j < requirements[i].modules.length; j++) {
-      existingModules.push(requirements[i].modules[j].code);
-    }
-  }
   const filteredModules = allModules.filter(
     (mod) => !existingModules.includes(mod.code),
   );
