@@ -1,0 +1,145 @@
+{
+  "CHS_Econs-2022": {
+    "and": [
+      {
+        "CHS Common Curriculum": {
+          "and": [
+            {
+              "Common Core": {
+                "and": [
+                  {
+                    "Common Core - AI": {
+                      "or": ["CS2109S", "HS1501", "IT1224"]
+                    }
+                  },
+                  {
+                    "Common Core - Communities and Engagement": {
+                      "module": {
+                        "code_pattern": "^CCE",
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  },
+                  {
+                    "Common Core - Digital Literacy": {
+                      "or": ["GEI1001", "GEI1002", "NM2207"]
+                    }
+                  },
+                  "DTK1234",
+                  {
+                    "Common Core - Data Literacy": {
+                      "or": [
+                        "BT1101",
+                        "DSA1101",
+                        "DSE1101",
+                        "GRA1000",
+                        "ST1131"
+                      ]
+                    }
+                  },
+                  {
+                    "Common Core - Writing": {
+                      "or": ["SP1541", "SP2271", "FAS1101"]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Integrated": {
+                "and": [
+                  "HSA1000",
+                  "HSH1000",
+                  {
+                    "Scientific Inq I": {
+                      "or": ["HSI1000", "SP2274"]
+                    }
+                  },
+                  {
+                    "Scientific Inq I": {
+                      "or": [
+                        "HSI2001",
+                        "HSI2002",
+                        "HSI2003",
+                        "HSI2004",
+                        "HSI2005",
+                        "HSI2006",
+                        "HSI2007",
+                        "HSI2008",
+                        "HSI2009",
+                        "HSI2010",
+                        "HSI2011",
+                        "HSI2012",
+                        "HSI2013",
+                        "HSI2014",
+                        "HSI2014"
+                      ]
+                    }
+                  },
+                  "HSS1000"
+                ]
+              }
+            },
+            {
+              "Interdisciplinary": {
+                "at_least_n_of": {
+                  "n": 2,
+                  "baskets": [
+                    "HS2902",
+                    "HS2903",
+                    "HS2904",
+                    "HS2905",
+                    "HS2906",
+                    "HS2907"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Econs Major": {
+          "and": [
+            "EC1101E",
+            "EC2101",
+            "EC2102",
+            "EC2104",
+            "EC2303",
+            "EC3101",
+            "EC3102",
+            "EC3303",
+            {
+              "3k Requirement": {
+                "module": {
+                  "level": 3000,
+                  "required_mcs": 4,
+                  "early_terminate": true
+                }
+              }
+            },
+            {
+              "4k Requirement": {
+                "module": {
+                  "level": 4000,
+                  "required_mcs": 20,
+                  "early_terminate": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Unrestricted Electives": {
+          "module": {
+            "code_pattern": ".",
+            "required_mcs": 32,
+            "early_terminate": true
+          }
+        }
+      }
+    ]
+  }
+}
