@@ -17,21 +17,23 @@ import {
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
-import { primaries } from "../constants/dummyModuleData";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 import {
   getGEsFromModuleList,
+  getNonDuplicateUEs,
   getNUSModsModulePage,
 } from "../utils/moduleUtils";
 import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactFragment,
   useState,
   useEffect,
 } from "react";
+import { SingleValue, ActionMeta } from "react-select";
+import * as models from "../models";
+import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import Select from "react-select";
+import { useAppContext } from "./AppContext";
+
 
 interface ModuleBoxProps {
   module: Module;
@@ -48,11 +50,15 @@ const ModuleBox = ({
   parentStr,
   idx,
 }: ModuleBoxProps) => {
+  const { mainViewModel, setMainViewModel } = useAppContext();
   const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
   let text: any;
   if (module.credits != null && module.credits > 0) {
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
   }
+
+  const isGE = module.code.startsWith("^GE");
+  const isUE = module.code.startsWith(".");
 
   let modName: any;
   let GEOptions = [];
@@ -65,8 +71,63 @@ const ModuleBox = ({
     getGEs();
   }, []);
 
+
+  let UEOptions = [];
+  const [UEs, setUEs] = useState<Module[]>([]);
+  const existingModules: string[] = [];
+  for (let i = 0; i < mainViewModel.requirements.length; i++) {
+    for (let j = 0; j < mainViewModel.requirements[i].modules.length; j++) {
+      existingModules.push(mainViewModel.requirements[i].modules[j].code);
+    }
+  }
+  const getUEs = async () => {
+    const UEs = await getNonDuplicateUEs(existingModules);
+    setUEs(UEs);
+  };
+  useEffect(() => {
+    getUEs();
+  }, []);
+
+  let underlyingModule: models.Module | null = null;
+
+  if (module.getUnderlyingModule) {
+    const tempModule = module.getUnderlyingModule();
+    if (tempModule !== undefined) {
+      underlyingModule = tempModule;
+    }
+  }
+
+  const handleChange = async (
+    selectedModule: SingleValue<{ label: string; value: string }>,
+    _: ActionMeta<{ label: string; value: string }>,
+  ) => {
+    if (selectedModule === null || selectedModule.value === undefined) return;
+
+    const basicModuleInfo = await fetchBasicModuleInfo(selectedModule.value);
+    let newUnderlyingModule: models.Module;
+    if (basicModuleInfo === undefined) {
+      newUnderlyingModule = new models.Module(selectedModule.value, "", 4);
+    } else {
+      newUnderlyingModule = new models.Module(
+        basicModuleInfo.moduleCode,
+        basicModuleInfo.title,
+        basicModuleInfo.moduleCredit,
+      );
+    }
+
+    if (module.selectModule !== undefined) {
+      if (underlyingModule !== null) {
+        mainViewModel.removeModuleViewModelFromGlobalState(underlyingModule.code);
+      }
+
+      underlyingModule = newUnderlyingModule;
+      module.selectModule(newUnderlyingModule);
+      mainViewModel.addModuleToGlobalState(newUnderlyingModule);
+    }
+  };
+
   if (module.name == "Select A Basket") {
-    if (module.code.startsWith("^GE")) {
+    if (isGE) {
       for (let GE of GEs) {
         GEOptions.push({
           label: GE.code + " " + GE.name,
@@ -86,13 +147,57 @@ const ModuleBox = ({
           <Select
             options={[{ options: GEOptions, label: module.code.slice(1, 4) }]}
             placeholder="Select a module"
+            value={
+              !!underlyingModule
+                ? {
+                    label: `${underlyingModule.code} ${underlyingModule.name}`,
+                    value: underlyingModule.code,
+                  }
+                : undefined
+            }
             closeMenuOnSelect={true}
             styles={customStyles}
             menuPosition='fixed'
+            onChange={handleChange}
           />
         </FormControl>
       );
-    }
+    } else if (isUE) {
+        for (let UE of UEs) {
+          UEOptions.push({
+            label: UE.code + " " + UE.name,
+            value: UE.code,
+          });
+        }
+        const customStyles = {
+          option: (provided: any, state: any): any => ({
+            ...provided,
+            padding: "0.3rem",
+            fontSize: "0.7rem",
+            lineHeight: "1rem",
+          }),
+        };
+        modName = (
+          <FormControl>
+            <Select
+              options={[{ options: UEOptions, label: module.code.slice(1, 4) }]}
+              placeholder="Key in a module"
+              value={
+                !!underlyingModule
+                  ? {
+                      label: `${underlyingModule.code} ${underlyingModule.name}`,
+                      value: underlyingModule.code,
+                    }
+                  : undefined
+              }
+              closeMenuOnSelect={true}
+              styles={customStyles}
+              menuPosition='fixed'
+              onChange={handleChange}
+            />
+          </FormControl>
+        );
+      }
   } else {
     modName = (
       <Text color="black.900" fontSize={"xs"}>
@@ -101,10 +206,9 @@ const ModuleBox = ({
     );
   }
 
-  const isModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
+  const isValidModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
 
   let prereqsViolationText: any;
-
   if (module.prereqsViolated?.length) {
     let violations: string[] = [];
     for (let or of module.prereqsViolated) {
@@ -147,12 +251,13 @@ const ModuleBox = ({
             >
               <Flex>
                 <Text fontSize={"medium"} color="black.900" fontWeight="bold">
-                  {isModuleCode && (
+                  {isValidModuleCode && (
                     <Link href={getNUSModsModulePage(module.code)} isExternal>
                       {module.code}
                     </Link>
                   )}
-                  {!isModuleCode && <>{module.code.split(":")[0]}</>}
+                  {isGE && <>{"Any " + module.code.slice(1,4)}</>}
+                  {!isValidModuleCode && !isGE && "Any UE"}
                 </Text>
                 <Spacer />
                 {displayModuleClose && (

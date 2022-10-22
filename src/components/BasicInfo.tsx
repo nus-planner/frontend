@@ -1,9 +1,35 @@
-import { Select, FormControl, HStack, Heading } from "@chakra-ui/react";
+import { Select, FormControl, HStack, Heading, Button } from "@chakra-ui/react";
 
 import { majors, specialisations } from "../constants/dummyModuleData";
-import { useState, SetStateAction } from "react";
+import { useState, SetStateAction, useCallback } from "react";
+import { useAppContext } from "./AppContext";
+import { labelModules } from "../utils/plannerUtils";
+import { MainViewModel } from "../models";
+
+type RequirementInfo = {
+  year: number;
+  major: string;
+  url: string;
+};
+
+const hardcodeRequirementInfos: RequirementInfo[] = [
+  {
+    year: 2019,
+    major: "Computer Science",
+    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
+  },
+  {
+    year: 2020,
+    major: "Electrical Engineering",
+    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/mech_eng-2020.json",
+  },
+];
 
 const BasicInfo = () => {
+  const [, updateState] = useState<{}>();
+  const forceUpdate = useCallback(() => updateState({}), []);
+  const { mainViewModel, setMainViewModel } = useAppContext();
+
   // Basic info of the user
   const years: number[] = [];
   const currYear = new Date().getFullYear();
@@ -12,9 +38,21 @@ const BasicInfo = () => {
     years.push(currYear - i);
   }
 
+  const majorMap = new Map<number, RequirementInfo[]>();
+  for (let year of years) {
+    majorMap.set(year, []);
+  }
+
+  // Load hardcoded data
+  for (let requirementInfo of hardcodeRequirementInfos) {
+    majorMap.get(requirementInfo.year)?.push(requirementInfo);
+  }
+
+  console.log("Majormap");
+  console.log(majorMap);
+
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
-  const [specialisation, setSpecialisation] = useState("");
   const handleYearChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
@@ -26,6 +64,24 @@ const BasicInfo = () => {
     setMajor(event.target.value);
   };
 
+  const loadRequirement = () => {
+    const newModel = new MainViewModel(parseInt(year), 4);
+    newModel
+      .initializeFromURL(
+        // "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
+        majorMap.has(parseInt(year))
+          ? (majorMap.get(parseInt(year)) as RequirementInfo[])[parseInt(major)]
+              .url
+          : "",
+      )
+      .then(() => {
+        setMainViewModel(newModel);
+        forceUpdate();
+        const moduleArr = Array.from(mainViewModel.modulesMap.values());
+        labelModules(moduleArr);
+      });
+  };
+
   return (
     <HStack spacing={"1rem"}>
       <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
@@ -35,9 +91,10 @@ const BasicInfo = () => {
         <Select
           placeholder="Choose your enrollment year"
           onChange={handleYearChange}
+          value={year}
         >
           {years.map((year) => (
-            <option key={year}>
+            <option key={year} value={year}>
               AY{year}/{year + 1}
             </option>
           ))}
@@ -47,11 +104,23 @@ const BasicInfo = () => {
       {year && (
         <FormControl w="-moz-fit-content">
           <Select placeholder="Choose your major" onChange={handleMajorChange}>
-            {majors.map((major) => (
-              <option key={major}>{major}</option>
+            {(majorMap.get(parseInt(year)) ?? []).map((req, idx) => (
+              <option key={idx} value={idx}>
+                {req.major}
+              </option>
             ))}
           </Select>
         </FormControl>
+      )}
+      {major && (
+        <Button
+          size="sm"
+          colorScheme={"white"}
+          variant="outline"
+          onClick={loadRequirement}
+        >
+          Load Requirement
+        </Button>
       )}
     </HStack>
   );

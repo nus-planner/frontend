@@ -15,10 +15,10 @@ import { applyPrereqValidation } from "../utils/moduleUtils";
 
 import { MainViewModel } from "../models";
 import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
+import { useAppContext } from "./AppContext";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
-  setMainViewModel: Dispatch<SetStateAction<MainViewModel>>;
 }
 
 // Notes about design:
@@ -30,39 +30,26 @@ interface PlannerProps {
 // State Tracking of Modules:
 // The state of all modules displayed are tracked in `moduleMap`, where each module code is mapped to the module struct
 
-const Planner = ({ mainViewModel, setMainViewModel }: PlannerProps) => {
+const Planner = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
 
-  const moduleRequirements = mainViewModel.requirements;
+  const { mainViewModel, setMainViewModel } = useAppContext();
 
-  const moduleRequirementsCodes = moduleRequirements.map((x) =>
-    x.modules.map((mod) => mod.code),
-  );
-
-  // list of all available modules
-  const moduleMap = mainViewModel.moduleViewModelsMap;
-  for (let requirement of moduleRequirements) {
-    for (let moduleViewModel of requirement.modules) {
-      moduleMap.set(moduleViewModel.code, moduleViewModel);
-    }
-  }
 
   const sortRequirementModules = (): void => {
     const modReqMap = new Map();
-    const state = mainViewModel;
-    for (let requirement of state.requirements) {
+    for (let requirement of mainViewModel.requirements) {
       for (let mod of requirement.modules) {
         modReqMap.set(mod.code, mod);
       }
     }
-
-    for (let i = 0; i < moduleRequirementsCodes.length; i++) {
-      state.requirements[i].modules = [];
-      for (let code of moduleRequirementsCodes[i]) {
-        if (modReqMap.has(code)) {
-          state.requirements[i].modules.push(modReqMap.get(code));
+    for (let i = 0; i < mainViewModel.requirements.length; i++) {
+      mainViewModel.requirements[i].modules = [];
+      for (let mod of mainViewModel.requirements[i].allModules) {
+        if (modReqMap.has(mod.code)) {
+          mainViewModel.requirements[i].modules.push(modReqMap.get(mod.code));
         }
       }
     }
@@ -115,9 +102,12 @@ const Planner = ({ mainViewModel, setMainViewModel }: PlannerProps) => {
       }
     }
 
-    if (!moduleMap.has(draggableId.split("|")[0])) return state;
+    if (!mainViewModel.moduleViewModelsMap.has(draggableId.split("|")[0]))
+      return state;
 
-    const modViewModel = moduleMap.get(draggableId.split("|")[0]);
+    const modViewModel = mainViewModel.moduleViewModelsMap.get(
+      draggableId.split("|")[0],
+    );
     if (modViewModel === undefined) return;
     modViewModel.prereqsViolated = [];
 
@@ -188,7 +178,7 @@ const Planner = ({ mainViewModel, setMainViewModel }: PlannerProps) => {
           ))}
         </Box>
 
-        <HStack padding="1.5em 1em 0.5em">
+        <HStack padding="1.5em 0em 0.5em">
           <Heading
             fontSize={"xl"}
             fontWeight={"bold"}
@@ -198,11 +188,11 @@ const Planner = ({ mainViewModel, setMainViewModel }: PlannerProps) => {
             Study Plan
           </Heading>
           <Button size="sm" colorScheme={"white"} variant="outline">
-            + Populate Study Plan
+            Populate Study Plan
           </Button>
           <ValidateStudyPlanButton mainViewModel={mainViewModel} />
         </HStack>
-        <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
+        <Box className="horiscroll" borderColor="black">
           <HStack align="top">
             {plannerYears.map((year) => (
               <StudyPlanContainer
@@ -222,14 +212,12 @@ const Planner = ({ mainViewModel, setMainViewModel }: PlannerProps) => {
             fontSize={"xl"}
             fontWeight={"bold"}
             fontFamily={"body"}
-            padding="0em 1em 0.5em"
+            padding="1.4em 0em 0.5rem"
           >
             Exemptions
           </Heading>
           <Box
-            margin="0em 0.5em 4em"
             borderColor="black"
-            padding="0.5em"
             w="16rem"
           >
             <ExemptionContainer

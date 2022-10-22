@@ -36,11 +36,11 @@ const SemesterPlanner = ({
       <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
         Semester {semesterNumber}
       </Text>
-      <Box border="dotted" borderColor={"blackAlpha.400"} minW="13rem">
+      <Box border="dotted" borderColor={"blackAlpha.400"} borderRadius="0.4rem" minW="13rem">
         <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              <VStack minW="12rem" minH="18em">
+              <VStack minW="12rem" minH="18em" padding={"0.4rem 0rem"}>
                 {semester.modules.map((module: Module, idx) => (
                   <ModuleBox
                     module={module}

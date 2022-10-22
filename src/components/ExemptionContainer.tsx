@@ -18,22 +18,19 @@ const ExemptionContainer = ({
   return (
     <Box
       alignItems="baseline"
-      bgColor="purple.50"
+      bgColor="blackAlpha.50"
       borderRadius="0.4rem"
-      minH="22em"
+      minH="22sem"
     >
       <Flex>
         <Box>
-          <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"}>
-            Exemptions
-          </Text>
         </Box>
         <Spacer />
       </Flex>
       <Droppable droppableId={id}>
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            <VStack minW="12rem" minH="18em">
+            <VStack minW="12rem" minH="18em" padding="0.5rem 0rem">
               {exemptedModules.map((module, idx) => (
                 <ModuleBox
                   module={module}
