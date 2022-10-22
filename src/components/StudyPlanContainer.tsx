@@ -36,7 +36,7 @@ const StudyPlanContainer = ({
   return (
     <Box
       alignItems="baseline"
-      bgColor="blackAlpha.200"
+      bgColor="blackAlpha.50"
       borderRadius="0.3rem"
       minH="22em"
       minW="28em"
@@ -49,13 +49,8 @@ const StudyPlanContainer = ({
           </Text>
         </Box>
         <Spacer />
-        <Box>
-          <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"}>
-            MCs
-          </Text>
-        </Box>
       </Flex>
-      <HStack scrollBehavior={"auto"} w="100%">
+      <HStack scrollBehavior={"auto"} w="100%" align="">
         {semesters.map((semester) => (
           <SemesterPlanner
             semesterNumber={semester}

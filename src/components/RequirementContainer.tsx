@@ -52,7 +52,7 @@ const RequirementContainer = ({
             )}
             <Droppable droppableId={id} direction="horizontal">
               {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
+                <div className="horiscroll" {...provided.droppableProps} ref={provided.innerRef}>
                   <HStack>
                     {requirement.modules.map((module, idx) => (
                       <ModuleBox

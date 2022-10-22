@@ -178,7 +178,7 @@ const Planner = () => {
           ))}
         </Box>
 
-        <HStack padding="1.5em 1em 0.5em">
+        <HStack padding="1.5em 0em 0.5em">
           <Heading
             fontSize={"xl"}
             fontWeight={"bold"}
@@ -192,7 +192,7 @@ const Planner = () => {
           </Button>
           <ValidateStudyPlanButton mainViewModel={mainViewModel} />
         </HStack>
-        <Box margin="0em 0.5em 4em" borderColor="black" padding="0.5em">
+        <Box className="horiscroll" borderColor="black">
           <HStack align="top">
             {plannerYears.map((year) => (
               <StudyPlanContainer
@@ -212,14 +212,12 @@ const Planner = () => {
             fontSize={"xl"}
             fontWeight={"bold"}
             fontFamily={"body"}
-            padding="0em 1em 0.5em"
+            padding="1.4em 0em 0.5rem"
           >
             Exemptions
           </Heading>
           <Box
-            margin="0em 0.5em 4em"
             borderColor="black"
-            padding="0.5em"
             w="16rem"
           >
             <ExemptionContainer
