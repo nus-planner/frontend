@@ -16,13 +16,23 @@ const hardcodeRequirementInfos: RequirementInfo[] = [
   {
     year: 2019,
     major: "Computer Science",
-    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
+    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2019/cs.json",
   },
   {
     year: 2020,
     major: "Electrical Engineering",
-    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/mech_eng-2020.json",
+    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2020/mech_eng.json",
   },
+  {
+    year: 2020,
+    major: "Applied Math",
+    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2020/applied_math.json",
+  },
+  {
+    year: 2022,
+    major: "Economics",
+    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2022/chs_econs.json"
+  }
 ];
 
 const BasicInfo = () => {
