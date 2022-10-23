@@ -44,6 +44,7 @@
     {
       "year": 3,
       "semester": 2,
+      "modules": [],
       "baskets": [
         "Focus Area",
         "Focus Area",
@@ -60,6 +61,7 @@
     {
       "year": 4,
       "semester": 2,
+      "modules": [],
       "baskets": [
         "Focus Area",
         "Unrestricted Elective",

@@ -519,12 +519,14 @@ class AcademicPlanViewModel implements frontend.Hydratable {
 
   loadAcademicPlan(text: string) {
     const jsonPlan = yaml.load(text) as JSONPlan;
+    console.log(jsonPlan);
     for (const jsonSemester of jsonPlan.semesters) {
       const semesterViewModel =
         this.semesterViewModels[
           jsonSemester.year * 4 + map[jsonSemester.semester] - 1
         ];
-
+      console.log(jsonSemester);
+      console.log(jsonSemester.modules);
       for (const mod of jsonSemester.modules) {
         const newMod = this.moduleStateDelegate.addModuleToGlobalState(
           new plan.Module(mod, "", 4),
@@ -582,6 +584,8 @@ export class MainViewModel
   @Expose()
   readonly academicPlanViewModel: AcademicPlanViewModel;
 
+  readonly sampleStudyPlanUrl?: string;
+
   readonly moduleViewModelsMap: Map<string, frontend.Module>;
 
   private basketToRequirementViewModelMap: Map<
@@ -592,12 +596,13 @@ export class MainViewModel
   @Expose()
   private validatorState: input.ValidatorState;
 
-  constructor(startYear: number, numYears = 4) {
+  constructor(startYear: number, numYears = 4, sampleStudyPlanUrl?: string) {
     this.academicPlanViewModel = new AcademicPlanViewModel(
       this,
       this,
       new plan.AcademicPlan(startYear, numYears),
     );
+    this.sampleStudyPlanUrl = sampleStudyPlanUrl;
     this.moduleViewModelsMap = new Map();
     this.validatorState = new input.ValidatorState();
     this._trickle = new TrickleDownMap(
@@ -683,7 +688,12 @@ export class MainViewModel
     return this.validatorState.initializeFromString(text);
   }
 
-  async loadAcademicPlanFromURL(url: string) {
+  async loadAcademicPlanFromURL(
+    url: string | undefined = this.sampleStudyPlanUrl,
+  ) {
+    if (!url) {
+      return;
+    }
     this.loadAcademicPlanFromString(await (await fetch(url)).text());
   }
 

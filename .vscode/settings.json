@@ -5,7 +5,7 @@
   "json.schemas": [
     {
       "fileMatch": [
-        "/locals/requirements/*.json",
+        "/locals/requirements/**/*.json",
         "!/locals/requirements/dir.*"
       ],
       "url": "/locals/schemas/requirements.schema.json"
@@ -15,7 +15,7 @@
       "url": "/locals/schemas/dir.schema.json"
     },
     {
-      "fileMatch": ["/locals/plans/*.json"],
+      "fileMatch": ["/locals/study-plans/**/*.json"],
       "url": "/locals/schemas/plan.schema.json"
     }
   ]

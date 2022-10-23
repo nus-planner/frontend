@@ -1,44 +1,54 @@
 import { Select, FormControl, HStack, Heading, Button } from "@chakra-ui/react";
-
+import { plainToClass, plainToInstance, Type } from "class-transformer";
 import { majors, specialisations } from "../constants/dummyModuleData";
-import { useState, SetStateAction, useCallback } from "react";
+import { useState, SetStateAction, useCallback, useEffect } from "react";
 import { useAppContext } from "./AppContext";
 import { labelModules } from "../utils/plannerUtils";
 import { MainViewModel } from "../models";
 
-type RequirementInfo = {
-  year: number;
-  major: string;
-  url: string;
-};
+const baseUrl = "https://raw.githubusercontent.com/nus-planner/frontend/main/";
 
-const hardcodeRequirementInfos: RequirementInfo[] = [
-  {
-    year: 2019,
-    major: "Computer Science",
-    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2019/cs.json",
-  },
-  {
-    year: 2020,
-    major: "Electrical Engineering",
-    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2020/mech_eng.json",
-  },
-  {
-    year: 2020,
-    major: "Applied Math",
-    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2020/applied_math.json",
-  },
-  {
-    year: 2022,
-    major: "Economics",
-    url: "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/2022/chs_econs.json"
+class DirectoryList {
+  @Type(() => DirectoryListing)
+  files: DirectoryListing[] = [];
+}
+
+class DirectoryListing {
+  static requirementsBaseUrl =
+    "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/";
+  static studyPlanBaseUrl =
+    "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/study-plans/";
+  cohort!: number;
+  faculty!: string;
+  course!: string;
+  filename!: string;
+  get url(): string {
+    return `${DirectoryListing.requirementsBaseUrl}/${this.filename}`;
   }
-];
+
+  get planUrl(): string {
+    return `${DirectoryListing.studyPlanBaseUrl}/${this.filename}`;
+  }
+}
 
 const BasicInfo = () => {
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
+  const [directoryList, setDirectoryList] = useState<DirectoryList>({
+    files: [],
+  });
+
+  useEffect(() => {
+    fetch(
+      "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/dir.json",
+    )
+      .then((res) => res.json())
+      .then((plain) => plainToInstance(DirectoryList, plain))
+      .then((directoryList) => {
+        setDirectoryList(directoryList);
+      });
+  }, []);
 
   // Basic info of the user
   const years: number[] = [];
@@ -48,14 +58,14 @@ const BasicInfo = () => {
     years.push(currYear - i);
   }
 
-  const majorMap = new Map<number, RequirementInfo[]>();
+  const majorMap = new Map<number, DirectoryListing[]>();
   for (let year of years) {
     majorMap.set(year, []);
   }
 
   // Load hardcoded data
-  for (let requirementInfo of hardcodeRequirementInfos) {
-    majorMap.get(requirementInfo.year)?.push(requirementInfo);
+  for (let requirementInfo of directoryList.files) {
+    majorMap.get(requirementInfo.cohort)?.push(requirementInfo);
   }
 
   console.log("Majormap");
@@ -71,25 +81,21 @@ const BasicInfo = () => {
   const handleMajorChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
+    console.log(event.target.value);
     setMajor(event.target.value);
   };
 
   const loadRequirement = () => {
-    const newModel = new MainViewModel(parseInt(year), 4);
-    newModel
-      .initializeFromURL(
-        // "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
-        majorMap.has(parseInt(year))
-          ? (majorMap.get(parseInt(year)) as RequirementInfo[])[parseInt(major)]
-              .url
-          : "",
-      )
-      .then(() => {
-        setMainViewModel(newModel);
-        forceUpdate();
-        const moduleArr = Array.from(mainViewModel.modulesMap.values());
-        labelModules(moduleArr);
-      });
+    const listing = majorMap.get(parseInt(year))?.[parseInt(major)];
+    const url = listing?.url ?? "";
+    const sampleStudyPlanUrl = listing?.planUrl;
+    const newModel = new MainViewModel(parseInt(year), 4, sampleStudyPlanUrl);
+    newModel.initializeFromURL(url).then(() => {
+      setMainViewModel(newModel);
+      forceUpdate();
+      const moduleArr = Array.from(mainViewModel.modulesMap.values());
+      labelModules(moduleArr);
+    });
   };
 
   return (
@@ -116,7 +122,7 @@ const BasicInfo = () => {
           <Select placeholder="Choose your major" onChange={handleMajorChange}>
             {(majorMap.get(parseInt(year)) ?? []).map((req, idx) => (
               <option key={idx} value={idx}>
-                {req.major}
+                {req.course}
               </option>
             ))}
           </Select>
