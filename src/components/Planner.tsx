@@ -190,7 +190,9 @@ const Planner = () => {
             size="sm"
             colorScheme={"white"}
             variant="outline"
-            onClick={() => mainViewModel.loadAcademicPlanFromURL()}
+            onClick={() => {
+              mainViewModel.loadAcademicPlanFromURL().then(forceUpdate);
+            }}
           >
             Populate Study Plan
           </Button>
