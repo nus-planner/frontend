@@ -519,12 +519,10 @@ class AcademicPlanViewModel implements frontend.Hydratable {
 
   loadAcademicPlan(text: string) {
     const jsonPlan = yaml.load(text) as JSONPlan;
-
-    console.log("length", this.semesterViewModels.length);
     for (const jsonSemester of jsonPlan.semesters) {
       const semesterViewModel =
         this.semesterViewModels[
-          (jsonSemester.year - 1) * 4 + map[jsonSemester.semester] - 1
+          (jsonSemester.year - 1) * 4 + map[jsonSemester.semester]
         ];
 
       for (const mod of jsonSemester.modules) {

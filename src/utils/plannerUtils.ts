@@ -17,3 +17,7 @@ export const labelModules = (moduleArr: models.Module[]) => {
     }
   }
 };
+
+export function convertYearAndSemToIndex(year: number, sem: number) {
+  return 4 * (year - 1) + sem;
+}
