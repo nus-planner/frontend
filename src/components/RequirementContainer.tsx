@@ -5,22 +5,17 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
-  Flex,
-  Container,
-  Stack,
-  Heading,
   Text,
-  Grid,
   HStack,
-  SimpleGrid,
-  VStack,
   Button,
 } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import ModuleBox from "./ModuleBox";
-import { Requirement, Module } from "../interfaces/planner";
+import { Requirement } from "../interfaces/planner";
 import React from "react";
-import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
+import { MultiModuleViewModel } from "../models";
+import { useAppContext } from "./AppContext";
 
 const RequirementContainer = ({
   requirement,
@@ -29,31 +24,33 @@ const RequirementContainer = ({
   requirement: Requirement;
   id: string;
 }) => {
+  const [, updateState] = useState<{}>();
+  const forceUpdate = useCallback(() => updateState({}), []);
   // If there is no requirement description, module lists align to leftmost, else, fix width.
   const requirementWith = requirement.description ? "12rem" : "";
-  const [newUEs, setNewUEs] = React.useState<Module[]>([]);
-  const [newUEsStack, setNewUEsStack] = React.useState(<HStack></HStack>);
+  const [ueCount, setUeCount] = useState<number>(0);
+  const { mainViewModel, setMainViewModel } = useAppContext();
+
   const addUE = () => {
-    // TODO: make it non-hardcoded
-    newUEs.push({
-      code: ".",
-      name: "Select A Basket",
-      credits: null,
-      color: "pink.100",
-    });
-    setNewUEs(newUEs);
-    setNewUEsStack(
-      <HStack>
-        {newUEs.map((module, idx) => (
-          <ModuleBox
-            module={module}
-            key={module.code + idx.toString()}
-            displayModuleClose={false}
-            idx={idx}
-            parentStr={requirement.title}
-          />
-        ))}
-      </HStack>,
+    const newUE = new MultiModuleViewModel(
+      "." + ueCount.toString(),
+      "Select A Basket",
+      0,
+    );
+
+    newUE.color = "pink.100";
+
+    mainViewModel.requirements.at(-1)?.modules.push(newUE);
+    mainViewModel.addModuleViewModelToGlobalState(newUE);
+
+    setUeCount((count) => count + 1);
+    forceUpdate();
+  };
+
+  const isUERequirementContainer = () => {
+    return (
+      requirement.title === "Unrestricted Electives" ||
+      requirement.title.toLowerCase() === "ue"
     );
   };
 
@@ -95,19 +92,20 @@ const RequirementContainer = ({
                         parentStr={requirement.title}
                       />
                     ))}
-                    {newUEsStack}
-                    <Button
-                      minW="12rem"
-                      minH="5rem"
-                      colorScheme={"white"}
-                      variant={"outline"}
-                      alignContent="center"
-                      borderRadius="0.4rem"
-                      padding="0.2rem 0.5rem"
-                      onClick={addUE}
-                    >
-                      + Add an UE
-                    </Button>
+                    {isUERequirementContainer() && (
+                      <Button
+                        minW="12rem"
+                        minH="5rem"
+                        colorScheme={"white"}
+                        variant={"outline"}
+                        alignContent="center"
+                        borderRadius="0.4rem"
+                        padding="0.2rem 0.5rem"
+                        onClick={addUE}
+                      >
+                        + Add an UE
+                      </Button>
+                    )}
                   </HStack>
                   {provided.placeholder}
                 </div>
