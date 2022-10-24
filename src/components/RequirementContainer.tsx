@@ -16,6 +16,7 @@ import { Requirement } from "../interfaces/planner";
 import React from "react";
 import { MultiModuleViewModel } from "../models";
 import { useAppContext } from "./AppContext";
+import { moduleColor } from "../constants/moduleColor";
 
 const RequirementContainer = ({
   requirement,
@@ -38,7 +39,7 @@ const RequirementContainer = ({
       0,
     );
 
-    newUE.color = "pink.100";
+    newUE.color = moduleColor[parseInt(id.split(":")[1]) % moduleColor.length];
 
     mainViewModel.requirements.at(-1)?.modules.push(newUE);
     mainViewModel.addModuleViewModelToGlobalState(newUE);
