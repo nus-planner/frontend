@@ -1,4 +1,12 @@
-import { Button, Heading, Box, HStack } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  Box,
+  HStack,
+  Collapse,
+  useDisclosure,
+  Text,
+} from "@chakra-ui/react";
 import {
   useState,
   useCallback,
@@ -156,26 +164,44 @@ const Planner = () => {
     [1, 2],
   ]);
 
+  const { isOpen, onToggle } = useDisclosure();
+  const showRequirementToggleButton = mainViewModel.requirements.length > 1;
+
   return (
     <div>
-      <Heading
-        fontSize={"xl"}
-        fontWeight={"bold"}
-        fontFamily={"body"}
-        padding="1rem 0rem"
-      >
-        Required Modules
-      </Heading>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Box bgColor="blackAlpha.50">
-          {mainViewModel.requirements.map((requirement, id) => (
-            <RequirementContainer
-              requirement={requirement}
-              id={"requirement:" + id.toString()}
-              key={id}
-            />
-          ))}
-        </Box>
+        <HStack padding="em 0em 0.5em">
+          <Heading
+            fontSize={"xl"}
+            fontWeight={"bold"}
+            fontFamily={"body"}
+            padding="1rem 0rem"
+          >
+            Required Modules
+          </Heading>
+          {showRequirementToggleButton && (
+          <Button
+            size="sm"
+            colorScheme={"white"}
+            variant="outline"
+            onClick={onToggle}
+          >
+            {!isOpen ? "Hide" : "Expand"}
+          </Button>
+          )}
+          </HStack>
+          <Collapse in={!isOpen} animateOpacity>
+            <Box bgColor="blackAlpha.50">
+              {mainViewModel.requirements.map((requirement, id) => (
+                <RequirementContainer
+                  requirement={requirement}
+                  id={"requirement:" + id.toString()}
+                  key={id}
+                />
+              ))}
+            </Box>
+          </Collapse>
+        
 
         <HStack padding="1.5em 0em 0.5em">
           <Heading
