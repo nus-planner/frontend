@@ -331,41 +331,6 @@
                               }
                             ]
                           }
-                        },
-                        {
-                          "algo_focus_area_primaries": {
-                            "tag": "algo",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csAlgosFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4231", "CS4232", "CS4234"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csAlgosFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        "CS3230",
-                                        "CS3231",
-                                        "CS3236",
-                                        "CS4231",
-                                        "CS4232",
-                                        "CS4234"
-                                      ]
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
                         }
                       ]
                     }
