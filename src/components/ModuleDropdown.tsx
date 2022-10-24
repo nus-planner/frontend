@@ -1,9 +1,10 @@
-import  Select, { ActionMeta, SingleValue }  from "react-select";
+import Select, { ActionMeta, SingleValue } from "react-select";
 import { FormControl } from "@chakra-ui/react";
 import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import { Module } from "../interfaces/planner";
 import * as models from "../models";
 import { useAppContext } from "./AppContext";
+import { DEFAULT_MODULE_COLOR, moduleColor } from "../constants/moduleColor";
 
 interface ModuleDropdownProps {
   module: Module;
@@ -13,7 +14,7 @@ interface ModuleDropdownProps {
 const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   let underlyingModule: models.Module | null = null;
-  
+
   if (module.getUnderlyingModule) {
     const tempModule = module.getUnderlyingModule();
     if (tempModule !== undefined) {
@@ -52,23 +53,70 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
     }
   };
 
+  const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
+  const moduleColorInReact = "var(--chakra-colors-" +
+  moduleColor.split(".")[0] +
+  "-" +
+  moduleColor.split(".")[1] +
+  ")";
+  const moduleColorInReactDarker = "var(--chakra-colors-" +
+  moduleColor.split(".")[0] +
+  "-" +
+  (Number(moduleColor.split(".")[1]) + 100) +
+  ")";
   const customStyles = {
     option: (provided: any, state: any): any => ({
       ...provided,
       padding: "0.3rem",
       fontSize: "0.7rem",
-      lineHeight: "1rem",
+      color: "black",
+      backgroundColor: state.isSelected ? moduleColorInReactDarker : "white",
+      "&:hover": {
+        backgroundColor: moduleColorInReact,    
+        },
     }),
-    placeholder: (defaultStyles: any) => {
+    placeholder: (provided: any) => {
+      return {
+        ...provided,
+        fontSize: "0.8rem",
+        color: "black",
+      };
+    },
+    singleValue: (defaultStyles: any) => {
       return {
         ...defaultStyles,
         fontSize: "0.8rem",
-        backgroundColor: module.color,
+        color: "black",
+      };
+    },
+    control: (provided: any, state: any) => {
+      return {
+        ...provided,
+        backgroundColor:
+          moduleColorInReactDarker,
+        border: 0,
+        boxShadow: 0,
+      };
+    },
+    dropdownIndicator: (provided: any) => {
+      return {
+        ...provided,
+        color: "black",
+        "&:hover": {
+            color: "black",
+        },
+      };
+    },
+    indicatorSeparator: (provided: any) => {
+      return {
+        ...provided,
+        backgroundColor: "black",
       };
     },
   };
+
   return (
-    <FormControl>
+    <FormControl pt="0.4rem">
       <Select
         options={[{ options: options, label: module.code.slice(1, 4) }]}
         placeholder="Select a module"

@@ -179,12 +179,12 @@ const Planner = () => {
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <HStack padding="em 0em 0.5em">
+        <HStack padding="0.5em 0em 0.5em">
           <Heading
             fontSize={"xl"}
             fontWeight={"bold"}
             fontFamily={"body"}
-            padding="1rem 0rem"
+            paddingRight="1em"
           >
             Required Modules
           </Heading>
