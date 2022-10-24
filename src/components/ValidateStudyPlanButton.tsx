@@ -2,6 +2,7 @@ import {
   Button,
   ListItem,
   Text,
+  Tooltip,
   UnorderedList,
   useToast,
 } from "@chakra-ui/react";
@@ -9,10 +10,12 @@ import { MainViewModel } from "../models";
 
 interface ValidateStudyPlanButtonProps {
   mainViewModel: MainViewModel;
+  isDisabled: boolean;
 }
 
 const ValidateStudyPlanButton = ({
   mainViewModel,
+  isDisabled,
 }: ValidateStudyPlanButtonProps) => {
   const toast = useToast();
 
@@ -56,14 +59,17 @@ const ValidateStudyPlanButton = ({
   };
 
   return (
-    <Button
-      size="sm"
-      colorScheme={"white"}
-      variant="outline"
-      onClick={validateViewModel}
-    >
-      Validate View Model
-    </Button>
+    <Tooltip isDisabled={!isDisabled} label='You have not fulfilled some prerequisites'>
+      <Button
+        size="sm"
+        colorScheme={"white"}
+        variant="outline"
+        onClick={validateViewModel}
+        isDisabled={isDisabled}
+      >
+        Validate View Model
+      </Button>
+    </Tooltip>
   );
 };
 
