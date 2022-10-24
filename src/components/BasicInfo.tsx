@@ -93,7 +93,7 @@ const BasicInfo = () => {
     newModel.initializeFromURL(url).then(() => {
       setMainViewModel(newModel);
       forceUpdate();
-      const moduleArr = Array.from(mainViewModel.modulesMap.values());
+      const moduleArr = Array.from(newModel.modulesMap.values());
       labelModules(moduleArr);
     });
   };

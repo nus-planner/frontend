@@ -44,14 +44,23 @@ const Planner = () => {
         modReqMap.set(mod.code, mod);
       }
     }
+
+    const addedSet = new Set();
     for (let i = 0; i < mainViewModel.requirements.length; i++) {
       mainViewModel.requirements[i].modules = [];
       for (let mod of mainViewModel.requirements[i].allModules) {
         if (modReqMap.has(mod.code)) {
           mainViewModel.requirements[i].modules.push(modReqMap.get(mod.code));
+          addedSet.add(mod.code);
         }
       }
     }
+
+    const extraModules = [...modReqMap.keys()].filter((x) => !addedSet.has(x));
+    extraModules.forEach((modCode) =>
+      mainViewModel.requirements.at(-1)?.modules.push(modReqMap.get(modCode)),
+    );
+
 
     forceUpdate();
   };
@@ -195,6 +204,26 @@ const Planner = () => {
             }}
           >
             Populate Study Plan
+          </Button>
+          <Button
+            size="sm"
+            colorScheme={"white"}
+            variant="outline"
+            onClick={() => {
+              console.log(mainViewModel.requirements.map((x) => x.modules));
+            }}
+          >
+            One
+          </Button>
+          <Button
+            size="sm"
+            colorScheme={"white"}
+            variant="outline"
+            onClick={() => {
+              console.log(mainViewModel.planner.map((x) => x.modules));
+            }}
+          >
+            two
           </Button>
           <ValidateStudyPlanButton mainViewModel={mainViewModel} />
         </HStack>
