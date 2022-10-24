@@ -37,12 +37,24 @@ export const applyPrereqValidation = async (
       let mod = semesters[i].modules[j];
       mod.prereqsViolated = [];
 
-      // Fetch prereqs from NUSMods if property not found
-      if (mod.prereqs === undefined) {
-        const reqs = await fetchModulePrereqs(mod.code);
-        mod.prereqs = reqs.prereqs;
-        if (reqs.preclusions !== undefined) {
+      // Handles modules with dropdown select
+      if (mod.getUnderlyingModule) {
+        const underlyingMod = mod.getUnderlyingModule();
+        mod.prereqs = null;
+        mod.preclusions = [];
+        if (underlyingMod !== undefined) {
+          const reqs = await fetchModulePrereqs(underlyingMod.code);
+          mod.prereqs = reqs.prereqs;
           mod.preclusions = reqs.preclusions;
+        }
+      } else {
+        // Fetch prereqs from NUSMods if property not found
+        if (mod.prereqs === undefined) {
+          const reqs = await fetchModulePrereqs(mod.code);
+          mod.prereqs = reqs.prereqs;
+          if (reqs.preclusions !== undefined) {
+            mod.preclusions = reqs.preclusions;
+          }
         }
       }
 
@@ -64,7 +76,14 @@ export const applyPrereqValidation = async (
       semesters[i].modules[j] = mod;
     }
     for (let j = 0; j < semesters[i].modules.length; j++) {
-      takenModuleSet.add(semesters[i].modules[j].code);
+      const mod = semesters[i].modules[j];
+      takenModuleSet.add(mod.code);
+      if (!!mod.getUnderlyingModule) {
+        const underlyingMod = mod.getUnderlyingModule();
+        if (underlyingMod !== undefined) {
+          takenModuleSet.add(underlyingMod.code);
+        }
+      }
     }
     preclusions.forEach((preclusion) => takenModuleSet.add(preclusion));
   }

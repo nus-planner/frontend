@@ -96,6 +96,7 @@ export class AcademicPlan {
   }
 
   checkAgainstConfig(config: input.ValidatorState) {
+    this.resetState();
     for (const [k, v] of config.doubleCountedModules) {
       if (this.getPlanView().modules.find((m) => m.code === k) === undefined) {
         continue;
@@ -109,7 +110,8 @@ export class AcademicPlan {
     return this.checkAgainstBasket(config.basket);
   }
 
-  checkAgainstBasket(basket: Basket): boolean {
+  private checkAgainstBasket(basket: Basket): boolean {
+    basket.resetSubtreeState();
     return basket.isFulfilledWithState(this.getPlanView()).isFulfilled;
   }
 }

@@ -69,7 +69,6 @@ const Planner = () => {
       mainViewModel.requirements.at(-1)?.modules.push(modReqMap.get(modCode)),
     );
 
-
     forceUpdate();
   };
 
@@ -141,7 +140,14 @@ const Planner = () => {
 
     console.log("state");
     console.log(state);
-    await applyPrereqValidation(state.planner);
+    await applyPrereqValidation(state.planner).then((semesters) => {
+      const isPrereqsViolated = semesters
+        .map((semester) => semester.modules)
+        .flat(1)
+        .filter((module) => module.prereqsViolated?.length).length > 0;
+      setIsValidateButtonDisabled(isPrereqsViolated);
+      return isPrereqsViolated;
+    });
 
     forceUpdate();
     sortRequirementModules();
@@ -156,7 +162,14 @@ const Planner = () => {
       semester.filtered((mod) => mod.code !== module.code);
     }
     state.requirements[0].modules.push(module);
-    await applyPrereqValidation(state.planner);
+    await applyPrereqValidation(state.planner).then((semesters) => {
+      const isPrereqsViolated = semesters
+        .map((semester) => semester.modules)
+        .flat(1)
+        .filter((module) => module.prereqsViolated?.length).length > 0;
+      setIsValidateButtonDisabled(isPrereqsViolated);
+      return isPrereqsViolated;
+    });
 
     console.log(state);
 
@@ -176,6 +189,9 @@ const Planner = () => {
   const { isOpen, onToggle } = useDisclosure();
   const showRequirementToggleButton = mainViewModel.requirements.length > 1;
 
+  const [isValidateButtonDisabled, setIsValidateButtonDisabled] =
+    useState(false);
+
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -189,28 +205,27 @@ const Planner = () => {
             Required Modules
           </Heading>
           {showRequirementToggleButton && (
-          <Button
-            size="sm"
-            colorScheme={"white"}
-            variant="outline"
-            onClick={onToggle}
-          >
-            {!isOpen ? "Hide" : "Expand"}
-          </Button>
+            <Button
+              size="sm"
+              colorScheme={"white"}
+              variant="outline"
+              onClick={onToggle}
+            >
+              {!isOpen ? "Hide" : "Expand"}
+            </Button>
           )}
-          </HStack>
-          <Collapse in={!isOpen} animateOpacity>
-            <Box bgColor="blackAlpha.50">
-              {mainViewModel.requirements.map((requirement, id) => (
-                <RequirementContainer
-                  requirement={requirement}
-                  id={"requirement:" + id.toString()}
-                  key={id}
-                />
-              ))}
-            </Box>
-          </Collapse>
-        
+        </HStack>
+        <Collapse in={!isOpen} animateOpacity>
+          <Box bgColor="blackAlpha.50">
+            {mainViewModel.requirements.map((requirement, id) => (
+              <RequirementContainer
+                requirement={requirement}
+                id={"requirement:" + id.toString()}
+                key={id}
+              />
+            ))}
+          </Box>
+        </Collapse>
 
         <HStack padding="1.5em 0em 0.5em">
           <Heading
@@ -231,7 +246,10 @@ const Planner = () => {
           >
             Populate Study Plan
           </Button>
-          <ValidateStudyPlanButton mainViewModel={mainViewModel} />
+          <ValidateStudyPlanButton
+            mainViewModel={mainViewModel}
+            isDisabled={isValidateButtonDisabled}
+          />
         </HStack>
         <Box className="horiscroll" borderColor="black">
           <HStack align="top">
