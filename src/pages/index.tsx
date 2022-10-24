@@ -11,20 +11,6 @@ const Home = () => {
   const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
 
-  // TODO: Set up the following to change when corresponding plan is selected
-  useEffect(() => {
-    mainViewModel
-      // .initializeFromString(reqStr)
-      .initializeFromURL(
-        "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/cs-2019.json",
-      )
-      .then(() => {
-        forceUpdate();
-        const moduleArr = Array.from(mainViewModel.modulesMap.values());
-        labelModules(moduleArr);
-      });
-  }, []);
-
   return (
     <Stack padding="1rem">
       <BasicInfo />
