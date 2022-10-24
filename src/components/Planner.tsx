@@ -231,26 +231,6 @@ const Planner = () => {
           >
             Populate Study Plan
           </Button>
-          <Button
-            size="sm"
-            colorScheme={"white"}
-            variant="outline"
-            onClick={() => {
-              console.log(mainViewModel.requirements.map((x) => x.modules));
-            }}
-          >
-            One
-          </Button>
-          <Button
-            size="sm"
-            colorScheme={"white"}
-            variant="outline"
-            onClick={() => {
-              console.log(mainViewModel.planner.map((x) => x.modules));
-            }}
-          >
-            two
-          </Button>
           <ValidateStudyPlanButton mainViewModel={mainViewModel} />
         </HStack>
         <Box className="horiscroll" borderColor="black">
