@@ -1,19 +1,12 @@
 import {
-  Input,
   Box,
-  Heading,
   Text,
   IconButton,
   Flex,
   Spacer,
-  Button,
-  color,
   Link,
   UnorderedList,
-  Divider,
   FormControl,
-  FormLabel,
-  Container,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon } from "@chakra-ui/icons";
@@ -24,16 +17,13 @@ import {
   getNonDuplicateUEs,
   getNUSModsModulePage,
 } from "../utils/moduleUtils";
-import {
-  useState,
-  useEffect,
-} from "react";
+import { useState, useEffect } from "react";
 import { SingleValue, ActionMeta } from "react-select";
 import * as models from "../models";
 import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import Select from "react-select";
 import { useAppContext } from "./AppContext";
-
+import ModuleDropdown from "./ModuleDropdown";
 
 interface ModuleBoxProps {
   module: Module;
@@ -71,7 +61,6 @@ const ModuleBox = ({
     getGEs();
   }, []);
 
-
   let UEOptions = [];
   const [UEs, setUEs] = useState<Module[]>([]);
   const existingModules: string[] = [];
@@ -88,44 +77,6 @@ const ModuleBox = ({
     getUEs();
   }, []);
 
-  let underlyingModule: models.Module | null = null;
-
-  if (module.getUnderlyingModule) {
-    const tempModule = module.getUnderlyingModule();
-    if (tempModule !== undefined) {
-      underlyingModule = tempModule;
-    }
-  }
-
-  const handleChange = async (
-    selectedModule: SingleValue<{ label: string; value: string }>,
-    _: ActionMeta<{ label: string; value: string }>,
-  ) => {
-    if (selectedModule === null || selectedModule.value === undefined) return;
-
-    const basicModuleInfo = await fetchBasicModuleInfo(selectedModule.value);
-    let newUnderlyingModule: models.Module;
-    if (basicModuleInfo === undefined) {
-      newUnderlyingModule = new models.Module(selectedModule.value, "", 4);
-    } else {
-      newUnderlyingModule = new models.Module(
-        basicModuleInfo.moduleCode,
-        basicModuleInfo.title,
-        basicModuleInfo.moduleCredit,
-      );
-    }
-
-    if (module.selectModule !== undefined) {
-      if (underlyingModule !== null) {
-        mainViewModel.removeModuleViewModelFromGlobalState(underlyingModule.code);
-      }
-
-      underlyingModule = newUnderlyingModule;
-      module.selectModule(newUnderlyingModule);
-      mainViewModel.addModuleToGlobalState(newUnderlyingModule);
-    }
-  };
-
   if (module.name == "Select A Basket") {
     if (isGE) {
       for (let GE of GEs) {
@@ -134,70 +85,16 @@ const ModuleBox = ({
           value: GE.code,
         });
       }
-      const customStyles = {
-        option: (provided: any, state: any): any => ({
-          ...provided,
-          padding: "0.3rem",
-          fontSize: "0.7rem",
-          lineHeight: "1rem",
-        }),
-      };
-      modName = (
-        <FormControl>
-          <Select
-            options={[{ options: GEOptions, label: module.code.slice(1, 4) }]}
-            placeholder="Select a module"
-            value={
-              !!underlyingModule
-                ? {
-                    label: `${underlyingModule.code} ${underlyingModule.name}`,
-                    value: underlyingModule.code,
-                  }
-                : undefined
-            }
-            closeMenuOnSelect={true}
-            styles={customStyles}
-            menuPosition='fixed'
-            onChange={handleChange}
-          />
-        </FormControl>
-      );
+      modName = <ModuleDropdown module={module} options={GEOptions} />;
     } else if (isUE) {
-        for (let UE of UEs) {
-          UEOptions.push({
-            label: UE.code + " " + UE.name,
-            value: UE.code,
-          });
-        }
-        const customStyles = {
-          option: (provided: any, state: any): any => ({
-            ...provided,
-            padding: "0.3rem",
-            fontSize: "0.7rem",
-            lineHeight: "1rem",
-          }),
-        };
-        modName = (
-          <FormControl>
-            <Select
-              options={[{ options: UEOptions, label: module.code.slice(1, 4) }]}
-              placeholder="Key in a module"
-              value={
-                !!underlyingModule
-                  ? {
-                      label: `${underlyingModule.code} ${underlyingModule.name}`,
-                      value: underlyingModule.code,
-                    }
-                  : undefined
-              }
-              closeMenuOnSelect={true}
-              styles={customStyles}
-              menuPosition='fixed'
-              onChange={handleChange}
-            />
-          </FormControl>
-        );
+      for (let UE of UEs) {
+        UEOptions.push({
+          label: UE.code + " " + UE.name,
+          value: UE.code,
+        });
       }
+      modName = <ModuleDropdown module={module} options={UEOptions} />;
+    }
   } else {
     modName = (
       <Text color="black.900" fontSize={"xs"}>
@@ -256,7 +153,7 @@ const ModuleBox = ({
                       {module.code}
                     </Link>
                   )}
-                  {isGE && <>{"Any " + module.code.slice(1,4)}</>}
+                  {isGE && <>{"Any " + module.code.slice(1, 4)}</>}
                   {!isValidModuleCode && !isGE && "Any UE"}
                 </Text>
                 <Spacer />
