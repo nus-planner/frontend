@@ -25,6 +25,10 @@
               "type": "string",
               "pattern": "(?<prefix>[A-Z]+)(?<codeNumber>\\d)\\d+(?<suffix>[A-Z]*)"
             }
+          },
+          "baskets": {
+            "type": "array",
+            "description": "An array of basket names"
           }
         }
       }

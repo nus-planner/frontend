@@ -1,0 +1,56 @@
+{
+  "starting_year": 2019,
+  "years": 4,
+  "semesters": [
+    {
+      "year": 1,
+      "semester": 1,
+      "modules": ["CS1101S", "MA1521", "CS1231S", "IS1103", "GET1001"]
+    },
+    {
+      "year": 1,
+      "semester": 2,
+      "modules": ["ES2660", "CS2030", "CS2040S", "CS2100", "GEH1001"]
+    },
+    {
+      "year": 2,
+      "semester": 1,
+      "modules": ["CS2101", "CS2103T", "CS2107", "CS2106", "GER1000"]
+    },
+    {
+      "year": 2,
+      "semester": 2,
+      "modules": ["CS2105", "MA1101R", "ST2334", "PC1221", "GEQ1000"]
+    },
+    {
+      "year": 2,
+      "semester": "ST2",
+      "modules": ["CP3200"]
+    },
+    {
+      "year": 3,
+      "semester": 1,
+      "modules": ["CS3219", "CS3103", "IT2900", "CS3235", "GES1001"]
+    },
+    {
+      "year": 3,
+      "semester": 2,
+      "modules": ["CS3230", "CS4222", "CS5321", "CS4218", "UE0001"]
+    },
+    {
+      "year": 3,
+      "semester": "ST2",
+      "modules": ["CP3202"]
+    },
+    {
+      "year": 4,
+      "semester": 1,
+      "modules": ["CS3216", "UE0002", "UE0003", "UE0004", "UE0005"]
+    },
+    {
+      "year": 4,
+      "semester": 2,
+      "modules": ["CS3217", "UE0006"]
+    }
+  ]
+}

@@ -37,7 +37,6 @@ const Planner = () => {
 
   const { mainViewModel, setMainViewModel } = useAppContext();
 
-
   const sortRequirementModules = (): void => {
     const modReqMap = new Map();
     for (let requirement of mainViewModel.requirements) {
@@ -187,7 +186,14 @@ const Planner = () => {
           >
             Study Plan
           </Heading>
-          <Button size="sm" colorScheme={"white"} variant="outline">
+          <Button
+            size="sm"
+            colorScheme={"white"}
+            variant="outline"
+            onClick={() => {
+              mainViewModel.loadAcademicPlanFromURL().then(forceUpdate);
+            }}
+          >
             Populate Study Plan
           </Button>
           <ValidateStudyPlanButton mainViewModel={mainViewModel} />
@@ -216,10 +222,7 @@ const Planner = () => {
           >
             Exemptions
           </Heading>
-          <Box
-            borderColor="black"
-            w="16rem"
-          >
+          <Box borderColor="black" w="16rem">
             <ExemptionContainer
               exemptedModules={mainViewModel.planner[0].modules}
               handleModuleClose={handleModuleClose}

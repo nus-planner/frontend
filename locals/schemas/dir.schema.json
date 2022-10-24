@@ -54,6 +54,16 @@
                 "enum": ["Applied Mathematics", "Mathematics", "Physics"]
               }
             }
+          },
+          {
+            "properties": {
+              "faculty": {
+                "enum": ["CHS"]
+              },
+              "course": {
+                "enum": ["Economics"]
+              }
+            }
           }
         ]
       }

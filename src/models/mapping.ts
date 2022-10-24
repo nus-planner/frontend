@@ -6,7 +6,7 @@ import {
   plainToClass,
   plainToInstance,
 } from "class-transformer";
-import { Module } from "module";
+import yaml from "js-yaml";
 import * as frontend from "../interfaces/planner";
 import { addColorToModulesv2 } from "../utils/moduleUtils";
 import * as basket from "./basket";
@@ -257,6 +257,24 @@ export class RequirementViewModel implements frontend.Requirement {
   }
 }
 
+const map = {
+  1: 1,
+  2: 2,
+  ST1: 3,
+  ST2: 4,
+};
+
+type JSONPlanSemester = {
+  year: number;
+  semester: 1 | 2 | "ST1" | "ST2";
+  modules: Array<string>;
+};
+
+type JSONPlan = {
+  years: number;
+  semesters: Array<JSONPlanSemester>;
+};
+
 @Exclude()
 class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
@@ -499,6 +517,27 @@ class AcademicPlanViewModel implements frontend.Hydratable {
     }
   }
 
+  loadAcademicPlan(text: string) {
+    const jsonPlan = yaml.load(text) as JSONPlan;
+    for (const jsonSemester of jsonPlan.semesters) {
+      const semesterViewModel =
+        this.semesterViewModels[
+          (jsonSemester.year - 1) * 4 + map[jsonSemester.semester]
+        ];
+
+      for (const mod of jsonSemester.modules) {
+        const newMod = this.moduleStateDelegate.addModuleToGlobalState(
+          new plan.Module(mod, "", 4),
+        );
+        semesterViewModel.addModule(
+          this.moduleStateDelegate.addModuleViewModelToGlobalState(
+            new ModuleViewModel(this.requirementDelegate, newMod),
+          ),
+        );
+      }
+    }
+  }
+
   public get startYear(): string {
     return this.academicPlan.startYear.toString();
   }
@@ -543,6 +582,8 @@ export class MainViewModel
   @Expose()
   readonly academicPlanViewModel: AcademicPlanViewModel;
 
+  readonly sampleStudyPlanUrl?: string;
+
   readonly moduleViewModelsMap: Map<string, frontend.Module>;
 
   private basketToRequirementViewModelMap: Map<
@@ -553,12 +594,13 @@ export class MainViewModel
   @Expose()
   private validatorState: input.ValidatorState;
 
-  constructor(startYear: number, numYears = 4) {
+  constructor(startYear: number, numYears = 4, sampleStudyPlanUrl?: string) {
     this.academicPlanViewModel = new AcademicPlanViewModel(
       this,
       this,
       new plan.AcademicPlan(startYear, numYears),
     );
+    this.sampleStudyPlanUrl = sampleStudyPlanUrl;
     this.moduleViewModelsMap = new Map();
     this.validatorState = new input.ValidatorState();
     this._trickle = new TrickleDownMap(
@@ -642,6 +684,19 @@ export class MainViewModel
 
   async initializeFromString(text: string) {
     return this.validatorState.initializeFromString(text);
+  }
+
+  async loadAcademicPlanFromURL(
+    url: string | undefined = this.sampleStudyPlanUrl,
+  ) {
+    if (!url) {
+      return;
+    }
+    this.loadAcademicPlanFromString(await (await fetch(url)).text());
+  }
+
+  loadAcademicPlanFromString(text: string) {
+    this.academicPlanViewModel.loadAcademicPlan(text);
   }
 
   validate() {

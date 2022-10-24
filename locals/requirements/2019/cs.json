@@ -142,7 +142,7 @@
           "at_least_n_mcs": 24,
           "and": [
             {
-              "1": {
+              "Focus Area": {
                 "state": "csBreadthAndDepthState",
                 "or": [
                   {
