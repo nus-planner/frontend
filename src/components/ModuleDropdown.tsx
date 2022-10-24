@@ -1,10 +1,17 @@
-import Select, { ActionMeta, SingleValue } from "react-select";
-import { FormControl } from "@chakra-ui/react";
+import Select, {
+  ActionMeta,
+  FormatOptionLabelMeta,
+  SingleValue,
+} from "react-select";
+import { FormControl, Text } from "@chakra-ui/react";
 import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import { Module } from "../interfaces/planner";
 import * as models from "../models";
 import { useAppContext } from "./AppContext";
 import { DEFAULT_MODULE_COLOR, moduleColor } from "../constants/moduleColor";
+import { labelModules } from "../utils/plannerUtils";
+import { Context } from "@dnd-kit/sortable/dist/components";
+import React from "react";
 
 interface ModuleDropdownProps {
   module: Module;
@@ -51,19 +58,24 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
       module.selectModule(newUnderlyingModule);
       mainViewModel.addModuleToGlobalState(newUnderlyingModule);
     }
+
+    const name = selectedModule.label.replace(selectedModule.value, "");
+    setSelectedModuleName(name);
   };
 
   const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
-  const moduleColorInReact = "var(--chakra-colors-" +
-  moduleColor.split(".")[0] +
-  "-" +
-  moduleColor.split(".")[1] +
-  ")";
-  const moduleColorInReactDarker = "var(--chakra-colors-" +
-  moduleColor.split(".")[0] +
-  "-" +
-  (Number(moduleColor.split(".")[1]) + 100) +
-  ")";
+  const moduleColorInReact =
+    "var(--chakra-colors-" +
+    moduleColor.split(".")[0] +
+    "-" +
+    moduleColor.split(".")[1] +
+    ")";
+  const moduleColorInReactDarker =
+    "var(--chakra-colors-" +
+    moduleColor.split(".")[0] +
+    "-" +
+    (Number(moduleColor.split(".")[1]) + 100) +
+    ")";
   const customStyles = {
     option: (provided: any, state: any): any => ({
       ...provided,
@@ -72,8 +84,8 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
       color: "black",
       backgroundColor: state.isSelected ? moduleColorInReactDarker : "white",
       "&:hover": {
-        backgroundColor: moduleColorInReact,    
-        },
+        backgroundColor: moduleColorInReact,
+      },
     }),
     placeholder: (provided: any) => {
       return {
@@ -92,8 +104,7 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
     control: (provided: any, state: any) => {
       return {
         ...provided,
-        backgroundColor:
-          moduleColorInReactDarker,
+        backgroundColor: moduleColorInReactDarker,
         border: 0,
         boxShadow: 0,
       };
@@ -103,7 +114,7 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
         ...provided,
         color: "black",
         "&:hover": {
-            color: "black",
+          color: "black",
         },
       };
     },
@@ -115,25 +126,44 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
     },
   };
 
+  const [selectedModuleName, setSelectedModuleName] = React.useState("");
+  const formatOptionLabel = (
+    data: { label: string; value: string },
+    formatOptionLabelMeta: FormatOptionLabelMeta<{ label: string; value: any }>,
+  ) => {
+    if (formatOptionLabelMeta.context === "value") {
+      return <div>{data.value}</div>;
+    } else if (formatOptionLabelMeta.context === "menu") {
+      return <div>{data.label}</div>;
+    }
+  };
+  const selectedModuleNameDisplay =
+    selectedModuleName === "" ? <></> 
+    : <Text color="black.900" fontSize={"xs"}>{selectedModuleName}</Text>;
+
   return (
-    <FormControl pt="0.4rem">
-      <Select
-        options={[{ options: options, label: module.code.slice(1, 4) }]}
-        placeholder="Select a module"
-        value={
-          !!underlyingModule
-            ? {
-                label: `${underlyingModule.code} ${underlyingModule.name}`,
-                value: underlyingModule.code,
-              }
-            : undefined
-        }
-        closeMenuOnSelect={true}
-        styles={customStyles}
-        menuPosition="fixed"
-        onChange={handleChange}
-      />
-    </FormControl>
+    <>
+      <FormControl pt="0.4rem">
+        <Select
+          options={[{ options: options, label: module.code.slice(1, 4) }]}
+          placeholder="Select a module"
+          value={
+            !!underlyingModule
+              ? {
+                  label: `${underlyingModule.code} ${underlyingModule.name}`,
+                  value: underlyingModule.code,
+                }
+              : undefined
+          }
+          closeMenuOnSelect={true}
+          styles={customStyles}
+          menuPosition="fixed"
+          onChange={handleChange}
+          formatOptionLabel={formatOptionLabel}
+        />
+      </FormControl>
+      {selectedModuleNameDisplay}
+    </>
   );
 };
 

@@ -83,7 +83,7 @@ const RequirementContainer = ({
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  <HStack>
+                  <HStack align="">
                     {requirement.modules.map((module, idx) => (
                       <ModuleBox
                         module={module}
