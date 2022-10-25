@@ -91,10 +91,16 @@ const BasicInfo = () => {
     const sampleStudyPlanUrl = listing?.planUrl;
     const newModel = new MainViewModel(parseInt(year), 4, sampleStudyPlanUrl);
     newModel.initializeFromURL(url).then(() => {
-      setMainViewModel(newModel);
-      forceUpdate();
       const moduleArr = Array.from(newModel.modulesMap.values());
       labelModules(moduleArr);
+      for (let requirement of newModel.requirements) {
+        requirement.modules = [...new Set(requirement.modules)].sort((a, b) =>
+          a.code.localeCompare(b.code),
+        );
+      }
+      
+      setMainViewModel(newModel);
+      forceUpdate();
     });
   };
 

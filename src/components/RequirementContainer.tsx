@@ -65,7 +65,7 @@ const RequirementContainer = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={2}>
-          <HStack h="7.73216em">
+          <Box h="7.73216em">
             {requirement.description && (
               <Text
                 fontSize={"x-small"}
@@ -112,7 +112,7 @@ const RequirementContainer = ({
                 </div>
               )}
             </Droppable>
-          </HStack>
+          </Box>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

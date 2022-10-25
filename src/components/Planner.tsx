@@ -69,6 +69,12 @@ const Planner = () => {
       mainViewModel.requirements.at(-1)?.modules.push(modReqMap.get(modCode)),
     );
 
+    for (let requirement of mainViewModel.requirements) {
+      requirement.modules = [...new Set(requirement.modules)].sort((a, b) =>
+        a.code.localeCompare(b.code),
+      );
+    }
+
     forceUpdate();
   };
 
@@ -141,10 +147,11 @@ const Planner = () => {
     console.log("state");
     console.log(state);
     await applyPrereqValidation(state.planner).then((semesters) => {
-      const isPrereqsViolated = semesters
-        .map((semester) => semester.modules)
-        .flat(1)
-        .filter((module) => module.prereqsViolated?.length).length > 0;
+      const isPrereqsViolated =
+        semesters
+          .map((semester) => semester.modules)
+          .flat(1)
+          .filter((module) => module.prereqsViolated?.length).length > 0;
       setIsValidateButtonDisabled(isPrereqsViolated);
       return isPrereqsViolated;
     });
@@ -163,10 +170,11 @@ const Planner = () => {
     }
     state.requirements[0].modules.push(module);
     await applyPrereqValidation(state.planner).then((semesters) => {
-      const isPrereqsViolated = semesters
-        .map((semester) => semester.modules)
-        .flat(1)
-        .filter((module) => module.prereqsViolated?.length).length > 0;
+      const isPrereqsViolated =
+        semesters
+          .map((semester) => semester.modules)
+          .flat(1)
+          .filter((module) => module.prereqsViolated?.length).length > 0;
       setIsValidateButtonDisabled(isPrereqsViolated);
       return isPrereqsViolated;
     });
