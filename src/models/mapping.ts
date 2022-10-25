@@ -217,6 +217,7 @@ export class RequirementViewModel implements frontend.Requirement {
 
     this.allModules = new ModuleGatherer()
       .visit(basket)
+      .unique()
       .map((basket): frontend.Module => {
         if ("module" in basket) {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
@@ -703,7 +704,7 @@ export class MainViewModel
     const mods = this.academicPlanViewModel.loadAcademicPlan(text);
     const modSet = new Set(mods);
     for (const requirement of this.requirements) {
-      requirement.filtered((mod) => (!modSet.has(mod.code)));
+      requirement.filtered((mod) => !modSet.has(mod.code));
     }
   }
 

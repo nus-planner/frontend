@@ -143,7 +143,7 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
 
   return (
     <>
-      <FormControl pt="0.4rem">
+      <FormControl>
         <Select
           options={[{ options: options, label: module.code.slice(1, 4) }]}
           placeholder="Select a module"
