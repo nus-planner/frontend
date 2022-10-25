@@ -217,6 +217,7 @@ export class RequirementViewModel implements frontend.Requirement {
 
     this.allModules = new ModuleGatherer()
       .visit(basket)
+      .unique()
       .map((basket): frontend.Module => {
         if ("module" in basket) {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
@@ -517,8 +518,9 @@ class AcademicPlanViewModel implements frontend.Hydratable {
     }
   }
 
-  loadAcademicPlan(text: string) {
+  loadAcademicPlan(text: string): string[] {
     const jsonPlan = yaml.load(text) as JSONPlan;
+    const mods = [];
     for (const jsonSemester of jsonPlan.semesters) {
       const semesterViewModel =
         this.semesterViewModels[
@@ -526,6 +528,7 @@ class AcademicPlanViewModel implements frontend.Hydratable {
         ];
 
       for (const mod of jsonSemester.modules) {
+        mods.push(mod);
         const newMod = this.moduleStateDelegate.addModuleToGlobalState(
           new plan.Module(mod, "", 4),
         );
@@ -536,6 +539,8 @@ class AcademicPlanViewModel implements frontend.Hydratable {
         );
       }
     }
+
+    return mods;
   }
 
   public get startYear(): string {
@@ -696,7 +701,11 @@ export class MainViewModel
   }
 
   loadAcademicPlanFromString(text: string) {
-    this.academicPlanViewModel.loadAcademicPlan(text);
+    const mods = this.academicPlanViewModel.loadAcademicPlan(text);
+    const modSet = new Set(mods);
+    for (const requirement of this.requirements) {
+      requirement.filtered((mod) => !modSet.has(mod.code));
+    }
   }
 
   validate() {

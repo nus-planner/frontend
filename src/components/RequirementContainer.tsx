@@ -65,7 +65,7 @@ const RequirementContainer = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={2}>
-          <HStack h="-webkit-fit-content">
+          <HStack h="7.73216em">
             {requirement.description && (
               <Text
                 fontSize={"x-small"}
@@ -76,7 +76,7 @@ const RequirementContainer = ({
                 {requirement.description}
               </Text>
             )}
-            <Droppable droppableId={id} direction="horizontal">
+            <Droppable droppableId={id} direction="horizontal" isDropDisabled>
               {(provided) => (
                 <div
                   className="horiscroll"
