@@ -1,4 +1,11 @@
-import { Select, FormControl, HStack, Heading, Button } from "@chakra-ui/react";
+import {
+  Select,
+  FormControl,
+  HStack,
+  Heading,
+  Button,
+  Spinner,
+} from "@chakra-ui/react";
 import { plainToClass, plainToInstance, Type } from "class-transformer";
 import { majors, specialisations } from "../constants/dummyModuleData";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
@@ -38,6 +45,7 @@ const BasicInfo = () => {
   const [directoryList, setDirectoryList] = useState<DirectoryList>({
     files: [],
   });
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   useEffect(() => {
     fetch(
@@ -86,6 +94,7 @@ const BasicInfo = () => {
   };
 
   const loadRequirement = () => {
+    setLoadingSpinner(true);
     const listing = majorMap.get(parseInt(year))?.[parseInt(major)];
     const url = listing?.url ?? "";
     const sampleStudyPlanUrl = listing?.planUrl;
@@ -98,9 +107,10 @@ const BasicInfo = () => {
           a.code.localeCompare(b.code),
         );
       }
-      
+
       setMainViewModel(newModel);
       forceUpdate();
+      setLoadingSpinner(false);
     });
   };
 
@@ -144,6 +154,7 @@ const BasicInfo = () => {
           Load Requirement
         </Button>
       )}
+      {loadingSpinner && <Spinner />}
     </HStack>
   );
 };

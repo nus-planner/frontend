@@ -8,15 +8,19 @@ import {
   Text,
   HStack,
   Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import ModuleBox from "./ModuleBox";
-import { Requirement } from "../interfaces/planner";
+import { Module, Requirement } from "../interfaces/planner";
 import React from "react";
 import { MultiModuleViewModel } from "../models";
 import { useAppContext } from "./AppContext";
 import { moduleColor } from "../constants/moduleColor";
+import { SearchIcon } from "@chakra-ui/icons";
 
 const RequirementContainer = ({
   requirement,
@@ -31,6 +35,7 @@ const RequirementContainer = ({
   const requirementWith = requirement.description ? "12rem" : "";
   const [ueCount, setUeCount] = useState<number>(0);
   const { mainViewModel, setMainViewModel } = useAppContext();
+  const [displayedModulesFilter, setDisplayedModulesFilter] = useState("");
 
   const addUE = () => {
     const newUE = new MultiModuleViewModel(
@@ -55,17 +60,44 @@ const RequirementContainer = ({
     );
   };
 
+  const moduleFilter = (mod: Module): boolean => {
+    if (mod.code.toLowerCase().includes(displayedModulesFilter.toLowerCase()))
+      return true;
+    if (mod.name.toLowerCase().includes(displayedModulesFilter.toLowerCase()))
+      return true;
+    if (mod.getUnderlyingModule) {
+      const underlyingModule = mod.getUnderlyingModule();
+      if (underlyingModule !== undefined) {
+        // underlying module is of different type
+        if (
+          underlyingModule.code
+            .toLowerCase()
+            .includes(displayedModulesFilter.toLowerCase())
+        )
+          return true;
+        if (
+          underlyingModule.name
+            .toLowerCase()
+            .includes(displayedModulesFilter.toLowerCase())
+        )
+          return true;
+      }
+    }
+
+    return false;
+  };
+
   return (
     <Accordion allowToggle>
       <AccordionItem>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            {requirement.title}
+            <Text>{requirement.title}</Text>
           </Box>
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={2}>
-          <Box h="7.73216em">
+          <Box h="9.73216em">
             {requirement.description && (
               <Text
                 fontSize={"x-small"}
@@ -83,16 +115,30 @@ const RequirementContainer = ({
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
+                  <InputGroup padding="0 0 0.5rem">
+                    <InputLeftElement zIndex="0">
+                      <SearchIcon />
+                    </InputLeftElement>
+                    <Input
+                      width="10rem"
+                      borderColor="gray.500"
+                      onChange={(e) =>
+                        setDisplayedModulesFilter(e.target.value)
+                      }
+                    />
+                  </InputGroup>
                   <HStack align="">
-                    {requirement.modules.map((module, idx) => (
-                      <ModuleBox
-                        module={module}
-                        key={module.code + idx.toString()}
-                        displayModuleClose={false}
-                        idx={idx}
-                        parentStr={requirement.title}
-                      />
-                    ))}
+                    {requirement.modules
+                      .filter(moduleFilter)
+                      .map((module, idx) => (
+                        <ModuleBox
+                          module={module}
+                          key={module.code + idx.toString()}
+                          displayModuleClose={false}
+                          idx={idx}
+                          parentStr={requirement.title}
+                        />
+                      ))}
                     {isUERequirementContainer() && (
                       <Button
                         minW="12rem"
