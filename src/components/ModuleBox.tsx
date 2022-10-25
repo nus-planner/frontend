@@ -1,15 +1,16 @@
 import {
   Box,
   Text,
+  Icon,
   IconButton,
   Flex,
   Spacer,
   Link,
   UnorderedList,
-  FormControl,
+  HStack,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 import {
@@ -17,13 +18,9 @@ import {
   getNonDuplicateUEs,
   getNUSModsModulePage,
 } from "../utils/moduleUtils";
-import { useState, useEffect } from "react";
-import { SingleValue, ActionMeta } from "react-select";
-import * as models from "../models";
-import { fetchBasicModuleInfo } from "../api/moduleAPI";
-import Select from "react-select";
 import { useAppContext } from "./AppContext";
 import ModuleDropdown from "./ModuleDropdown";
+import { useEffect, useState } from "react";
 
 interface ModuleBoxProps {
   module: Module;
@@ -113,10 +110,13 @@ const ModuleBox = ({
     }
     prereqsViolationText = (
       <div>
-        <Text fontSize={"xx-small"} color={"red.500"} pt="1">
-          These modules need to be taken first:
+        <HStack>
+        <Icon as={WarningTwoIcon} color="red.500"/>
+        <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
+        These modules might need to be taken first:
         </Text>
-        <UnorderedList fontSize={"xx-small"} color={"red.500"}>
+        </HStack>
+        <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
           {violations.map((v, idx) => (
             <li key={idx}>{v}</li>
           ))}

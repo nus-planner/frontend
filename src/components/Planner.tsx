@@ -244,7 +244,7 @@ const Planner = () => {
               mainViewModel.loadAcademicPlanFromURL().then(forceUpdate);
             }}
           >
-            Populate Study Plan
+            Populate Sample Study Plan
           </Button>
           <ValidateStudyPlanButton
             mainViewModel={mainViewModel}

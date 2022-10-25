@@ -67,7 +67,7 @@ const ValidateStudyPlanButton = ({
         onClick={validateViewModel}
         isDisabled={isDisabled}
       >
-        Validate View Model
+        Validate Study Plan
       </Button>
     </Tooltip>
   );

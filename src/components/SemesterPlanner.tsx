@@ -36,7 +36,7 @@ const SemesterPlanner = ({
       <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
         Semester {semesterNumber}
       </Text>
-      <Box border="dotted" borderColor={"blackAlpha.400"} borderRadius="0.4rem" minW="13rem">
+      <Box border="dotted" borderColor={"blackAlpha.400"} borderRadius="0.4rem" w="13rem" minH="22.5rem">
         <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
