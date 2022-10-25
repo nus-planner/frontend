@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import "reflect-metadata";
+import "../utils/arrayExt";
 import { ChakraProvider } from "@chakra-ui/react";
 import { AppProps } from "next/app";
 import { AppContext } from "../components/AppContext";
