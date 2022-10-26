@@ -10,16 +10,19 @@ import {
   useDisclosure,
   Tooltip,
 } from "@chakra-ui/react";
-import { plainToClass, plainToInstance, Type } from "class-transformer";
-import { majors, specialisations } from "../constants/dummyModuleData";
+import { plainToInstance, Type } from "class-transformer";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
 import { useAppContext } from "./AppContext";
 import { labelModules, storeViewModel } from "../utils/plannerUtils";
 import { MainViewModel } from "../models";
 import { EmailIcon } from "@chakra-ui/icons";
-import { postFeedback } from "../api/feedbackAPI";
 import FeedbackModal from "./FeedbackModal";
-import { COURSE_MAJOR, ENROLLMENT_YEAR } from "../constants/planner";
+import {
+  COURSE_MAJOR,
+  ENROLLMENT_YEAR,
+  VIEWMODEL_STORAGE,
+} from "../constants/planner";
+import LoadAlert from "./LoadAlert";
 
 const baseUrl = "https://raw.githubusercontent.com/nus-planner/frontend/main/";
 
@@ -54,7 +57,16 @@ const BasicInfo = () => {
     files: [],
   });
   const [loadingSpinner, setLoadingSpinner] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenLoadAlert,
+    onOpen: onOpenLoadAlert,
+    onClose: onCloseLoadAlert,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenFeedbackModal,
+    onOpen: onOpenFeedbackModal,
+    onClose: onCloseFeedbackModal,
+  } = useDisclosure();
 
   useEffect(() => {
     fetch(
@@ -169,12 +181,23 @@ const BasicInfo = () => {
             size="sm"
             colorScheme={"white"}
             variant="outline"
-            onClick={loadRequirement}
+            onClick={() => {
+              if (localStorage.getItem(VIEWMODEL_STORAGE) === null) {
+                loadRequirement();
+              } else {
+                onOpenLoadAlert();
+              }
+            }}
           >
             Load Requirement
           </Button>
         )}
         {loadingSpinner && <Spinner />}
+        <LoadAlert
+          onClose={onCloseLoadAlert}
+          isOpen={isOpenLoadAlert}
+          loadRequirement={loadRequirement}
+        />
       </HStack>
       <HStack spacing={"1rem"} px="1rem">
         <Tooltip label="Submit Feedback">
@@ -184,11 +207,14 @@ const BasicInfo = () => {
             color="gray.600"
             variant="ghost"
             icon={<EmailIcon />}
-            onClick={onOpen}
+            onClick={onOpenFeedbackModal}
           />
         </Tooltip>
 
-        <FeedbackModal isOpen={isOpen} onClose={onClose} />
+        <FeedbackModal
+          isOpen={isOpenFeedbackModal}
+          onClose={onCloseFeedbackModal}
+        />
       </HStack>
     </Flex>
   );
