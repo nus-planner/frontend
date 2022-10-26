@@ -30,11 +30,12 @@ const SemesterPlanner = ({
   semesterIdx,
   handleModuleClose,
 }: SemesterPlannerProps) => {
+  const semTitle = semesterNumber > 2 ? `Special Term ${semesterNumber-2}` : `Semester ${semesterNumber}`;
 
   return (
     <Box>
       <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
-        Semester {semesterNumber}
+        {semTitle}
       </Text>
       <Box border="dotted" borderColor={"blackAlpha.400"} borderRadius="0.4rem" w="13rem" minH="22.5rem">
         <Droppable droppableId={id}>

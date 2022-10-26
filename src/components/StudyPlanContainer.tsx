@@ -6,6 +6,7 @@ import {
   Box,
   VStack,
   HStack,
+  Button,
 } from "@chakra-ui/react";
 
 import DeleteIcon from "@chakra-ui/icons";
@@ -13,7 +14,7 @@ import DeleteIcon from "@chakra-ui/icons";
 import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import SemesterPlanner from "./SemesterPlanner";
 import { convertYearAndSemToIndex } from "../utils/plannerUtils";
 
@@ -34,25 +35,39 @@ const StudyPlanContainer = ({
   plannerSemesters,
   handleModuleClose,
 }: PlannerContainerProps) => {
+  const [sems, setSems] = useState<number[]>(semesters);
+  const addSpecialTerm = () => {
+    semesters.push(sems.length + 1);
+    setSems(semesters);
+    forceUpdate();
+  };
+  const [, updateState] = useState<{}>();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
   return (
     <Box
       alignItems="baseline"
       bgColor="blackAlpha.50"
       borderRadius="0.3rem"
       minH="22em"
-      minW="28em"
       padding={3}
     >
       <Flex>
-        <Box>
+        <HStack spacing={"1rem"}>
           <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"}>
             Year {year}
           </Text>
-        </Box>
+          <Button size="sm"
+            colorScheme={"white"}
+            variant="outline"
+            onClick={addSpecialTerm}
+            disabled={sems.length >= 4}
+            > + Special Term </Button>
+        </HStack>
         <Spacer />
       </Flex>
       <HStack scrollBehavior={"auto"} w="100%" align="">
-        {semesters.map((semester) => {
+        {sems.map((semester) => {
           // const index = 2 * (Number(id) - 1) + Number(semester);
           const index = convertYearAndSemToIndex(Number(id), Number(semester));
           return (

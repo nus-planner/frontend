@@ -6,6 +6,7 @@ import {
   Collapse,
   useDisclosure,
   Text,
+  Stack,
 } from "@chakra-ui/react";
 import {
   useState,
