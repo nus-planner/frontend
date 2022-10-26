@@ -17,6 +17,7 @@ import {
   getGEsFromModuleList,
   getNonDuplicateUEs,
   getNUSModsModulePage,
+  fetchedModuleListPromise,
 } from "../utils/moduleUtils";
 import { useAppContext } from "./AppContext";
 import ModuleDropdown from "./ModuleDropdown";
@@ -44,63 +45,35 @@ const ModuleBox = ({
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
   }
 
-  const isGE = module.code.startsWith("^GE");
-  const isUE = module.code.startsWith(".");
-
-  let modName: any;
-  let GEOptions = [];
-  const [GEs, setGEs] = useState<Module[]>([]);
-  const getGEs = async () => {
-    const GEs = await getGEsFromModuleList(module.code.slice(1, 4));
-    setGEs(GEs);
-  };
-  useEffect(() => {
-    getGEs();
-  }, []);
-
-  let UEOptions = [];
-  const [UEs, setUEs] = useState<Module[]>([]);
+  let options: any[] = [];
+  let moduleBoxBody: React.ReactElement;
+  const [mods, setMods] = useState<Module[]>([]);
   const existingModules: string[] = [];
   for (let i = 0; i < mainViewModel.requirements.length; i++) {
     for (let j = 0; j < mainViewModel.requirements[i].modules.length; j++) {
       existingModules.push(mainViewModel.requirements[i].modules[j].code);
     }
   }
-  const getUEs = async () => {
-    const UEs = await getNonDuplicateUEs(existingModules);
-    setUEs(UEs);
-  };
+
   useEffect(() => {
-    getUEs();
+    getNonDuplicateUEs(existingModules).then((mods) => setMods(mods));
   }, []);
 
-  if (module.name == "Select A Basket") {
-    if (isGE) {
-      for (let GE of GEs) {
-        GEOptions.push({
-          label: GE.code + " " + GE.name,
-          value: GE.code,
-        });
-      }
-      modName = <ModuleDropdown module={module} options={GEOptions} />;
-    } else if (isUE) {
-      for (let UE of UEs) {
-        UEOptions.push({
-          label: UE.code + " " + UE.name,
-          value: UE.code,
-        });
-      }
-      modName = <ModuleDropdown module={module} options={UEOptions} />;
+  if (module.isMultiModule) {
+    for (const mod of mods) {
+      options.push({
+        label: mod.name,
+        value: mod.code,
+      });
     }
+    moduleBoxBody = <ModuleDropdown module={module} options={options} />;
   } else {
-    modName = (
+    moduleBoxBody = (
       <Text color="black.900" fontSize={"xs"}>
         {module.name}
       </Text>
     );
   }
-
-  const isValidModuleCode = !!module.code.match(/[A-Z]+\d+[A-Z]*/);
 
   let prereqsViolationText: any;
   if (module.prereqsViolated?.length) {
@@ -111,10 +84,10 @@ const ModuleBox = ({
     prereqsViolationText = (
       <div>
         <HStack>
-        <Icon as={WarningTwoIcon} color="red.500"/>
-        <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
-        These modules might need to be taken first:
-        </Text>
+          <Icon as={WarningTwoIcon} color="red.500" />
+          <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
+            These modules might need to be taken first:
+          </Text>
         </HStack>
         <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
           {violations.map((v, idx) => (
@@ -148,13 +121,13 @@ const ModuleBox = ({
             >
               <Flex>
                 <Text fontSize={"medium"} color="black.900" fontWeight="bold">
-                  {isValidModuleCode && (
+                  {!module.isMultiModule ? (
                     <Link href={getNUSModsModulePage(module.code)} isExternal>
                       {module.code}
                     </Link>
+                  ) : (
+                    module.name
                   )}
-                  {isGE && <>{"Any " + module.code.slice(1, 4)}</>}
-                  {!isValidModuleCode && !isGE && "Any UE"}
                 </Text>
                 <Spacer />
                 {displayModuleClose && (
@@ -173,7 +146,7 @@ const ModuleBox = ({
                   />
                 )}
               </Flex>
-              {modName}
+              {moduleBoxBody}
               {text}
               {prereqsViolationText}
               <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>

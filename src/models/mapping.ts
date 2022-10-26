@@ -64,6 +64,13 @@ export class ModuleViewModel implements frontend.Module {
     this.requirementDelegate = requirementDelegate;
     this.module = module;
   }
+  preclusions?: string[] | null | undefined;
+  public get isMultiModule(): boolean {
+    return false;
+  }
+  selectModule?(module: plan.Module): void {
+    throw new Error("Method not implemented.");
+  }
 
   getUnderlyingModule(): plan.Module {
     return this.module;
@@ -93,7 +100,9 @@ export class MultiModuleViewModel implements frontend.Module {
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: string[][];
   selectedModule?: plan.Module;
-
+  public get isMultiModule(): boolean {
+    return true;
+  }
   constructor(code: string, name: string, credits: number) {
     this.code = code;
     this.name = name;
@@ -227,7 +236,7 @@ export class RequirementViewModel implements frontend.Requirement {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
             new MultiModuleViewModel(
               basket.getEffectivePattern(),
-              "Select A Basket",
+              basket.title,
               -1,
             ),
           );

@@ -8,7 +8,7 @@
           "and": [
             {
               "geh": {
-                "title": "GEH modules",
+                "title": "Any GEH",
                 "module": {
                   "code_pattern": "^GEH"
                 }
@@ -18,7 +18,7 @@
             "GER1000",
             {
               "ges": {
-                "title": "GES modules",
+                "title": "Any GES",
                 "module": {
                   "code_pattern": "^GES"
                 }
@@ -26,6 +26,7 @@
             },
             {
               "get": {
+                "title": "Any GET",
                 "module": {
                   "code_pattern": "^GET"
                 }
@@ -41,7 +42,7 @@
           "and": [
             {
               "cs1010": {
-                "title": "CS1010 variants",
+                "title": "Any CS1010 variant",
                 "or": ["CS1101S", "CS1010X"]
               }
             },
@@ -277,6 +278,7 @@
                   {
                     "Remaining Breadth and Depth": {
                       "state": "csBreadthAndDepthState",
+                      "title": "Any CS module",
                       "module": {
                         "code_prefix": "CS",
                         "required_mcs": 16,
@@ -338,6 +340,7 @@
                   {
                     "Remaining Breadth and Depth": {
                       "state": "csBreadthAndDepthState",
+                      "title": "Any CS module",
                       "module": {
                         "code_prefix": "CS",
                         "required_mcs": 12,

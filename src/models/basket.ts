@@ -432,7 +432,7 @@ export class MultiModuleBasket extends Basket {
   requiredMCs?: number;
   earlyTerminate?: boolean;
   constructor(basket: Partial<MultiModuleBasket>) {
-    super();
+    super(basket.title);
     this.moduleCodePattern = basket.moduleCodePattern;
     this.moduleCodePrefix = basket.moduleCodePrefix;
     this.moduleCodeSuffix = basket.moduleCodeSuffix;

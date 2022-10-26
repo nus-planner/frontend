@@ -165,6 +165,7 @@ export class ValidatorState implements Hydratable {
         basketOption.module.level
       ) {
         basket = new baskets.MultiModuleBasket({
+          title: basketOption.title,
           moduleCodePrefix: basketOption.module.code_prefix
             ? new Set([basketOption.module.code_prefix])
             : undefined,

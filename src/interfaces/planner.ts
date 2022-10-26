@@ -11,6 +11,7 @@ export interface Module {
   preclusions?: string[] | null;
   prereqsViolated?: string[][] | null;
   tags?: string[];
+  isMultiModule?: boolean;
   getUnderlyingModule?(): models.Module | undefined;
   getMatchedRequirements?(): models.RequirementViewModel[];
   selectModule?(module: models.Module): void; // specific to MultiModule
