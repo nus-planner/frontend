@@ -166,6 +166,7 @@ const Planner = () => {
     console.log("handle module close", module.code);
 
     module.prereqsViolated = [];
+    module.coreqsViolated = [];
     const state = mainViewModel;
     for (const semester of state.planner) {
       semester.filtered((mod) => mod.code !== module.code);
