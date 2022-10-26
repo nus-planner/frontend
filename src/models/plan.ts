@@ -19,6 +19,9 @@ export class Module {
   name: string;
   credits: number;
   constructor(code: string, name: string, credits: number) {
+    if (code === undefined) {
+      return;
+    }
     this.code = code;
     const match = moduleRegex.exec(code);
     if (match === null || match.groups === undefined) {
@@ -39,6 +42,7 @@ export class Module {
 
 export class AcademicPlan {
   startYear: number;
+  @Type(() => SemPlan)
   plans: Array<SemPlan>;
 
   constructor(startYear: number, numYears: number = 4) {

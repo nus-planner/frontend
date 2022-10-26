@@ -14,11 +14,12 @@ import { plainToClass, plainToInstance, Type } from "class-transformer";
 import { majors, specialisations } from "../constants/dummyModuleData";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
 import { useAppContext } from "./AppContext";
-import { labelModules } from "../utils/plannerUtils";
+import { labelModules, storeViewModel } from "../utils/plannerUtils";
 import { MainViewModel } from "../models";
 import { EmailIcon } from "@chakra-ui/icons";
 import { postFeedback } from "../api/feedbackAPI";
 import FeedbackModal from "./FeedbackModal";
+import { COURSE_MAJOR, ENROLLMENT_YEAR } from "../constants/planner";
 
 const baseUrl = "https://raw.githubusercontent.com/nus-planner/frontend/main/";
 
@@ -64,6 +65,8 @@ const BasicInfo = () => {
       .then((directoryList) => {
         setDirectoryList(directoryList);
       });
+    setYear(localStorage.getItem(ENROLLMENT_YEAR) || "");
+    setMajor(localStorage.getItem(COURSE_MAJOR) || "");
   }, []);
 
   // Basic info of the user
@@ -89,6 +92,7 @@ const BasicInfo = () => {
 
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
+
   const handleYearChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
@@ -97,12 +101,13 @@ const BasicInfo = () => {
   const handleMajorChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
-    console.log(event.target.value);
     setMajor(event.target.value);
   };
 
   const loadRequirement = () => {
     setLoadingSpinner(true);
+    localStorage.setItem(ENROLLMENT_YEAR, year);
+    localStorage.setItem(COURSE_MAJOR, major);
     const listing = majorMap.get(parseInt(year))?.[parseInt(major)];
     const url = listing?.url ?? "";
     const sampleStudyPlanUrl = listing?.planUrl;
@@ -119,6 +124,8 @@ const BasicInfo = () => {
       setMainViewModel(newModel);
       forceUpdate();
       setLoadingSpinner(false);
+      storeViewModel(newModel);
+      console.log(newModel.toStorageString());
     });
   };
 
@@ -147,6 +154,7 @@ const BasicInfo = () => {
             <Select
               placeholder="Choose your major"
               onChange={handleMajorChange}
+              value={major}
             >
               {(majorMap.get(parseInt(year)) ?? []).map((req, idx) => (
                 <option key={idx} value={idx}>
@@ -169,7 +177,7 @@ const BasicInfo = () => {
         {loadingSpinner && <Spinner />}
       </HStack>
       <HStack spacing={"1rem"} px="1rem">
-        <Tooltip label='Submit Feedback'>
+        <Tooltip label="Submit Feedback">
           <IconButton
             aria-label="Open menu"
             fontSize="1.5rem"
