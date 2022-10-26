@@ -5,6 +5,10 @@ import {
   Heading,
   Button,
   Spinner,
+  Flex,
+  IconButton,
+  useDisclosure,
+  Tooltip,
 } from "@chakra-ui/react";
 import { plainToClass, plainToInstance, Type } from "class-transformer";
 import { majors, specialisations } from "../constants/dummyModuleData";
@@ -12,6 +16,9 @@ import { useState, SetStateAction, useCallback, useEffect } from "react";
 import { useAppContext } from "./AppContext";
 import { labelModules } from "../utils/plannerUtils";
 import { MainViewModel } from "../models";
+import { EmailIcon } from "@chakra-ui/icons";
+import { postFeedback } from "../api/feedbackAPI";
+import FeedbackModal from "./FeedbackModal";
 
 const baseUrl = "https://raw.githubusercontent.com/nus-planner/frontend/main/";
 
@@ -46,6 +53,7 @@ const BasicInfo = () => {
     files: [],
   });
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     fetch(
@@ -115,47 +123,66 @@ const BasicInfo = () => {
   };
 
   return (
-    <HStack spacing={"1rem"}>
-      <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
-        NUS Planner
-      </Heading>
-      <FormControl w="-moz-fit-content">
-        <Select
-          placeholder="Choose your enrollment year"
-          onChange={handleYearChange}
-          value={year}
-        >
-          {years.map((year) => (
-            <option key={year} value={year}>
-              AY{year}/{year + 1}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-
-      {year && (
+    <Flex w="full" h="full" align="center" justify="space-between">
+      <HStack spacing={"1rem"}>
+        <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
+          NUS Planner
+        </Heading>
         <FormControl w="-moz-fit-content">
-          <Select placeholder="Choose your major" onChange={handleMajorChange}>
-            {(majorMap.get(parseInt(year)) ?? []).map((req, idx) => (
-              <option key={idx} value={idx}>
-                {req.course}
+          <Select
+            placeholder="Choose your enrollment year"
+            onChange={handleYearChange}
+            value={year}
+          >
+            {years.map((year) => (
+              <option key={year} value={year}>
+                AY{year}/{year + 1}
               </option>
             ))}
           </Select>
         </FormControl>
-      )}
-      {major && (
-        <Button
-          size="sm"
-          colorScheme={"white"}
-          variant="outline"
-          onClick={loadRequirement}
-        >
-          Load Requirement
-        </Button>
-      )}
-      {loadingSpinner && <Spinner />}
-    </HStack>
+
+        {year && (
+          <FormControl w="-moz-fit-content">
+            <Select
+              placeholder="Choose your major"
+              onChange={handleMajorChange}
+            >
+              {(majorMap.get(parseInt(year)) ?? []).map((req, idx) => (
+                <option key={idx} value={idx}>
+                  {req.course}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+        {major && (
+          <Button
+            size="sm"
+            colorScheme={"white"}
+            variant="outline"
+            onClick={loadRequirement}
+          >
+            Load Requirement
+          </Button>
+        )}
+        {loadingSpinner && <Spinner />}
+      </HStack>
+      <HStack spacing={"1rem"} px="1rem">
+        <Tooltip label='Submit Feedback'>
+          <IconButton
+            aria-label="Open menu"
+            fontSize="1.5rem"
+            color="gray.600"
+            variant="ghost"
+            icon={<EmailIcon />}
+            onClick={onOpen}
+          />
+        </Tooltip>
+
+        <FeedbackModal isOpen={isOpen} onClose={onClose} />
+      </HStack>
+    </Flex>
   );
 };
 
