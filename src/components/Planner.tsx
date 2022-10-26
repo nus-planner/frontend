@@ -249,7 +249,15 @@ const Planner = () => {
             colorScheme={"white"}
             variant="outline"
             onClick={() => {
-              mainViewModel.loadAcademicPlanFromURL().then(forceUpdate);
+              mainViewModel
+                .loadAcademicPlanFromURL()
+                .then(() =>
+                  localStorage.setItem(
+                    "mainViewModel",
+                    mainViewModel.toStorageString(),
+                  ),
+                )
+                .then(forceUpdate);
             }}
           >
             Populate Sample Study Plan

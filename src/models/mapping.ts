@@ -800,7 +800,7 @@ export class MainViewModel
   }
 
   toStorageObject() {
-    const obj = instanceToPlain(this);
+    const obj = instanceToPlain(this, { enableCircularCheck: true });
     console.log(obj);
     return obj;
   }
