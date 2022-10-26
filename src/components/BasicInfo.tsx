@@ -10,15 +10,19 @@ import {
   useDisclosure,
   Tooltip,
 } from "@chakra-ui/react";
-import { plainToClass, plainToInstance, Type } from "class-transformer";
-import { majors, specialisations } from "../constants/dummyModuleData";
+import { plainToInstance, Type } from "class-transformer";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
 import { useAppContext } from "./AppContext";
-import { labelModules } from "../utils/plannerUtils";
+import { labelModules, storeViewModel } from "../utils/plannerUtils";
 import { MainViewModel } from "../models";
 import { EmailIcon } from "@chakra-ui/icons";
-import { postFeedback } from "../api/feedbackAPI";
 import FeedbackModal from "./FeedbackModal";
+import {
+  COURSE_MAJOR,
+  ENROLLMENT_YEAR,
+  VIEWMODEL_STORAGE,
+} from "../constants/planner";
+import LoadAlert from "./LoadAlert";
 
 const baseUrl = "https://raw.githubusercontent.com/nus-planner/frontend/main/";
 
@@ -53,7 +57,16 @@ const BasicInfo = () => {
     files: [],
   });
   const [loadingSpinner, setLoadingSpinner] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenLoadAlert,
+    onOpen: onOpenLoadAlert,
+    onClose: onCloseLoadAlert,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenFeedbackModal,
+    onOpen: onOpenFeedbackModal,
+    onClose: onCloseFeedbackModal,
+  } = useDisclosure();
 
   useEffect(() => {
     fetch(
@@ -64,6 +77,8 @@ const BasicInfo = () => {
       .then((directoryList) => {
         setDirectoryList(directoryList);
       });
+    setYear(localStorage.getItem(ENROLLMENT_YEAR) || "");
+    setMajor(localStorage.getItem(COURSE_MAJOR) || "");
   }, []);
 
   // Basic info of the user
@@ -89,6 +104,7 @@ const BasicInfo = () => {
 
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
+
   const handleYearChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
@@ -97,12 +113,13 @@ const BasicInfo = () => {
   const handleMajorChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
-    console.log(event.target.value);
     setMajor(event.target.value);
   };
 
   const loadRequirement = () => {
     setLoadingSpinner(true);
+    localStorage.setItem(ENROLLMENT_YEAR, year);
+    localStorage.setItem(COURSE_MAJOR, major);
     const listing = majorMap.get(parseInt(year))?.[parseInt(major)];
     const url = listing?.url ?? "";
     const sampleStudyPlanUrl = listing?.planUrl;
@@ -119,6 +136,8 @@ const BasicInfo = () => {
       setMainViewModel(newModel);
       forceUpdate();
       setLoadingSpinner(false);
+      storeViewModel(newModel);
+      console.log(newModel.toStorageString());
     });
   };
 
@@ -147,6 +166,7 @@ const BasicInfo = () => {
             <Select
               placeholder="Choose your major"
               onChange={handleMajorChange}
+              value={major}
             >
               {(majorMap.get(parseInt(year)) ?? []).map((req, idx) => (
                 <option key={idx} value={idx}>
@@ -161,26 +181,40 @@ const BasicInfo = () => {
             size="sm"
             colorScheme={"white"}
             variant="outline"
-            onClick={loadRequirement}
+            onClick={() => {
+              if (localStorage.getItem(VIEWMODEL_STORAGE) === null) {
+                loadRequirement();
+              } else {
+                onOpenLoadAlert();
+              }
+            }}
           >
             Load Requirement
           </Button>
         )}
         {loadingSpinner && <Spinner />}
+        <LoadAlert
+          onClose={onCloseLoadAlert}
+          isOpen={isOpenLoadAlert}
+          loadRequirement={loadRequirement}
+        />
       </HStack>
       <HStack spacing={"1rem"} px="1rem">
-        <Tooltip label='Submit Feedback'>
+        <Tooltip label="Submit Feedback">
           <IconButton
             aria-label="Open menu"
             fontSize="1.5rem"
             color="gray.600"
             variant="ghost"
             icon={<EmailIcon />}
-            onClick={onOpen}
+            onClick={onOpenFeedbackModal}
           />
         </Tooltip>
 
-        <FeedbackModal isOpen={isOpen} onClose={onClose} />
+        <FeedbackModal
+          isOpen={isOpenFeedbackModal}
+          onClose={onCloseFeedbackModal}
+        />
       </HStack>
     </Flex>
   );

@@ -10,6 +10,8 @@ export interface Module {
   prereqs?: PrereqTree | null;
   preclusions?: string[] | null;
   prereqsViolated?: string[][] | null;
+  coreqs?: string[] | null;
+  coreqsViolated?: string[] | null;
   tags?: string[];
   isMultiModule?: boolean;
   getUnderlyingModule?(): models.Module | undefined;
