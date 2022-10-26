@@ -56,13 +56,20 @@ const ModuleBox = ({
   }
 
   useEffect(() => {
-    getNonDuplicateUEs(existingModules).then((mods) => setMods(mods));
+    if (!module.isMultiModule) {
+      return;
+    }
+    getNonDuplicateUEs(existingModules).then((mods) => {
+      const regexp = new RegExp(module.code);
+      const filterResult = mods.filter((mod) => regexp.test(mod.code));
+      setMods(filterResult);
+    });
   }, []);
 
   if (module.isMultiModule) {
     for (const mod of mods) {
       options.push({
-        label: mod.name,
+        label: mod.code + " " + mod.name,
         value: mod.code,
       });
     }
