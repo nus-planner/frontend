@@ -41,12 +41,6 @@ export class AcademicPlan {
   startYear: number;
   plans: Array<SemPlan>;
 
-  @Exclude()
-  private modules: Array<Module> = [];
-
-  @Exclude()
-  private moduleCodeToModuleMap: Map<string, Module> = new Map();
-
   constructor(startYear: number, numYears: number = 4) {
     this.startYear = startYear;
     this.plans = new Array(numYears * 4);
@@ -67,28 +61,25 @@ export class AcademicPlan {
     this.plans.length = newValue;
   }
 
+  @Exclude()
+  get modules(): Array<Module> {
+    const mods: Array<Module> = [];
+    for (const plan of this.plans) {
+      for (const mod of plan.modules) {
+        mods.push(mod);
+      }
+    }
+    return mods;
+  }
+
   getSemPlan(year: number, semester: SemesterNumber) {
     return this.plans[(year - 1) * 4 + semester];
   }
 
-  preprocess() {
-    this.modules = [];
-    this.moduleCodeToModuleMap.clear();
-    for (const plan of this.plans) {
-      for (const mod of plan.modules) {
-        this.modules.push(mod);
-        this.moduleCodeToModuleMap.set(mod.code, mod);
-      }
-    }
-  }
+  preprocess() {}
 
   getPlanView(): AcademicPlanView {
-    this.preprocess();
     return new AcademicPlanView(this, this.modules);
-  }
-
-  getModules() {
-    return this.modules;
   }
 
   resetState() {
@@ -130,20 +121,10 @@ export class SemPlan {
   @Type(() => Module)
   modules: Array<Module>;
 
-  @Exclude()
-  private moduleCodeToModuleMap: Map<string, Module> = new Map();
-
   constructor(year: number, semester: SemesterNumber, modules: Array<Module>) {
     this.year = year;
     this.semester = semester;
     this.modules = modules;
-  }
-
-  preprocess() {
-    this.moduleCodeToModuleMap.clear();
-    for (const mod of this.modules) {
-      this.moduleCodeToModuleMap.set(mod.code, mod);
-    }
   }
 }
 
@@ -169,10 +150,7 @@ export class AcademicPlanView {
   }
 
   withOriginalPlan(): AcademicPlanView {
-    return new AcademicPlanView(
-      this.academicPlan,
-      this.academicPlan.getModules(),
-    );
+    return new AcademicPlanView(this.academicPlan, this.academicPlan.modules);
   }
 }
 

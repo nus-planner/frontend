@@ -13,6 +13,9 @@ import * as basket from "./basket";
 import * as input from "./input";
 import * as plan from "./plan";
 
+interface AcademicPlanDelegate {
+  moduleExists(moduleCode: string): boolean;
+}
 interface RequirementDelegate {
   getRequirement(forBasket: basket.Basket): RequirementViewModel | undefined;
 }
@@ -287,16 +290,19 @@ type JSONPlan = {
 
 @Exclude()
 class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
+  private academicPlanDelegate: AcademicPlanDelegate;
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   private requirementDelegate: RequirementDelegate;
   private _trickle: TrickleDownArray<frontend.Module, plan.Module>;
   private semPlan: plan.SemPlan;
   private _modules: frontend.Module[];
   constructor(
+    academicPlanDelegate: AcademicPlanDelegate,
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
     requirementDelegate: RequirementDelegate,
     semPlan: plan.SemPlan,
   ) {
+    this.academicPlanDelegate = academicPlanDelegate;
     this.moduleStateDelegate = moduleStateDelegate;
     this.requirementDelegate = requirementDelegate;
     this.semPlan = semPlan;
@@ -347,6 +353,9 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
   }
 
   addModule(module: frontend.Module) {
+    if (this.academicPlanDelegate.moduleExists(module.code)) {
+      return;
+    }
     this._trickle.push(module);
   }
 
@@ -356,6 +365,10 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
 
   removeAtIndex(index: number) {
     this._trickle.removeAtIndex(index);
+  }
+
+  clearModules() {
+    this._trickle.clear();
   }
 
   filtered(filter: (mod: frontend.Module) => boolean) {
@@ -480,7 +493,9 @@ class TrickleDownArray<T1, T2> {
 }
 
 @Exclude()
-class AcademicPlanViewModel implements frontend.Hydratable {
+class AcademicPlanViewModel
+  implements frontend.Hydratable, AcademicPlanDelegate
+{
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   private requirementDelegate: RequirementDelegate;
 
@@ -507,6 +522,7 @@ class AcademicPlanViewModel implements frontend.Hydratable {
       (model) => model.getUnderlyingSemPlan(),
       (semPlan) =>
         new SemesterViewModel(
+          this,
           moduleStateDelegate,
           requirementDelegate,
           semPlan,
@@ -514,10 +530,15 @@ class AcademicPlanViewModel implements frontend.Hydratable {
     );
   }
 
+  moduleExists(moduleCode: string): boolean {
+    return this.academicPlan.modules.some((mod) => mod.code === moduleCode);
+  }
+
   hydrate(stored: this): void {
     this.clearSemesters();
     for (const semesterViewModel of stored.semesterViewModels) {
       const newSemesterViewModel = new SemesterViewModel(
+        this,
         this.moduleStateDelegate,
         this.requirementDelegate,
         new plan.SemPlan(0, 0, []),
@@ -558,6 +579,12 @@ class AcademicPlanViewModel implements frontend.Hydratable {
 
   clearSemesters() {
     this._trickle.clear();
+  }
+
+  clearModules() {
+    for (const semesterViewModel of this.semesterViewModels) {
+      semesterViewModel.clearModules();
+    }
   }
 
   addSemester(semester: SemesterViewModel) {
