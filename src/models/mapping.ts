@@ -73,7 +73,8 @@ export class ModuleViewModel implements frontend.Module {
   public get isMultiModule(): boolean {
     return false;
   }
-  selectModule?(module: plan.Module): void {
+
+  selectModule(module: plan.Module): void {
     throw new Error("Method not implemented.");
   }
 
@@ -261,6 +262,10 @@ export class RequirementViewModel implements frontend.Requirement {
 
   public get allBaskets(): basket.Basket[] {
     return new BasketGatherer().visit(this.basket);
+  }
+
+  public get respawnables(): frontend.Module[] {
+    return this.allModules.filter((mod) => mod.isMultiModule);
   }
 
   public get isFulfilled(): boolean {
