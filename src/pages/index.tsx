@@ -4,6 +4,7 @@ import PlannerComponent from "../components/Planner";
 import { labelModules } from "../utils/plannerUtils";
 import BasicInfo from "../components/BasicInfo";
 import { useAppContext } from "../components/AppContext";
+import ReactGA from 'react-ga4';
 
 const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
@@ -11,6 +12,8 @@ const Home = () => {
   const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
 
+  ReactGA.initialize('G-HL6L0L40B1');
+  
   return (
     <Stack padding="1rem">
       <BasicInfo />
