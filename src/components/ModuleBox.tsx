@@ -98,6 +98,25 @@ const ModuleBox = ({
     );
   }
 
+  let coreqsViolationText: any;
+  if (module.coreqsViolated?.length) {
+    coreqsViolationText = (
+      <div>
+        <HStack>
+          <Icon as={WarningTwoIcon} color="red.500" />
+          <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
+            These modules might need to be taken at the same time:
+          </Text>
+        </HStack>
+        <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
+          {module.coreqsViolated.map((v, idx) => (
+            <li key={idx}>{v}</li>
+          ))}
+        </UnorderedList>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Draggable
@@ -149,6 +168,7 @@ const ModuleBox = ({
               {moduleBoxBody}
               {text}
               {prereqsViolationText}
+              {coreqsViolationText}
               <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
             </Box>
           </div>

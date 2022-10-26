@@ -42,39 +42,39 @@ export const applyPrereqValidation = async (
         const underlyingMod = mod.getUnderlyingModule();
         mod.prereqs = null;
         mod.preclusions = [];
+        mod.coreqs = [];
         if (underlyingMod !== undefined) {
           const reqs = await fetchModulePrereqs(underlyingMod.code);
           mod.prereqs = reqs.prereqs;
           mod.preclusions = reqs.preclusions;
+          mod.coreqs = reqs.coreqs;
         }
       } else {
         // Fetch prereqs from NUSMods if property not found
         if (mod.prereqs === undefined) {
           const reqs = await fetchModulePrereqs(mod.code);
           mod.prereqs = reqs.prereqs;
-          if (reqs.preclusions !== undefined) {
-            mod.preclusions = reqs.preclusions;
-          }
+          mod.preclusions = reqs.preclusions;
+          mod.coreqs = reqs.coreqs;
         }
       }
 
+      // Prereq checking
       // Handles 2 cases:
-      // module.prereqs is still undefined due to error
-      // module.prereqs is null (no prereqs)
+      // module.prereqs is still undefined due to error, or module.prereqs is null (no prereqs)
       if (!!mod.prereqs) {
         mod.prereqsViolated = evaluatePrereqTreeMods(
           mod.prereqs,
           takenModuleSet,
         );
-        console.log(`Pre-requisites violated for ${mod.code}`);
-        console.log(mod.prereqsViolated);
       }
-      console.log(mod);
+
       if (!!mod.preclusions) {
         preclusions.push(...mod.preclusions);
       }
       semesters[i].modules[j] = mod;
     }
+
     for (let j = 0; j < semesters[i].modules.length; j++) {
       const mod = semesters[i].modules[j];
       takenModuleSet.add(mod.code);
@@ -87,6 +87,8 @@ export const applyPrereqValidation = async (
     }
     preclusions.forEach((preclusion) => takenModuleSet.add(preclusion));
   }
+
+  semesters = applyCoreqValidation(semesters);
 
   console.log("Apply prereq validation");
   console.log(semesters);
@@ -139,6 +141,23 @@ const evaluatePrereqTreeMods = (
   }
 
   return null;
+};
+
+export const applyCoreqValidation = (semesters: Semester[]): Semester[] => {
+  for (let semester of semesters) {
+    const moduleSet = new Set(semester.modules.map((mod) => mod.code));
+    for (let mod of semester.modules) {
+      mod.coreqsViolated = [];
+      if (!!mod.coreqs) {
+        for (let coreq of mod.coreqs) {
+          if (!moduleSet.has(coreq)) {
+            mod.coreqsViolated.push(coreq);
+          }
+        }
+      }
+    }
+  }
+  return semesters;
 };
 
 export const testPrereqTree = async () => {
