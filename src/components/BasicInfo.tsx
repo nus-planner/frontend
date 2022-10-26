@@ -119,6 +119,8 @@ const BasicInfo = () => {
       setMainViewModel(newModel);
       forceUpdate();
       setLoadingSpinner(false);
+      localStorage.setItem('mainViewModel', newModel.toStorageString());
+      console.log(newModel.toStorageString());
     });
   };
 

@@ -11,6 +11,15 @@ const Home = () => {
   const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
 
+  useEffect(() => {
+    const viewModelString = localStorage.getItem("mainViewModel");
+    if (viewModelString !== null) {
+      console.log(viewModelString);
+      mainViewModel.hydrateWithStorageString(viewModelString);
+      forceUpdate();
+    }
+  }, []);
+
   return (
     <Stack padding="1rem">
       <BasicInfo />
