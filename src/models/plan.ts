@@ -39,6 +39,7 @@ export class Module {
 
 export class AcademicPlan {
   startYear: number;
+  @Type(() => SemPlan)
   plans: Array<SemPlan>;
 
   constructor(startYear: number, numYears: number = 4) {
