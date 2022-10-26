@@ -1,6 +1,7 @@
 {
   "starting_year": 2019,
   "years": 4,
+  "exemptions": ["MA1301"],
   "semesters": [
     {
       "year": 1,

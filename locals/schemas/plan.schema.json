@@ -7,6 +7,14 @@
     "years": {
       "enum": [2, 3, 4, 5]
     },
+    "exemptions": {
+      "type": "array",
+      "description": "An array of module codes",
+      "items": {
+        "type": "string",
+        "pattern": "(?<prefix>[A-Z]+)(?<codeNumber>\\d)\\d+(?<suffix>[A-Z]*)"
+      }
+    },
     "semesters": {
       "type": "array",
       "items": {

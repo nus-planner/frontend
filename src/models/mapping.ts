@@ -285,6 +285,7 @@ type JSONPlanSemester = {
 
 type JSONPlan = {
   years: number;
+  exemptions: Array<string>;
   semesters: Array<JSONPlanSemester>;
 };
 
@@ -551,6 +552,18 @@ class AcademicPlanViewModel
   loadAcademicPlan(text: string): string[] {
     const jsonPlan = yaml.load(text) as JSONPlan;
     const mods = [];
+    const exemptionsViewModel = this.semesterViewModels[0];
+    for (const mod of jsonPlan.exemptions) {
+      mods.push(mod);
+      const newMod = this.moduleStateDelegate.addModuleToGlobalState(
+        new plan.Module(mod, "", 4),
+      );
+      exemptionsViewModel.addModule(
+        this.moduleStateDelegate.addModuleViewModelToGlobalState(
+          new ModuleViewModel(this.requirementDelegate, newMod),
+        ),
+      );
+    }
     for (const jsonSemester of jsonPlan.semesters) {
       const semesterViewModel =
         this.semesterViewModels[
