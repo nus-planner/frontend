@@ -1,9 +1,10 @@
 import { Stack, Divider } from "@chakra-ui/react";
 import { useState, useCallback, useEffect, SetStateAction } from "react";
 import PlannerComponent from "../components/Planner";
-import { labelModules } from "../utils/plannerUtils";
+import { labelModules, loadViewModel } from "../utils/plannerUtils";
 import BasicInfo from "../components/BasicInfo";
 import { useAppContext } from "../components/AppContext";
+import { VIEWMODEL_STORAGE } from "../constants/planner";
 
 const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
@@ -12,12 +13,8 @@ const Home = () => {
   const { mainViewModel, setMainViewModel } = useAppContext();
 
   useEffect(() => {
-    const viewModelString = localStorage.getItem("mainViewModel");
-    if (viewModelString !== null) {
-      console.log(viewModelString);
-      mainViewModel.hydrateWithStorageString(viewModelString);
-      forceUpdate();
-    }
+    loadViewModel(mainViewModel);
+    forceUpdate();
   }, []);
 
   return (

@@ -24,6 +24,7 @@ import { applyPrereqValidation } from "../utils/moduleUtils";
 import { MainViewModel } from "../models";
 import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
 import { useAppContext } from "./AppContext";
+import { storeViewModel } from "../utils/plannerUtils";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -76,6 +77,7 @@ const Planner = () => {
     }
 
     forceUpdate();
+    storeViewModel(mainViewModel);
   };
 
   const handleDragEnd = (event: any) => {
