@@ -56,13 +56,20 @@ const ModuleBox = ({
   }
 
   useEffect(() => {
-    getNonDuplicateUEs(existingModules).then((mods) => setMods(mods));
+    if (!module.isMultiModule) {
+      return;
+    }
+    getNonDuplicateUEs(existingModules).then((mods) => {
+      const regexp = new RegExp(module.code);
+      const filterResult = mods.filter((mod) => regexp.test(mod.code));
+      setMods(filterResult);
+    });
   }, []);
 
   if (module.isMultiModule) {
     for (const mod of mods) {
       options.push({
-        label: mod.name,
+        label: mod.code + " " + mod.name,
         value: mod.code,
       });
     }
@@ -91,6 +98,25 @@ const ModuleBox = ({
         </HStack>
         <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
           {violations.map((v, idx) => (
+            <li key={idx}>{v}</li>
+          ))}
+        </UnorderedList>
+      </div>
+    );
+  }
+
+  let coreqsViolationText: any;
+  if (module.coreqsViolated?.length) {
+    coreqsViolationText = (
+      <div>
+        <HStack>
+          <Icon as={WarningTwoIcon} color="red.500" />
+          <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
+            These modules might need to be taken at the same time:
+          </Text>
+        </HStack>
+        <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
+          {module.coreqsViolated.map((v, idx) => (
             <li key={idx}>{v}</li>
           ))}
         </UnorderedList>
@@ -149,6 +175,7 @@ const ModuleBox = ({
               {moduleBoxBody}
               {text}
               {prereqsViolationText}
+              {coreqsViolationText}
               <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
             </Box>
           </div>

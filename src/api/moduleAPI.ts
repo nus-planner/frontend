@@ -4,6 +4,7 @@ import { isValidModuleCode } from "../utils/moduleUtils";
 interface ModuleRequisites {
   prereqs?: PrereqTree | null;
   preclusions?: string[] | null;
+  coreqs?: string[] | null;
 }
 
 interface BasicModuleInfo {
@@ -40,24 +41,23 @@ export const fetchModulePrereqs = async (
   console.log(res?.prereqTree);
   console.log(JSON.stringify(res?.prereqTree));
 
-  let prereqs: PrereqTree | null = res.prereqTree;
-  let preclusions: string[] | null = null;
+  const prereqs: PrereqTree | null =
+    res.prereqTree === undefined ? null : res.prereqTree;
+  const preclusions: string[] | null =
+    res.preclusion === undefined
+      ? null
+      : res.preclusion.match(/[A-Z]+\d+[A-Z]*/g);
+  const coreqs: string[] | null =
+    res.corequisite === undefined ? null : res.corequisite.match(/[A-Z]+\d+[A-Z]*/g);
 
-  if (res.prereqTree === undefined) prereqs = null;
-  if (res.preclusion === undefined) {
-    preclusions = null;
-  } else {
-    preclusions = res.preclusion.match(/[A-Z]+\d+[A-Z]*/g);
-  }
-
-  return { prereqs: prereqs, preclusions: preclusions };
+  return { prereqs: prereqs, preclusions: preclusions, coreqs: coreqs };
 };
 
 export const fetchBasicModuleInfo = async (
   moduleCode: string,
 ): Promise<BasicModuleInfo | undefined> => {
   if (!isValidModuleCode(moduleCode)) return undefined;
-  
+
   const res = await fetch(
     NUSMODS_API_URL + `/${acadYear}/modules/${moduleCode}.json`,
   ).then((resp) => {

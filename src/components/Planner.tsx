@@ -25,6 +25,7 @@ import { applyPrereqValidation } from "../utils/moduleUtils";
 import { MainViewModel } from "../models";
 import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
 import { useAppContext } from "./AppContext";
+import { storeViewModel } from "../utils/plannerUtils";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -77,6 +78,7 @@ const Planner = () => {
     }
 
     forceUpdate();
+    storeViewModel(mainViewModel);
   };
 
   const handleDragEnd = (event: any) => {
@@ -165,6 +167,7 @@ const Planner = () => {
     console.log("handle module close", module.code);
 
     module.prereqsViolated = [];
+    module.coreqsViolated = [];
     const state = mainViewModel;
     for (const semester of state.planner) {
       semester.filtered((mod) => mod.code !== module.code);
@@ -250,7 +253,15 @@ const Planner = () => {
             colorScheme={"white"}
             variant="outline"
             onClick={() => {
-              mainViewModel.loadAcademicPlanFromURL().then(forceUpdate);
+              mainViewModel
+                .loadAcademicPlanFromURL()
+                .then(() =>
+                  localStorage.setItem(
+                    "mainViewModel",
+                    mainViewModel.toStorageString(),
+                  ),
+                )
+                .then(forceUpdate);
             }}
           >
             Populate Sample Study Plan
