@@ -11,6 +11,7 @@ import {
   InputGroup,
   InputLeftElement,
   Wrap,
+  background,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
@@ -102,9 +103,11 @@ const RequirementContainer = ({
               <SearchIcon />
             </InputLeftElement>
             <Input
-              width="10rem"
-              borderColor="gray.500"
-              onChange={(e) => setDisplayedModulesFilter(e.target.value)}
+              width="12rem"
+              borderColor="blackAlpha.700"
+              focusBorderColor="blackAlpha.700"
+              _hover={{ borderColor: "blackAlpha.700" }}
+              borderWidth={1}
             />
           </InputGroup>
           <Box>
