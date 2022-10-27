@@ -214,11 +214,24 @@ const Planner = () => {
   const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
   const [hidden, setHidden] = useState(!isOpen);
 
+  const studyPlanRow = (years: number[]) => (
+    <HStack align="top">
+      {years.map((year) => (
+        <StudyPlanContainer
+          year={year}
+          semesters={plannerSemesters[year - 1]}
+          plannerSemesters={mainViewModel.planner}
+          handleModuleClose={handleModuleClose}
+          id={year.toString()}
+          key={year}
+        />
+      ))}
+    </HStack>
+  );
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
         <HStack align="">
-          
           <motion.div
             {...getDisclosureProps()}
             hidden={hidden}
@@ -253,22 +266,31 @@ const Planner = () => {
               ))}
             </Box>
           </motion.div>
-          <HStack >
-          <Button
-            _hover={{ bg: "white" }}
-            _active={{ bg: "white" }}
-            backgroundColor={"white"}
-            {...getButtonProps()}
-          >
-            <Circle size="30px" bg={"blackAlpha.900"} color="white" _hover={{bg: "blackAlpha.700"}}>
-              {isOpen? <GoTriangleLeft></GoTriangleLeft> : <GoTriangleRight></GoTriangleRight>}
-            </Circle>
-          </Button>
+          <HStack>
+            <Button
+              _hover={{ bg: "white" }}
+              _active={{ bg: "white" }}
+              backgroundColor={"white"}
+              {...getButtonProps()}
+            >
+              <Circle
+                size="30px"
+                bg={"blackAlpha.900"}
+                color="white"
+                _hover={{ bg: "blackAlpha.700" }}
+              >
+                {isOpen ? (
+                  <GoTriangleLeft></GoTriangleLeft>
+                ) : (
+                  <GoTriangleRight></GoTriangleRight>
+                )}
+              </Circle>
+            </Button>
           </HStack>
           <Box minW="50%">
-            <HStack>
+            <Flex align={"center"}>
               <Heading
-              padding="1em 0em 1.5em"
+                padding="1em 0em 1.5em"
                 fontSize={"xl"}
                 fontWeight={"bold"}
                 fontFamily={"body"}
@@ -276,7 +298,9 @@ const Planner = () => {
               >
                 Study Plan
               </Heading>
+              <Spacer />
               <Button
+                mr="1rem"
                 size="sm"
                 colorScheme={"white"}
                 variant="outline"
@@ -298,9 +322,13 @@ const Planner = () => {
                 mainViewModel={mainViewModel}
                 isDisabled={isValidateButtonDisabled}
               />
-            </HStack>
+            </Flex>
             <Box className="horiscroll" borderColor="black">
-              <HStack align="top">
+              <Stack>
+                {studyPlanRow(plannerYears.slice(0, 2))}
+                {studyPlanRow(plannerYears.slice(2, 4))}
+              </Stack>
+              {/* <HStack align="top">
                 {plannerYears.map((year) => (
                   <StudyPlanContainer
                     year={year}
@@ -311,7 +339,7 @@ const Planner = () => {
                     key={year}
                   />
                 ))}
-              </HStack>
+              </HStack> */}
             </Box>
 
             <div>
