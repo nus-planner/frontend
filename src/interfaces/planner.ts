@@ -23,9 +23,9 @@ export interface Module {
 export interface Requirement {
   title: string;
   description: string;
-  totalCredits: number;
   modules: Module[];
   respawnables: Module[];
+  expectedMcs?: number;
 }
 
 export interface Semester {

@@ -1,7 +1,6 @@
 import yaml from "js-yaml";
 import { Exclude, Expose } from "class-transformer";
 import * as baskets from "./basket";
-import * as log from "./log";
 import * as plan from "./plan";
 import { Hydratable } from "../interfaces/planner";
 
@@ -11,6 +10,7 @@ type Shared<T> = T & {
   description?: string;
   state?: string;
   at_least_n_mcs?: number;
+  expected_mcs?: number;
 };
 
 type ModuleCode = string;
@@ -206,6 +206,10 @@ export class ValidatorState implements Hydratable {
         basketOption.at_least_n_mcs,
         basket,
       );
+    }
+
+    if (basketOption.expected_mcs !== undefined) {
+      basket.expectedMcs = basketOption.expected_mcs;
     }
 
     if (basketOption.state) {

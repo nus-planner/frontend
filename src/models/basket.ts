@@ -64,6 +64,8 @@ export interface Criterion {
 
 @Exclude()
 export abstract class Basket implements Criterion, CriterionEventDelegate {
+  // This field is purely for display purposes.
+  expectedMcs?: number;
   title: string;
   description?: string;
   criterionState: CriterionFulfillmentResult = new CriterionFulfillmentResult();

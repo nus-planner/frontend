@@ -219,7 +219,6 @@ class BasketGatherer extends basket.BasketVisitor<Array<basket.Basket>> {
 @Exclude()
 export class RequirementViewModel implements frontend.Requirement {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
-  totalCredits: number;
   allTags: string[];
   allModules: frontend.Module[];
   modules: frontend.Module[];
@@ -232,7 +231,6 @@ export class RequirementViewModel implements frontend.Requirement {
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
     this.basket = basket;
-    this.totalCredits = -1; // I don't think this is possible?
 
     const tagSet = new TagGatherer().visit(basket);
     this.allTags = Array.from(tagSet);
@@ -277,6 +275,10 @@ export class RequirementViewModel implements frontend.Requirement {
 
   public get isFulfilled(): boolean {
     return this.basket.criterionState.isFulfilled;
+  }
+
+  public get expectedMcs(): number | undefined {
+    return this.basket.expectedMcs;
   }
 
   filtered(filter: (mod: frontend.Module) => boolean) {
