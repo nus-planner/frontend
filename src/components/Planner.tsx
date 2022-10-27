@@ -211,7 +211,9 @@ const Planner = () => {
   const [isValidateButtonDisabled, setIsValidateButtonDisabled] =
     useState(false);
 
-  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure({defaultIsOpen: true});
+  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure({
+    defaultIsOpen: true,
+  });
   const [hidden, setHidden] = useState(!isOpen);
 
   const studyPlanRow = (years: number[]) => (
@@ -307,12 +309,8 @@ const Planner = () => {
                 onClick={() => {
                   mainViewModel
                     .loadAcademicPlanFromURL()
-                    .then(() =>
-                      localStorage.setItem(
-                        "mainViewModel",
-                        mainViewModel.toStorageString(),
-                      ),
-                    )
+                    .then(() => storeViewModel(mainViewModel))
+                    .then(() => applyPrereqValidation(mainViewModel.planner))
                     .then(forceUpdate);
                 }}
               >
