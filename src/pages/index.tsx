@@ -4,6 +4,7 @@ import PlannerComponent from "../components/Planner";
 import { labelModules, loadViewModel } from "../utils/plannerUtils";
 import BasicInfo from "../components/BasicInfo";
 import { useAppContext } from "../components/AppContext";
+import ReactGA from 'react-ga4';
 import { VIEWMODEL_STORAGE } from "../constants/planner";
 
 const Home = () => {
@@ -12,6 +13,8 @@ const Home = () => {
   const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
 
+  ReactGA.initialize('G-HL6L0L40B1');
+  
   useEffect(() => {
     loadViewModel(mainViewModel);
     forceUpdate();
