@@ -208,10 +208,6 @@ export class ValidatorState implements Hydratable {
       );
     }
 
-    if (basketOption.expected_mcs !== undefined) {
-      basket.expectedMcs = basketOption.expected_mcs;
-    }
-
     if (basketOption.state) {
       if (!this.states.has(basketOption.state)) {
         this.states.set(basketOption.state, new baskets.BasketState());
@@ -222,6 +218,10 @@ export class ValidatorState implements Hydratable {
       );
       statefulBasket.basket.title = basketOption.title || "";
       basket = statefulBasket;
+    }
+
+    if (basketOption.expected_mcs !== undefined) {
+      basket.expectedMcs = basketOption.expected_mcs;
     }
 
     if (basketOption.description) {

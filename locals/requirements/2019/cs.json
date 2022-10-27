@@ -357,6 +357,7 @@
       },
       {
         "Math and Science Requirement": {
+          "expected_mcs": 16,
           "state": "overallDegreeState",
           "and": [
             {
@@ -374,6 +375,7 @@
       },
       {
         "Unrestricted Electives": {
+          "expected_mcs": 32,
           "state": "overallDegreeState",
           "module": {
             "code_pattern": ".",
