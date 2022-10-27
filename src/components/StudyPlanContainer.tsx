@@ -50,21 +50,20 @@ const StudyPlanContainer = ({
       bgColor="blackAlpha.50"
       borderRadius="0.3rem"
       minH="22em"
-      padding={3}
+      padding={2}
     >
       <Flex>
-        <HStack spacing={"1rem"}>
           <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"}>
             Year {year}
           </Text>
+          <Spacer />
           <Button size="sm"
             colorScheme={"white"}
             variant="outline"
             onClick={addSpecialTerm}
             disabled={sems.length >= 4}
             > + Special Term </Button>
-        </HStack>
-        <Spacer />
+        
       </Flex>
       <HStack scrollBehavior={"auto"} w="100%" align="">
         {sems.map((semester) => {
