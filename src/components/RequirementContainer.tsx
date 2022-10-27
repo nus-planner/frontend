@@ -97,7 +97,19 @@ const RequirementContainer = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={2}>
-          <Box h="9.73216em">
+        <InputGroup padding="0 0 0.5rem">
+                    <InputLeftElement zIndex="0">
+                      <SearchIcon />
+                    </InputLeftElement>
+                    <Input
+                      width="10rem"
+                      borderColor="gray.500"
+                      onChange={(e) =>
+                        setDisplayedModulesFilter(e.target.value)
+                      }
+                    />
+                  </InputGroup>
+          <Box>
             {requirement.description && (
               <Text
                 fontSize={"x-small"}
@@ -115,18 +127,7 @@ const RequirementContainer = ({
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  <InputGroup padding="0 0 0.5rem">
-                    <InputLeftElement zIndex="0">
-                      <SearchIcon />
-                    </InputLeftElement>
-                    <Input
-                      width="10rem"
-                      borderColor="gray.500"
-                      onChange={(e) =>
-                        setDisplayedModulesFilter(e.target.value)
-                      }
-                    />
-                  </InputGroup>
+                  
                   <HStack align="">
                     {requirement.modules
                       .filter(moduleFilter)

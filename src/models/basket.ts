@@ -181,6 +181,10 @@ export class BasketState {
   constructor(moduleCodesAlreadyMatched: Set<string> = new Set()) {
     this.moduleCodesAlreadyMatched = moduleCodesAlreadyMatched;
   }
+
+  reset() {
+    this.moduleCodesAlreadyMatched.clear();
+  }
 }
 
 export abstract class BasketVisitor<ReturnValue> {
@@ -221,6 +225,11 @@ export class StatefulBasket extends Basket {
         new PropertySetFilter("code", this.state.moduleCodesAlreadyMatched),
       ),
     );
+  }
+
+  override resetSubtreeState() {
+    super.resetSubtreeState();
+    this.state.reset();
   }
 
   acceptEvent(event: BasketEvent): void {
@@ -432,7 +441,7 @@ export class MultiModuleBasket extends Basket {
   requiredMCs?: number;
   earlyTerminate?: boolean;
   constructor(basket: Partial<MultiModuleBasket>) {
-    super();
+    super(basket.title);
     this.moduleCodePattern = basket.moduleCodePattern;
     this.moduleCodePrefix = basket.moduleCodePrefix;
     this.moduleCodeSuffix = basket.moduleCodeSuffix;

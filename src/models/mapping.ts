@@ -5,6 +5,7 @@ import {
   instanceToPlain,
   plainToClass,
   plainToInstance,
+  Type,
 } from "class-transformer";
 import yaml from "js-yaml";
 import * as frontend from "../interfaces/planner";
@@ -13,6 +14,9 @@ import * as basket from "./basket";
 import * as input from "./input";
 import * as plan from "./plan";
 
+interface AcademicPlanDelegate {
+  moduleExists(moduleCode: string): boolean;
+}
 interface RequirementDelegate {
   getRequirement(forBasket: basket.Basket): RequirementViewModel | undefined;
 }
@@ -29,8 +33,8 @@ interface GlobalModuleViewModelStateDelegate {
   removeModuleViewModelFromGlobalState(code: string): void;
 }
 
-@Exclude()
 export class ModuleViewModel implements frontend.Module {
+  type = "module";
   requirementDelegate: RequirementDelegate;
   color?: string;
   editable?: boolean;
@@ -38,6 +42,7 @@ export class ModuleViewModel implements frontend.Module {
   prereqsViolated?: string[][];
 
   @Expose()
+  @Type(() => plan.Module)
   private module: plan.Module;
 
   public get code(): string {
@@ -64,6 +69,14 @@ export class ModuleViewModel implements frontend.Module {
     this.requirementDelegate = requirementDelegate;
     this.module = module;
   }
+  preclusions?: string[] | null | undefined;
+  public get isMultiModule(): boolean {
+    return false;
+  }
+
+  selectModule(module: plan.Module): void {
+    throw new Error("Method not implemented.");
+  }
 
   getUnderlyingModule(): plan.Module {
     return this.module;
@@ -83,8 +96,8 @@ export class ModuleViewModel implements frontend.Module {
   }
 }
 
-@Exclude()
 export class MultiModuleViewModel implements frontend.Module {
+  type = "multi-module";
   color?: string;
   code: string;
   name: string;
@@ -93,7 +106,9 @@ export class MultiModuleViewModel implements frontend.Module {
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: string[][];
   selectedModule?: plan.Module;
-
+  public get isMultiModule(): boolean {
+    return true;
+  }
   constructor(code: string, name: string, credits: number) {
     this.code = code;
     this.name = name;
@@ -227,7 +242,7 @@ export class RequirementViewModel implements frontend.Requirement {
           return moduleStateDelegate.addModuleViewModelToGlobalState(
             new MultiModuleViewModel(
               basket.getEffectivePattern(),
-              "Select A Basket",
+              basket.title,
               -1,
             ),
           );
@@ -247,6 +262,10 @@ export class RequirementViewModel implements frontend.Requirement {
 
   public get allBaskets(): basket.Basket[] {
     return new BasketGatherer().visit(this.basket);
+  }
+
+  public get respawnables(): frontend.Module[] {
+    return this.allModules.filter((mod) => mod.isMultiModule);
   }
 
   public get isFulfilled(): boolean {
@@ -273,21 +292,40 @@ type JSONPlanSemester = {
 
 type JSONPlan = {
   years: number;
+  exemptions: Array<string>;
   semesters: Array<JSONPlanSemester>;
 };
 
 @Exclude()
 class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
+  private academicPlanDelegate: AcademicPlanDelegate;
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   private requirementDelegate: RequirementDelegate;
   private _trickle: TrickleDownArray<frontend.Module, plan.Module>;
+  @Expose()
   private semPlan: plan.SemPlan;
+  @Expose()
+  @Type(() => Object, {
+    keepDiscriminatorProperty: true,
+    discriminator: {
+      property: "type",
+      subTypes: [
+        { value: ModuleViewModel, name: "module" },
+        { value: MultiModuleViewModel, name: "multi-module" },
+      ],
+    },
+  })
   private _modules: frontend.Module[];
   constructor(
+    academicPlanDelegate: AcademicPlanDelegate,
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
     requirementDelegate: RequirementDelegate,
     semPlan: plan.SemPlan,
   ) {
+    if (academicPlanDelegate === undefined) {
+      return;
+    }
+    this.academicPlanDelegate = academicPlanDelegate;
     this.moduleStateDelegate = moduleStateDelegate;
     this.requirementDelegate = requirementDelegate;
     this.semPlan = semPlan;
@@ -338,6 +376,9 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
   }
 
   addModule(module: frontend.Module) {
+    if (this.academicPlanDelegate.moduleExists(module.code)) {
+      return;
+    }
     this._trickle.push(module);
   }
 
@@ -347,6 +388,10 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
 
   removeAtIndex(index: number) {
     this._trickle.removeAtIndex(index);
+  }
+
+  clearModules() {
+    this._trickle.clear();
   }
 
   filtered(filter: (mod: frontend.Module) => boolean) {
@@ -471,16 +516,20 @@ class TrickleDownArray<T1, T2> {
 }
 
 @Exclude()
-class AcademicPlanViewModel implements frontend.Hydratable {
+class AcademicPlanViewModel
+  implements frontend.Hydratable, AcademicPlanDelegate
+{
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   private requirementDelegate: RequirementDelegate;
 
   private readonly _trickle: TrickleDownArray<SemesterViewModel, plan.SemPlan>;
 
   @Expose()
+  @Type(() => SemesterViewModel)
   readonly semesterViewModels: Array<SemesterViewModel>;
 
   @Expose()
+  @Type(() => plan.AcademicPlan)
   private academicPlan: plan.AcademicPlan;
 
   constructor(
@@ -488,6 +537,10 @@ class AcademicPlanViewModel implements frontend.Hydratable {
     requirementDelegate: RequirementDelegate,
     academicPlan: plan.AcademicPlan,
   ) {
+    // should not have used class-transformer :(
+    if (moduleStateDelegate === undefined) {
+      return;
+    }
     this.moduleStateDelegate = moduleStateDelegate;
     this.requirementDelegate = requirementDelegate;
     this.academicPlan = academicPlan;
@@ -498,6 +551,7 @@ class AcademicPlanViewModel implements frontend.Hydratable {
       (model) => model.getUnderlyingSemPlan(),
       (semPlan) =>
         new SemesterViewModel(
+          this,
           moduleStateDelegate,
           requirementDelegate,
           semPlan,
@@ -505,10 +559,15 @@ class AcademicPlanViewModel implements frontend.Hydratable {
     );
   }
 
+  moduleExists(moduleCode: string): boolean {
+    return this.academicPlan.modules.some((mod) => mod.code === moduleCode);
+  }
+
   hydrate(stored: this): void {
     this.clearSemesters();
     for (const semesterViewModel of stored.semesterViewModels) {
       const newSemesterViewModel = new SemesterViewModel(
+        this,
         this.moduleStateDelegate,
         this.requirementDelegate,
         new plan.SemPlan(0, 0, []),
@@ -521,6 +580,18 @@ class AcademicPlanViewModel implements frontend.Hydratable {
   loadAcademicPlan(text: string): string[] {
     const jsonPlan = yaml.load(text) as JSONPlan;
     const mods = [];
+    const exemptionsViewModel = this.semesterViewModels[0];
+    for (const mod of jsonPlan.exemptions) {
+      mods.push(mod);
+      const newMod = this.moduleStateDelegate.addModuleToGlobalState(
+        new plan.Module(mod, "", 4),
+      );
+      exemptionsViewModel.addModule(
+        this.moduleStateDelegate.addModuleViewModelToGlobalState(
+          new ModuleViewModel(this.requirementDelegate, newMod),
+        ),
+      );
+    }
     for (const jsonSemester of jsonPlan.semesters) {
       const semesterViewModel =
         this.semesterViewModels[
@@ -549,6 +620,12 @@ class AcademicPlanViewModel implements frontend.Hydratable {
 
   clearSemesters() {
     this._trickle.clear();
+  }
+
+  clearModules() {
+    for (const semesterViewModel of this.semesterViewModels) {
+      semesterViewModel.clearModules();
+    }
   }
 
   addSemester(semester: SemesterViewModel) {
@@ -585,6 +662,7 @@ export class MainViewModel
   private _requirements?: Array<RequirementViewModel>;
 
   @Expose()
+  @Type(() => AcademicPlanViewModel)
   readonly academicPlanViewModel: AcademicPlanViewModel;
 
   readonly sampleStudyPlanUrl?: string;
@@ -597,6 +675,7 @@ export class MainViewModel
   >;
 
   @Expose()
+  @Type(() => input.ValidatorState)
   private validatorState: input.ValidatorState;
 
   constructor(startYear: number, numYears = 4, sampleStudyPlanUrl?: string) {
@@ -719,12 +798,16 @@ export class MainViewModel
   }
 
   hydrateWithStorageString(storedString: string) {
-    const instance = plainToInstance(MainViewModel, storedString);
+    const obj = JSON.parse(storedString) as object;
+    const instance = plainToInstance(MainViewModel, obj);
+    console.log(instance);
     this.hydrate(instance);
   }
 
   toStorageObject() {
-    return instanceToPlain(this);
+    const obj = instanceToPlain(this, { enableCircularCheck: true });
+    console.log(obj);
+    return obj;
   }
 
   toStorageString() {

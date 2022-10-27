@@ -165,6 +165,7 @@ export class ValidatorState implements Hydratable {
         basketOption.module.level
       ) {
         basket = new baskets.MultiModuleBasket({
+          title: basketOption.title,
           moduleCodePrefix: basketOption.module.code_prefix
             ? new Set([basketOption.module.code_prefix])
             : undefined,
@@ -211,10 +212,12 @@ export class ValidatorState implements Hydratable {
       if (!this.states.has(basketOption.state)) {
         this.states.set(basketOption.state, new baskets.BasketState());
       }
-      basket = new baskets.StatefulBasket(
+      const statefulBasket = new baskets.StatefulBasket(
         basket,
         this.states.get(basketOption.state),
       );
+      statefulBasket.basket.title = basketOption.title || "";
+      basket = statefulBasket;
     }
 
     if (basketOption.description) {
@@ -237,6 +240,9 @@ export class ValidatorState implements Hydratable {
     // In other words, an explicitly specified title will be able to override the label
     if (basket.title === "") {
       basket.title = label;
+      if (basket instanceof baskets.StatefulBasket) {
+        basket.basket.title = label;
+      }
     }
     return basket;
   }

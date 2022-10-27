@@ -10,7 +10,10 @@ export interface Module {
   prereqs?: PrereqTree | null;
   preclusions?: string[] | null;
   prereqsViolated?: string[][] | null;
+  coreqs?: string[] | null;
+  coreqsViolated?: string[] | null;
   tags?: string[];
+  isMultiModule?: boolean;
   getUnderlyingModule?(): models.Module | undefined;
   getMatchedRequirements?(): models.RequirementViewModel[];
   selectModule?(module: models.Module): void; // specific to MultiModule
@@ -21,6 +24,7 @@ export interface Requirement {
   description: string;
   totalCredits: number;
   modules: Module[];
+  respawnables: Module[];
 }
 
 export interface Semester {

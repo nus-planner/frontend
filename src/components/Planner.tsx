@@ -6,6 +6,13 @@ import {
   Collapse,
   useDisclosure,
   Text,
+  Stack,
+  Center,
+  IconButton,
+  Circle,
+  Icon,
+  Flex,
+  Spacer,
 } from "@chakra-ui/react";
 import {
   useState,
@@ -24,6 +31,9 @@ import { applyPrereqValidation } from "../utils/moduleUtils";
 import { MainViewModel } from "../models";
 import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
 import { useAppContext } from "./AppContext";
+import { storeViewModel } from "../utils/plannerUtils";
+import { motion } from "framer-motion";
+import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -76,6 +86,7 @@ const Planner = () => {
     }
 
     forceUpdate();
+    storeViewModel(mainViewModel);
   };
 
   const handleDragEnd = (event: any) => {
@@ -164,6 +175,7 @@ const Planner = () => {
     console.log("handle module close", module.code);
 
     module.prereqsViolated = [];
+    module.coreqsViolated = [];
     const state = mainViewModel;
     for (const semester of state.planner) {
       semester.filtered((mod) => mod.code !== module.code);
@@ -194,103 +206,161 @@ const Planner = () => {
     [1, 2],
   ]);
 
-  const { isOpen, onToggle } = useDisclosure();
   const showRequirementToggleButton = mainViewModel.requirements.length > 1;
 
   const [isValidateButtonDisabled, setIsValidateButtonDisabled] =
     useState(false);
 
+  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
+  const [hidden, setHidden] = useState(!isOpen);
+
+  const studyPlanRow = (years: number[]) => (
+    <HStack align="top">
+      {years.map((year) => (
+        <StudyPlanContainer
+          year={year}
+          semesters={plannerSemesters[year - 1]}
+          plannerSemesters={mainViewModel.planner}
+          handleModuleClose={handleModuleClose}
+          id={year.toString()}
+          key={year}
+        />
+      ))}
+    </HStack>
+  );
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <HStack padding="0.5em 0em 0.5em">
-          <Heading
-            fontSize={"xl"}
-            fontWeight={"bold"}
-            fontFamily={"body"}
-            paddingRight="1em"
-          >
-            Required Modules
-          </Heading>
-          {showRequirementToggleButton && (
-            <Button
-              size="sm"
-              colorScheme={"white"}
-              variant="outline"
-              onClick={onToggle}
-            >
-              {!isOpen ? "Hide" : "Expand"}
-            </Button>
-          )}
-        </HStack>
-        <Collapse in={!isOpen} animateOpacity>
-          <Box bgColor="blackAlpha.50">
-            {mainViewModel.requirements.map((requirement, id) => (
-              <RequirementContainer
-                requirement={requirement}
-                id={"requirement:" + id.toString()}
-                key={id}
-              />
-            ))}
-          </Box>
-        </Collapse>
-
-        <HStack padding="1.5em 0em 0.5em">
-          <Heading
-            fontSize={"xl"}
-            fontWeight={"bold"}
-            fontFamily={"body"}
-            paddingRight="1em"
-          >
-            Study Plan
-          </Heading>
-          <Button
-            size="sm"
-            colorScheme={"white"}
-            variant="outline"
-            onClick={() => {
-              mainViewModel.loadAcademicPlanFromURL().then(forceUpdate);
+        <HStack align="">
+          <motion.div
+            {...getDisclosureProps()}
+            hidden={hidden}
+            initial={true}
+            onAnimationStart={() => setHidden(false)}
+            onAnimationComplete={() => setHidden(!isOpen)}
+            animate={{ width: isOpen ? "100%" : 0 }}
+            style={{
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              left: "0",
+              height: "100%",
+              top: "0",
             }}
           >
-            Populate Sample Study Plan
-          </Button>
-          <ValidateStudyPlanButton
-            mainViewModel={mainViewModel}
-            isDisabled={isValidateButtonDisabled}
-          />
-        </HStack>
-        <Box className="horiscroll" borderColor="black">
-          <HStack align="top">
-            {plannerYears.map((year) => (
-              <StudyPlanContainer
-                year={year}
-                semesters={plannerSemesters[year - 1]}
-                plannerSemesters={mainViewModel.planner}
-                handleModuleClose={handleModuleClose}
-                id={year.toString()}
-                key={year}
-              />
-            ))}
+            <Heading
+              padding="1em 0em 1.5em"
+              fontSize={"xl"}
+              fontWeight={"bold"}
+              fontFamily={"body"}
+              paddingRight="1em"
+            >
+              Required Modules
+            </Heading>
+            <Box bgColor="blackAlpha.50">
+              {mainViewModel.requirements.map((requirement, id) => (
+                <RequirementContainer
+                  requirement={requirement}
+                  id={"requirement:" + id.toString()}
+                  key={id}
+                />
+              ))}
+            </Box>
+          </motion.div>
+          <HStack>
+            <Button
+              _hover={{ bg: "white" }}
+              _active={{ bg: "white" }}
+              backgroundColor={"white"}
+              {...getButtonProps()}
+            >
+              <Circle
+                size="30px"
+                bg={"blackAlpha.900"}
+                color="white"
+                _hover={{ bg: "blackAlpha.700" }}
+              >
+                {isOpen ? (
+                  <GoTriangleLeft></GoTriangleLeft>
+                ) : (
+                  <GoTriangleRight></GoTriangleRight>
+                )}
+              </Circle>
+            </Button>
           </HStack>
-        </Box>
+          <Box minW="50%">
+            <Flex align={"center"}>
+              <Heading
+                padding="1em 0em 1.5em"
+                fontSize={"xl"}
+                fontWeight={"bold"}
+                fontFamily={"body"}
+                paddingRight="1em"
+              >
+                Study Plan
+              </Heading>
+              <Spacer />
+              <Button
+                mr="1rem"
+                size="sm"
+                colorScheme={"white"}
+                variant="outline"
+                onClick={() => {
+                  mainViewModel
+                    .loadAcademicPlanFromURL()
+                    .then(() =>
+                      localStorage.setItem(
+                        "mainViewModel",
+                        mainViewModel.toStorageString(),
+                      ),
+                    )
+                    .then(forceUpdate);
+                }}
+              >
+                Populate Sample Study Plan
+              </Button>
+              <ValidateStudyPlanButton
+                mainViewModel={mainViewModel}
+                isDisabled={isValidateButtonDisabled}
+              />
+            </Flex>
+            <Box className="horiscroll" borderColor="black">
+              <Stack>
+                {studyPlanRow(plannerYears.slice(0, 2))}
+                {studyPlanRow(plannerYears.slice(2, 4))}
+              </Stack>
+              {/* <HStack align="top">
+                {plannerYears.map((year) => (
+                  <StudyPlanContainer
+                    year={year}
+                    semesters={plannerSemesters[year - 1]}
+                    plannerSemesters={mainViewModel.planner}
+                    handleModuleClose={handleModuleClose}
+                    id={year.toString()}
+                    key={year}
+                  />
+                ))}
+              </HStack> */}
+            </Box>
 
-        <div>
-          <Heading
-            fontSize={"xl"}
-            fontWeight={"bold"}
-            fontFamily={"body"}
-            padding="1.4em 0em 0.5rem"
-          >
-            Exemptions
-          </Heading>
-          <Box borderColor="black" w="16rem">
-            <ExemptionContainer
-              exemptedModules={mainViewModel.planner[0].modules}
-              handleModuleClose={handleModuleClose}
-              id={"planner:0"}
-            />
+            <div>
+              <Heading
+                fontSize={"xl"}
+                fontWeight={"bold"}
+                fontFamily={"body"}
+                padding="1.4em 0em 0.5rem"
+              >
+                Exemptions
+              </Heading>
+              <Box borderColor="black" w="16rem">
+                <ExemptionContainer
+                  exemptedModules={mainViewModel.planner[0].modules}
+                  handleModuleClose={handleModuleClose}
+                  id={"planner:0"}
+                />
+              </Box>
+            </div>
           </Box>
-        </div>
+        </HStack>
       </DragDropContext>
     </div>
   );

@@ -52,6 +52,7 @@ export const sampleModuleRequirements: Requirement[] = [
         credits: 4,
       },
     ],
+    respawnables: [],
   },
   {
     title: "Focus Area and Level-4000",
@@ -76,6 +77,7 @@ export const sampleModuleRequirements: Requirement[] = [
         credits: null,
       },
     ],
+    respawnables: [],
   },
   {
     title: "Computer Systems Team Project",
@@ -110,6 +112,7 @@ export const sampleModuleRequirements: Requirement[] = [
         credits: 4,
       },
     ],
+    respawnables: [],
   },
   {
     title: "IT Professionalism",
@@ -132,6 +135,7 @@ export const sampleModuleRequirements: Requirement[] = [
         credits: 4,
       },
     ],
+    respawnables: [],
   },
   {
     title: "Mathematics and Sciences",
@@ -154,6 +158,7 @@ export const sampleModuleRequirements: Requirement[] = [
         credits: 8,
       },
     ],
+    respawnables: [],
   },
   {
     title: "Elective Modules",
@@ -169,6 +174,7 @@ export const sampleModuleRequirements: Requirement[] = [
       { code: "Any UE:7", name: "Select A Module", credits: null },
       { code: "Any UE:8", name: "Select A Module", credits: null },
     ],
+    respawnables: [],
   },
 ];
 
