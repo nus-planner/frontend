@@ -125,7 +125,7 @@ const RequirementContainer = ({
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  <Wrap>
+                  <Wrap overflowY="auto" maxH={"22rem"} spacing="0.5rem">
                     {requirement.modules
                       .filter(moduleFilter)
                       .map((module, idx) => (
