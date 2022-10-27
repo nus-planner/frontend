@@ -6,11 +6,11 @@ import {
   AccordionIcon,
   Box,
   Text,
-  HStack,
   Button,
   Input,
   InputGroup,
   InputLeftElement,
+  Wrap,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
@@ -97,18 +97,16 @@ const RequirementContainer = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={2}>
-        <InputGroup padding="0 0 0.5rem">
-                    <InputLeftElement zIndex="0">
-                      <SearchIcon />
-                    </InputLeftElement>
-                    <Input
-                      width="10rem"
-                      borderColor="gray.500"
-                      onChange={(e) =>
-                        setDisplayedModulesFilter(e.target.value)
-                      }
-                    />
-                  </InputGroup>
+          <InputGroup padding="0 0 0.5rem">
+            <InputLeftElement zIndex="0">
+              <SearchIcon />
+            </InputLeftElement>
+            <Input
+              width="10rem"
+              borderColor="gray.500"
+              onChange={(e) => setDisplayedModulesFilter(e.target.value)}
+            />
+          </InputGroup>
           <Box>
             {requirement.description && (
               <Text
@@ -127,8 +125,7 @@ const RequirementContainer = ({
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  
-                  <HStack align="">
+                  <Wrap>
                     {requirement.modules
                       .filter(moduleFilter)
                       .map((module, idx) => (
@@ -154,7 +151,7 @@ const RequirementContainer = ({
                         + Add an UE
                       </Button>
                     )}
-                  </HStack>
+                  </Wrap>
                   {provided.placeholder}
                 </div>
               )}

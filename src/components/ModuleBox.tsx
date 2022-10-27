@@ -66,6 +66,17 @@ const ModuleBox = ({
     });
   }, []);
 
+  function getStyle(style: any, snapshot: any) {
+    if (!snapshot.isDropAnimating) {
+      return style;
+    }
+    return {
+      ...style,
+      // cannot be 0, but make it super tiny
+      transitionDuration: `0.000001s`,
+    };
+  }
+
   if (module.isMultiModule) {
     for (const mod of mods) {
       options.push({
@@ -131,53 +142,57 @@ const ModuleBox = ({
         draggableId={module.code + "|" + parentStr}
         index={idx}
       >
-        {(provided) => (
-          <div
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
-          >
-            <Box
-              w="12rem"
-              minH="5rem"
-              bgColor={moduleColor}
-              alignContent="center"
-              borderRadius="0.4rem"
-              padding="0.2rem 0.5rem"
+        {(provided, snapshot) => (
+          <div>
+            <div
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              style={getStyle(provided.draggableProps.style, snapshot)}
             >
-              <Flex>
-                <Text fontSize={"medium"} color="black.900" fontWeight="bold">
-                  {!module.isMultiModule ? (
-                    <Link href={getNUSModsModulePage(module.code)} isExternal>
-                      {module.code}
-                    </Link>
-                  ) : (
-                    module.name
+              <Box
+                w="12rem"
+                minH="5rem"
+                bgColor={moduleColor}
+                alignContent="center"
+                borderRadius="0.4rem"
+                padding="0.2rem 0.5rem"
+              >
+                <Flex>
+                  <Text fontSize={"medium"} color="black.900" fontWeight="bold">
+                    {!module.isMultiModule ? (
+                      <Link href={getNUSModsModulePage(module.code)} isExternal>
+                        {module.code}
+                      </Link>
+                    ) : (
+                      module.name
+                    )}
+                  </Text>
+                  <Spacer />
+                  {displayModuleClose && (
+                    <IconButton
+                      icon={<CloseIcon />}
+                      aria-label="Remove Module"
+                      size="xs"
+                      bgColor={moduleColor}
+                      color="black"
+                      colorScheme={moduleColor}
+                      onClick={() => {
+                        if (handleModuleClose !== undefined) {
+                          handleModuleClose(module);
+                        }
+                      }}
+                    />
                   )}
-                </Text>
-                <Spacer />
-                {displayModuleClose && (
-                  <IconButton
-                    icon={<CloseIcon />}
-                    aria-label="Remove Module"
-                    size="xs"
-                    bgColor={moduleColor}
-                    color="black"
-                    colorScheme={moduleColor}
-                    onClick={() => {
-                      if (handleModuleClose !== undefined) {
-                        handleModuleClose(module);
-                      }
-                    }}
-                  />
-                )}
-              </Flex>
-              {moduleBoxBody}
-              {text}
-              {prereqsViolationText}
-              {coreqsViolationText}
-              <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
-            </Box>
+                </Flex>
+                {moduleBoxBody}
+                {text}
+                {prereqsViolationText}
+                {coreqsViolationText}
+                <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
+              </Box>
+            </div>
+            {snapshot.isDragging && <Box w="12rem" visibility="hidden" />}
           </div>
         )}
       </Draggable>
