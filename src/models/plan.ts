@@ -48,7 +48,7 @@ export class AcademicPlan {
   constructor(startYear: number, numYears: number = 4) {
     this.startYear = startYear;
     this.plans = new Array(numYears * 4);
-    for (let i = 0; i < numYears * 4; i++) {
+    for (let i = 0; i < numYears * 4 + 1; i++) {
       this.plans[i] = new SemPlan(Math.floor(i / 4) + 1, (i % 4) + 1, []);
     }
   }

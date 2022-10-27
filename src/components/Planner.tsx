@@ -211,7 +211,7 @@ const Planner = () => {
   const [isValidateButtonDisabled, setIsValidateButtonDisabled] =
     useState(false);
 
-  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
+  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure({defaultIsOpen: true});
   const [hidden, setHidden] = useState(!isOpen);
 
   const studyPlanRow = (years: number[]) => (
