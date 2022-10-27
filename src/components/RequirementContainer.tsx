@@ -12,13 +12,16 @@ import {
   InputLeftElement,
   Wrap,
   background,
+  HStack,
+  Badge,
+  Tag,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import ModuleBox from "./ModuleBox";
 import { Module, Requirement } from "../interfaces/planner";
 import React from "react";
-import { MultiModuleViewModel } from "../models";
+import { MultiModuleViewModel, RequirementViewModel } from "../models";
 import { useAppContext } from "./AppContext";
 import { moduleColor } from "../constants/moduleColor";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -27,7 +30,7 @@ const RequirementContainer = ({
   requirement,
   id,
 }: {
-  requirement: Requirement;
+  requirement: RequirementViewModel;
   id: string;
 }) => {
   const [, updateState] = useState<{}>();
@@ -107,7 +110,22 @@ const RequirementContainer = ({
       <AccordionItem>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            <Text>{requirement.title}</Text>
+            <HStack>
+              <Text>{requirement.title}</Text>
+              {requirement.expectedMcs !== undefined && (
+                <Tag
+                  colorScheme={
+                    requirement.matchedMCs >= (requirement.expectedMcs || 0)
+                      ? "green"
+                      : "red"
+                  }
+                  size='sm'
+                >
+                  {requirement.matchedMCs} / {requirement.expectedMcs || 0} MCs
+                  Fulfilled
+                </Tag>
+              )}
+            </HStack>
           </Box>
           <AccordionIcon />
         </AccordionButton>

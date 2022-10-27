@@ -31,7 +31,7 @@ import { applyPrereqValidation } from "../utils/moduleUtils";
 import { MainViewModel } from "../models";
 import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
 import { useAppContext } from "./AppContext";
-import { storeViewModel } from "../utils/plannerUtils";
+import { sortRequirementModules, storeViewModel } from "../utils/plannerUtils";
 import { motion } from "framer-motion";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 
@@ -54,40 +54,6 @@ const Planner = () => {
   const forceUpdate = useCallback(() => updateState({}), []);
 
   const { mainViewModel, setMainViewModel } = useAppContext();
-
-  const sortRequirementModules = (): void => {
-    const modReqMap = new Map();
-    for (let requirement of mainViewModel.requirements) {
-      for (let mod of requirement.modules) {
-        modReqMap.set(mod.code, mod);
-      }
-    }
-
-    const addedSet = new Set();
-    for (let i = 0; i < mainViewModel.requirements.length; i++) {
-      mainViewModel.requirements[i].modules = [];
-      for (let mod of mainViewModel.requirements[i].allModules) {
-        if (modReqMap.has(mod.code)) {
-          mainViewModel.requirements[i].modules.push(modReqMap.get(mod.code));
-          addedSet.add(mod.code);
-        }
-      }
-    }
-
-    const extraModules = [...modReqMap.keys()].filter((x) => !addedSet.has(x));
-    extraModules.forEach((modCode) =>
-      mainViewModel.requirements.at(-1)?.modules.push(modReqMap.get(modCode)),
-    );
-
-    for (let requirement of mainViewModel.requirements) {
-      requirement.modules = [...new Set(requirement.modules)].sort((a, b) =>
-        a.code.localeCompare(b.code),
-      );
-    }
-
-    forceUpdate();
-    storeViewModel(mainViewModel);
-  };
 
   const handleDragEnd = (event: any) => {
     const { source, destination, draggableId } = event;
@@ -167,8 +133,9 @@ const Planner = () => {
       return isPrereqsViolated;
     });
 
+    sortRequirementModules(mainViewModel);
+    mainViewModel.validate();
     forceUpdate();
-    sortRequirementModules();
   };
 
   const handleModuleClose = async (module: Module) => {
@@ -193,7 +160,8 @@ const Planner = () => {
 
     console.log(state);
 
-    sortRequirementModules();
+    sortRequirementModules(mainViewModel);
+    mainViewModel.validate();
     forceUpdate();
   };
 
@@ -311,6 +279,7 @@ const Planner = () => {
                     .loadAcademicPlanFromURL()
                     .then(() => storeViewModel(mainViewModel))
                     .then(() => applyPrereqValidation(mainViewModel.planner))
+                    .then(() => mainViewModel.validate())
                     .then(forceUpdate);
                 }}
               >

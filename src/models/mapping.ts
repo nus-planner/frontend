@@ -277,6 +277,10 @@ export class RequirementViewModel implements frontend.Requirement {
     return this.basket.criterionState.isFulfilled;
   }
 
+  public get matchedMCs(): number {
+    return this.basket.criterionState.matchedMCs;
+  }
+
   public get expectedMcs(): number | undefined {
     return this.basket.expectedMcs;
   }
