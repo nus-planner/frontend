@@ -3,6 +3,7 @@
     "and": [
       {
         "University Level Requirements": {
+          "expected_mcs": 20,
           "state": "overallDegreeState",
           "title": "University Level Requirements",
           "and": [
