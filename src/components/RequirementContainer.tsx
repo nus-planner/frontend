@@ -38,28 +38,42 @@ const RequirementContainer = ({
   const { mainViewModel, setMainViewModel } = useAppContext();
   const [displayedModulesFilter, setDisplayedModulesFilter] = useState("");
 
-  const addUE = () => {
-    const newUE = new MultiModuleViewModel(
-      "." + ueCount.toString(),
-      "Select A Basket",
-      0,
-    );
+  const respawnButtons = requirement.respawnables
+    .uniqueByKey("name")
+    .map((respawnable) => {
+      console.log(respawnable);
+      console.log(respawnable.name);
+      return (
+        <Button
+          key={respawnable.code}
+          minW="12rem"
+          minH="5rem"
+          colorScheme={"white"}
+          variant={"outline"}
+          alignContent="center"
+          borderRadius="0.4rem"
+          padding="0.2rem 0.5rem"
+          onClick={() => {
+            const newViewModel = new MultiModuleViewModel(
+              respawnable.code,
+              respawnable.name,
+              -1,
+            );
 
-    newUE.color = moduleColor[parseInt(id.split(":")[1]) % moduleColor.length];
+            newViewModel.color =
+              moduleColor[parseInt(id.split(":")[1]) % moduleColor.length];
 
-    mainViewModel.requirements.at(-1)?.modules.push(newUE);
-    mainViewModel.addModuleViewModelToGlobalState(newUE);
+            requirement.modules.push(newViewModel);
+            mainViewModel.addModuleViewModelToGlobalState(newViewModel);
 
-    setUeCount((count) => count + 1);
-    forceUpdate();
-  };
-
-  const isUERequirementContainer = () => {
-    return (
-      requirement.title === "Unrestricted Electives" ||
-      requirement.title.toLowerCase() === "ue"
-    );
-  };
+            setUeCount((count) => count + 1);
+            forceUpdate();
+          }}
+        >
+          + Add {respawnable.name}
+        </Button>
+      );
+    });
 
   const moduleFilter = (mod: Module): boolean => {
     if (mod.code.toLowerCase().includes(displayedModulesFilter.toLowerCase()))
@@ -140,20 +154,7 @@ const RequirementContainer = ({
                           parentStr={requirement.title}
                         />
                       ))}
-                    {isUERequirementContainer() && (
-                      <Button
-                        minW="12rem"
-                        minH="5rem"
-                        colorScheme={"white"}
-                        variant={"outline"}
-                        alignContent="center"
-                        borderRadius="0.4rem"
-                        padding="0.2rem 0.5rem"
-                        onClick={addUE}
-                      >
-                        + Add an UE
-                      </Button>
-                    )}
+                    {respawnButtons}
                   </Wrap>
                   {provided.placeholder}
                 </div>

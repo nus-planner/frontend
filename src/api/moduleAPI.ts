@@ -48,7 +48,9 @@ export const fetchModulePrereqs = async (
       ? null
       : res.preclusion.match(/[A-Z]+\d+[A-Z]*/g);
   const coreqs: string[] | null =
-    res.corequisite === undefined ? null : res.corequisite.match(/[A-Z]+\d+[A-Z]*/g);
+    res.corequisite === undefined
+      ? null
+      : res.corequisite.match(/[A-Z]+\d+[A-Z]*/g);
 
   return { prereqs: prereqs, preclusions: preclusions, coreqs: coreqs };
 };
@@ -95,6 +97,7 @@ export const fetchModuleList = async (): Promise<Module[]> => {
   if (!res) return moduleList;
   for (let i = 0; i < res.length; i++) {
     moduleList.push({
+      id: res[i].moduleCode,
       code: res[i].moduleCode,
       name: res[i].title,
       credits: null,

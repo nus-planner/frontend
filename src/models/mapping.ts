@@ -41,6 +41,10 @@ export class ModuleViewModel implements frontend.Module {
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: string[][];
 
+  public get id(): string {
+    return this.code;
+  }
+
   @Expose()
   @Type(() => plan.Module)
   private module: plan.Module;
@@ -97,6 +101,8 @@ export class ModuleViewModel implements frontend.Module {
 }
 
 export class MultiModuleViewModel implements frontend.Module {
+  static count: number = 0;
+  id: string;
   type = "multi-module";
   color?: string;
   code: string;
@@ -110,6 +116,7 @@ export class MultiModuleViewModel implements frontend.Module {
     return true;
   }
   constructor(code: string, name: string, credits: number) {
+    this.id = (MultiModuleViewModel.count++).toString();
     this.code = code;
     this.name = name;
     this.credits = credits;
@@ -702,11 +709,11 @@ export class MainViewModel
     moduleViewModel: frontend.Module,
     addIfExists: boolean = false,
   ): frontend.Module {
-    if (!addIfExists && this._trickle.containsKey(moduleViewModel.code)) {
-      return this._trickle.getByKey(moduleViewModel.code)!;
+    if (!addIfExists && this._trickle.containsKey(moduleViewModel.id)) {
+      return this._trickle.getByKey(moduleViewModel.id)!;
     }
 
-    this._trickle.setKeyValue(moduleViewModel.code, moduleViewModel);
+    this._trickle.setKeyValue(moduleViewModel.id, moduleViewModel);
     return moduleViewModel;
   }
 

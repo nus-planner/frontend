@@ -130,7 +130,7 @@ const Planner = () => {
       state.planner[sourceId].removeAtIndex(sourceIndex);
     } else if (sourceType === "requirement") {
       for (const requirement of state.requirements) {
-        requirement.filtered((mod) => mod.code !== draggableId.split("|")[0]);
+        requirement.filtered((mod) => mod.id !== draggableId.split("|")[0]);
       }
     }
 
@@ -211,7 +211,9 @@ const Planner = () => {
   const [isValidateButtonDisabled, setIsValidateButtonDisabled] =
     useState(false);
 
-  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure({defaultIsOpen: true});
+  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure({
+    defaultIsOpen: true,
+  });
   const [hidden, setHidden] = useState(!isOpen);
 
   const studyPlanRow = (years: number[]) => (

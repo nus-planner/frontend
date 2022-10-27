@@ -138,8 +138,8 @@ const ModuleBox = ({
   return (
     <div>
       <Draggable
-        key={module.code + "|" + parentStr}
-        draggableId={module.code + "|" + parentStr}
+        key={module.id + "|" + parentStr}
+        draggableId={module.id + "|" + parentStr}
         index={idx}
       >
         {(provided, snapshot) => (

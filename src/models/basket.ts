@@ -526,7 +526,12 @@ export class MultiModuleBasket extends Basket {
     if (this.moduleCodePattern) {
       return this.moduleCodePattern.source;
     } else {
-      let str = this.level ? `${this.level}\\d{3}` : "\\d{4}";
+      let str: string;
+      if (this.level) {
+        str = `[${Array.from(this.level).join("")}]\\d{3}`;
+      } else {
+        str = "\\d{4}";
+      }
 
       if (this.moduleCodePrefix) {
         str = `^${this.moduleCodePrefix}` + str;

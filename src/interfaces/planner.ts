@@ -2,6 +2,7 @@ import * as models from "../models";
 export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
 export interface Module {
+  readonly id: string;
   color?: string;
   readonly code: string;
   name: string;
