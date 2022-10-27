@@ -157,6 +157,7 @@ const ModuleBox = ({
                 alignContent="center"
                 borderRadius="0.4rem"
                 padding="0.2rem 0.5rem"
+                whiteSpace={"initial"}
               >
                 <Flex>
                   <Text fontSize={"medium"} color="black.900" fontWeight="bold">
