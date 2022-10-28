@@ -155,7 +155,7 @@ const ModuleDropdown = ({
     }
     return (
       <Text fontSize="0.8rem" color="black">
-        {data.value} {data.label}
+        {data.label}
       </Text>
     );
   };
