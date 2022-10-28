@@ -14,6 +14,7 @@ import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 import {
+  convertPrereqTreeToString,
   getNonDuplicateUEs,
   getNUSModsModulePage,
 } from "../utils/moduleUtils";
@@ -84,48 +85,6 @@ const ModuleBox = ({
     }
   }
 
-  let prereqsViolationText: any;
-  if (module.prereqsViolated?.length) {
-    let violations: string[] = [];
-    for (let or of module.prereqsViolated) {
-      violations.push(or.join(" or "));
-    }
-    prereqsViolationText = (
-      <div>
-        <HStack>
-          <Icon as={WarningTwoIcon} color="red.500" />
-          <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
-            These modules might need to be taken first:
-          </Text>
-        </HStack>
-        <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
-          {violations.map((v, idx) => (
-            <li key={idx}>{v}</li>
-          ))}
-        </UnorderedList>
-      </div>
-    );
-  }
-
-  let coreqsViolationText: any;
-  if (module.coreqsViolated?.length) {
-    coreqsViolationText = (
-      <div>
-        <HStack>
-          <Icon as={WarningTwoIcon} color="red.500" />
-          <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
-            These modules might need to be taken at the same time:
-          </Text>
-        </HStack>
-        <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
-          {module.coreqsViolated.map((v, idx) => (
-            <li key={idx}>{v}</li>
-          ))}
-        </UnorderedList>
-      </div>
-    );
-  }
-
   return (
     <div>
       <Draggable
@@ -189,9 +148,57 @@ const ModuleBox = ({
                   </Text>
                 )}
                 {text}
-                {prereqsViolationText}
-                {coreqsViolationText}
                 <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
+                {!!module.prereqsViolated?.length && (
+                  <div>
+                    <HStack>
+                      <Icon as={WarningTwoIcon} color="red.500" />
+                      <Text
+                        fontSize={"xs"}
+                        fontWeight="bold"
+                        color={"red.500"}
+                        pt="1"
+                      >
+                        These modules might need to be taken first:
+                      </Text>
+                    </HStack>
+                    <UnorderedList
+                      fontSize={"xs"}
+                      fontWeight="bold"
+                      color={"red.500"}
+                    >
+                      {module.prereqsViolated
+                        .map((x) => convertPrereqTreeToString(x))
+                        .map((v, idx) => (
+                          <li key={idx}>{v}</li>
+                        ))}
+                    </UnorderedList>
+                  </div>
+                )}
+                {!!module.coreqsViolated?.length && (
+                  <div>
+                    <HStack>
+                      <Icon as={WarningTwoIcon} color="red.500" />
+                      <Text
+                        fontSize={"xs"}
+                        fontWeight="bold"
+                        color={"red.500"}
+                        pt="1"
+                      >
+                        These modules might need to be taken at the same time:
+                      </Text>
+                    </HStack>
+                    <UnorderedList
+                      fontSize={"xs"}
+                      fontWeight="bold"
+                      color={"red.500"}
+                    >
+                      {module.coreqsViolated.map((v, idx) => (
+                        <li key={idx}>{v}</li>
+                      ))}
+                    </UnorderedList>
+                  </div>
+                )}
               </Box>
             </div>
             {snapshot.isDragging && <Box w="12rem" visibility="hidden" />}

@@ -39,7 +39,7 @@ export class ModuleViewModel implements frontend.Module {
   color?: string;
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
-  prereqsViolated?: string[][];
+  prereqsViolated?: frontend.PrereqTree[];
 
   public get id(): string {
     return this.code;
@@ -110,7 +110,7 @@ export class MultiModuleViewModel implements frontend.Module {
   credits: number;
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
-  prereqsViolated?: string[][];
+  prereqsViolated?: frontend.PrereqTree[];
   @Expose()
   @Type(() => plan.Module)
   selectedModule?: plan.Module;
