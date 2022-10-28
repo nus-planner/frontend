@@ -108,9 +108,10 @@ const RequirementContainer = ({
               focusBorderColor="blackAlpha.700"
               _hover={{ borderColor: "blackAlpha.700" }}
               borderWidth={1}
+              onChange={(e) => setDisplayedModulesFilter(e.target.value)}
             />
           </InputGroup>
-          <Box>
+          <Box overflow={"visible"}>
             {requirement.description && (
               <Text
                 fontSize={"x-small"}
@@ -128,7 +129,7 @@ const RequirementContainer = ({
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  <Wrap overflowY="auto" maxH={"22rem"} spacing="0.5rem">
+                  <Wrap spacing="0.5rem" pt="0.25rem">
                     {requirement.modules
                       .filter(moduleFilter)
                       .map((module, idx) => (

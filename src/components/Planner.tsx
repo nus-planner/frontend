@@ -20,7 +20,7 @@ import {
   useEffect,
   Dispatch,
   SetStateAction,
-} from "react";
+} from "react"
 import { Module } from "../interfaces/planner";
 import RequirementContainer from "./RequirementContainer";
 import StudyPlanContainer from "./StudyPlanContainer";
@@ -288,7 +288,7 @@ const Planner = () => {
             </Button>
           </HStack>
           <Box minW="50%">
-            <Flex align={"center"}>
+            <HStack align={"center"} spacing="1rem">
               <Heading
                 padding="1em 0em 1.5em"
                 fontSize={"xl"}
@@ -298,7 +298,6 @@ const Planner = () => {
               >
                 Study Plan
               </Heading>
-              <Spacer />
               <Button
                 mr="1rem"
                 size="sm"
@@ -322,26 +321,13 @@ const Planner = () => {
                 mainViewModel={mainViewModel}
                 isDisabled={isValidateButtonDisabled}
               />
-            </Flex>
+            </HStack>
             <Box className="horiscroll" borderColor="black">
               <Stack>
                 {studyPlanRow(plannerYears.slice(0, 2))}
                 {studyPlanRow(plannerYears.slice(2, 4))}
               </Stack>
-              {/* <HStack align="top">
-                {plannerYears.map((year) => (
-                  <StudyPlanContainer
-                    year={year}
-                    semesters={plannerSemesters[year - 1]}
-                    plannerSemesters={mainViewModel.planner}
-                    handleModuleClose={handleModuleClose}
-                    id={year.toString()}
-                    key={year}
-                  />
-                ))}
-              </HStack> */}
             </Box>
-
             <div>
               <Heading
                 fontSize={"xl"}

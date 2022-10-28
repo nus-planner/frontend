@@ -1,6 +1,5 @@
 import Select, {
   ActionMeta,
-  FormatOptionLabelMeta,
   SingleValue,
 } from "react-select";
 import { FormControl, Text } from "@chakra-ui/react";
@@ -124,19 +123,37 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
         backgroundColor: "black",
       };
     },
-  };
-
-  const [selectedModuleName, setSelectedModuleName] = React.useState("");
-  const formatOptionLabel = (
-    data: { label: string; value: string },
-    formatOptionLabelMeta: FormatOptionLabelMeta<{ label: string; value: any }>,
-  ) => {
-    if (formatOptionLabelMeta.context === "value") {
-      return <div>{data.value}</div>;
-    } else if (formatOptionLabelMeta.context === "menu") {
-      return <div>{data.label}</div>;
+    container: (provided: any) => {
+      return {
+        ...provided,
+        position: "static",
+      };
+    },
+    menu: (provided: any) => {
+      return {
+        ...provided,
+        position: "absolute",
+      };
     }
   };
+    
+  const [selectedModuleName, setSelectedModuleName] = React.useState("");
+ 
+  const formatOptionLabel = (data: { label: string; value: string }) => {
+    if (data.value === "placeholder") {
+      return (
+        <Text fontSize="0.8rem" color="black">
+          {data.label}
+        </Text>
+      );
+    }
+    return (
+      <Text fontSize="0.8rem" color="black">
+        {data.value} {data.label}
+      </Text>
+    );
+  };
+
   const selectedModuleNameDisplay =
     selectedModuleName === "" ? <></> 
     : <Text color="black.900" fontSize={"xs"}>{selectedModuleName}</Text>;
@@ -146,7 +163,7 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
       <FormControl>
         <Select
           options={[{ options: options, label: module.code.slice(1, 4) }]}
-          placeholder="Select a module"
+          placeholder={module.name === "Unrestricted Electives" ? "Key in a module" : "Select a module"}
           value={
             !!underlyingModule
               ? {
@@ -157,7 +174,7 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
           }
           closeMenuOnSelect={true}
           styles={customStyles}
-          menuPosition="fixed"
+          menuPortalTarget={document.querySelector("body")}
           onChange={handleChange}
           formatOptionLabel={formatOptionLabel}
         />

@@ -84,7 +84,7 @@ const ModuleBox = ({
         value: mod.code,
       });
     }
-    moduleBoxBody = <ModuleDropdown module={module} options={options} />;
+    moduleBoxBody = <ModuleDropdown module={module} options={options}/>;
   } else {
     moduleBoxBody = (
       <Text color="black.900" fontSize={"xs"}>
@@ -202,12 +202,3 @@ const ModuleBox = ({
 };
 
 export default ModuleBox;
-
-// padding: $module-padding-v $module-padding-h;
-// margin-bottom: 0.4rem;
-// border-bottom: 0.15rem solid darken(theme-color('success'), 10);
-// border-radius: 0.35rem;
-// font-size: 0.9rem;
-// line-height: 1.3;
-// color: darken(theme-color('success'), 30);
-// background: lighten(theme-color('success'), 3);
