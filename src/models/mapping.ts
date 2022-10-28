@@ -348,7 +348,8 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
     this._trickle = new TrickleDownArray(
       this._modules,
       semPlan.modules,
-      (modViewModel) => modViewModel.getUnderlyingModule!()!, // TODO: Deal with !
+      (modViewModel) =>
+        modViewModel.getUnderlyingModule!() || plan.Module.emptyModule, // TODO: Deal with !
       (mod) => new ModuleViewModel(this.requirementDelegate, mod),
     );
   }
