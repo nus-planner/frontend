@@ -40,7 +40,7 @@ export const sortRequirementModules = (viewModel: MainViewModel): void => {
 
   const extraModules = [...modReqMap.keys()].filter((x) => !addedSet.has(x));
   extraModules.forEach((modCode) =>
-  viewModel.requirements.at(-1)?.modules.push(modReqMap.get(modCode)),
+    viewModel.requirements.at(-1)?.modules.push(modReqMap.get(modCode)),
   );
 
   for (let requirement of viewModel.requirements) {
@@ -69,6 +69,9 @@ export const loadViewModel = (viewModel: MainViewModel): void => {
   viewModel.requirements.map((x) =>
     x.filtered((mod) => !plannerModulesSet.has(mod.code)),
   );
+  
+  sortRequirementModules(viewModel);
+  viewModel.validate();
 };
 
 export const storeViewModel = (viewModel: MainViewModel): void => {
