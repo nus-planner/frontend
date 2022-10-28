@@ -2,6 +2,7 @@ import * as models from "../models";
 export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
 export interface Module {
+  readonly id: string;
   color?: string;
   readonly code: string;
   name: string;
@@ -22,9 +23,9 @@ export interface Module {
 export interface Requirement {
   title: string;
   description: string;
-  totalCredits: number;
   modules: Module[];
   respawnables: Module[];
+  expectedMcs?: number;
 }
 
 export interface Semester {

@@ -41,6 +41,10 @@ export class ModuleViewModel implements frontend.Module {
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: string[][];
 
+  public get id(): string {
+    return this.code;
+  }
+
   @Expose()
   @Type(() => plan.Module)
   private module: plan.Module;
@@ -97,6 +101,8 @@ export class ModuleViewModel implements frontend.Module {
 }
 
 export class MultiModuleViewModel implements frontend.Module {
+  static count: number = 0;
+  id: string;
   type = "multi-module";
   color?: string;
   code: string;
@@ -110,6 +116,7 @@ export class MultiModuleViewModel implements frontend.Module {
     return true;
   }
   constructor(code: string, name: string, credits: number) {
+    this.id = (MultiModuleViewModel.count++).toString();
     this.code = code;
     this.name = name;
     this.credits = credits;
@@ -212,7 +219,6 @@ class BasketGatherer extends basket.BasketVisitor<Array<basket.Basket>> {
 @Exclude()
 export class RequirementViewModel implements frontend.Requirement {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
-  totalCredits: number;
   allTags: string[];
   allModules: frontend.Module[];
   modules: frontend.Module[];
@@ -225,7 +231,6 @@ export class RequirementViewModel implements frontend.Requirement {
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
     this.basket = basket;
-    this.totalCredits = -1; // I don't think this is possible?
 
     const tagSet = new TagGatherer().visit(basket);
     this.allTags = Array.from(tagSet);
@@ -270,6 +275,14 @@ export class RequirementViewModel implements frontend.Requirement {
 
   public get isFulfilled(): boolean {
     return this.basket.criterionState.isFulfilled;
+  }
+
+  public get matchedMCs(): number {
+    return this.basket.criterionState.matchedMCs;
+  }
+
+  public get expectedMcs(): number | undefined {
+    return this.basket.expectedMcs;
   }
 
   filtered(filter: (mod: frontend.Module) => boolean) {
@@ -702,11 +715,11 @@ export class MainViewModel
     moduleViewModel: frontend.Module,
     addIfExists: boolean = false,
   ): frontend.Module {
-    if (!addIfExists && this._trickle.containsKey(moduleViewModel.code)) {
-      return this._trickle.getByKey(moduleViewModel.code)!;
+    if (!addIfExists && this._trickle.containsKey(moduleViewModel.id)) {
+      return this._trickle.getByKey(moduleViewModel.id)!;
     }
 
-    this._trickle.setKeyValue(moduleViewModel.code, moduleViewModel);
+    this._trickle.setKeyValue(moduleViewModel.id, moduleViewModel);
     return moduleViewModel;
   }
 

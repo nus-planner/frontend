@@ -4,271 +4,271 @@ import { Module, ModulesState, Requirement } from "../interfaces/planner";
 // Note: How 'any' modules are currently implemented is essentially "any ___":<number>
 //       This obviously won't be the case when parsing the yaml file, so we need to do either
 //       (1) Find another representation (2) Convert the yaml modules to this representation
-export const sampleModuleRequirements: Requirement[] = [
-  {
-    title: "Computer Science Foundation",
-    description: "Compulsory modules",
-    totalCredits: 36,
-    modules: [
-      {
-        code: "CS1101S",
-        name: "Programming Methodology",
-        credits: 4,
-      },
-      { code: "CS1231S", name: "Discrete Structures", credits: 4 },
-      {
-        code: "CS2030S",
-        name: "Programming Methodology II",
-        credits: 4,
-      },
-      {
-        code: "CS2040S",
-        name: "Data Structures and Algorithms",
-        credits: 4,
-      },
-      {
-        code: "CS2100",
-        name: "Computer Organisation",
-        credits: 4,
-      },
-      {
-        code: "CS2103T",
-        name: "Software Engineering",
-        credits: 4,
-      },
-      {
-        code: "CS2105",
-        name: "Introduction to Computer Networks",
-        credits: 4,
-      },
-      {
-        code: "CS2106",
-        name: "Introduction to Operating Systems",
-        credits: 4,
-      },
-      {
-        code: "CS3230",
-        name: "Design and Analysis of Algorithms",
-        credits: 4,
-      },
-    ],
-    respawnables: [],
-  },
-  {
-    title: "Focus Area and Level-4000",
-    description:
-      "1. 3 modules in the Area Primaries, with at least one module at level-4000 or above. " +
-      "2. At least 12 MCs are at level-4000 or above.",
-    totalCredits: 24,
-    modules: [
-      {
-        code: "Any Primary:1",
-        name: "Select A Module",
-        credits: null,
-      },
-      {
-        code: "Any Primary:2",
-        name: "Select A Module",
-        credits: null,
-      },
-      {
-        code: "Any Primary:3",
-        name: "Select A Module",
-        credits: null,
-      },
-    ],
-    respawnables: [],
-  },
-  {
-    title: "Computer Systems Team Project",
-    description:
-      "At least 8 MCs of Computer Systems Team Project modules. CS3216 and CS3217, CS3281 and CS3282 " +
-      "are to be taken together",
-    totalCredits: 8,
-    modules: [
-      {
-        code: "CS3203",
-        name: "Software Engineering Project",
-        credits: 8,
-      },
-      {
-        code: "CS3216",
-        name: "Software Product Engineering for Digital Markets",
-        credits: 5,
-      },
-      {
-        code: "CS3217",
-        name: "Software Engineering on Modern Application Platforms",
-        credits: 5,
-      },
-      {
-        code: "CS3281",
-        name: "Thematic Systems Project I",
-        credits: 4,
-      },
-      {
-        code: "CS3282",
-        name: "Thematic Systems Project II",
-        credits: 4,
-      },
-    ],
-    respawnables: [],
-  },
-  {
-    title: "IT Professionalism",
-    description: "",
-    totalCredits: 12,
-    modules: [
-      {
-        code: "IS1103/X",
-        name: "IS Innovations in Organisations and Society",
-        credits: 4,
-      },
-      {
-        code: "CS2101",
-        name: "Effective Communication for Computing Professionals",
-        credits: 4,
-      },
-      {
-        code: "ES2660",
-        name: "Communicating in the Information Age",
-        credits: 4,
-      },
-    ],
-    respawnables: [],
-  },
-  {
-    title: "Mathematics and Sciences",
-    description: "",
-    totalCredits: 16,
-    modules: [
-      {
-        code: "MA1521",
-        name: "Calculus for Computing",
-        credits: 4,
-      },
-      {
-        code: "MA1101R",
-        name: "Linear Algebra I or MA2001 Linear Algebra I",
-        credits: 4,
-      },
-      {
-        code: "ST2334",
-        name: "Probability and Statistics 5 and one Science Module",
-        credits: 8,
-      },
-    ],
-    respawnables: [],
-  },
-  {
-    title: "Elective Modules",
-    description: "",
-    totalCredits: 32,
-    modules: [
-      { code: "Any UE:1", name: "Select A Module", credits: null },
-      { code: "Any UE:2", name: "Select A Module", credits: null },
-      { code: "Any UE:3", name: "Select A Module", credits: null },
-      { code: "Any UE:4", name: "Select A Module", credits: null },
-      { code: "Any UE:5", name: "Select A Module", credits: null },
-      { code: "Any UE:6", name: "Select A Module", credits: null },
-      { code: "Any UE:7", name: "Select A Module", credits: null },
-      { code: "Any UE:8", name: "Select A Module", credits: null },
-    ],
-    respawnables: [],
-  },
-];
+// export const sampleModuleRequirements: Requirement[] = [
+//   {
+//     title: "Computer Science Foundation",
+//     description: "Compulsory modules",
+//     totalCredits: 36,
+//     modules: [
+//       {
+//         code: "CS1101S",
+//         name: "Programming Methodology",
+//         credits: 4,
+//       },
+//       { code: "CS1231S", name: "Discrete Structures", credits: 4 },
+//       {
+//         code: "CS2030S",
+//         name: "Programming Methodology II",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS2040S",
+//         name: "Data Structures and Algorithms",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS2100",
+//         name: "Computer Organisation",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS2103T",
+//         name: "Software Engineering",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS2105",
+//         name: "Introduction to Computer Networks",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS2106",
+//         name: "Introduction to Operating Systems",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS3230",
+//         name: "Design and Analysis of Algorithms",
+//         credits: 4,
+//       },
+//     ],
+//     respawnables: [],
+//   },
+//   {
+//     title: "Focus Area and Level-4000",
+//     description:
+//       "1. 3 modules in the Area Primaries, with at least one module at level-4000 or above. " +
+//       "2. At least 12 MCs are at level-4000 or above.",
+//     totalCredits: 24,
+//     modules: [
+//       {
+//         code: "Any Primary:1",
+//         name: "Select A Module",
+//         credits: null,
+//       },
+//       {
+//         code: "Any Primary:2",
+//         name: "Select A Module",
+//         credits: null,
+//       },
+//       {
+//         code: "Any Primary:3",
+//         name: "Select A Module",
+//         credits: null,
+//       },
+//     ],
+//     respawnables: [],
+//   },
+//   {
+//     title: "Computer Systems Team Project",
+//     description:
+//       "At least 8 MCs of Computer Systems Team Project modules. CS3216 and CS3217, CS3281 and CS3282 " +
+//       "are to be taken together",
+//     totalCredits: 8,
+//     modules: [
+//       {
+//         code: "CS3203",
+//         name: "Software Engineering Project",
+//         credits: 8,
+//       },
+//       {
+//         code: "CS3216",
+//         name: "Software Product Engineering for Digital Markets",
+//         credits: 5,
+//       },
+//       {
+//         code: "CS3217",
+//         name: "Software Engineering on Modern Application Platforms",
+//         credits: 5,
+//       },
+//       {
+//         code: "CS3281",
+//         name: "Thematic Systems Project I",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS3282",
+//         name: "Thematic Systems Project II",
+//         credits: 4,
+//       },
+//     ],
+//     respawnables: [],
+//   },
+//   {
+//     title: "IT Professionalism",
+//     description: "",
+//     totalCredits: 12,
+//     modules: [
+//       {
+//         code: "IS1103/X",
+//         name: "IS Innovations in Organisations and Society",
+//         credits: 4,
+//       },
+//       {
+//         code: "CS2101",
+//         name: "Effective Communication for Computing Professionals",
+//         credits: 4,
+//       },
+//       {
+//         code: "ES2660",
+//         name: "Communicating in the Information Age",
+//         credits: 4,
+//       },
+//     ],
+//     respawnables: [],
+//   },
+//   {
+//     title: "Mathematics and Sciences",
+//     description: "",
+//     totalCredits: 16,
+//     modules: [
+//       {
+//         code: "MA1521",
+//         name: "Calculus for Computing",
+//         credits: 4,
+//       },
+//       {
+//         code: "MA1101R",
+//         name: "Linear Algebra I or MA2001 Linear Algebra I",
+//         credits: 4,
+//       },
+//       {
+//         code: "ST2334",
+//         name: "Probability and Statistics 5 and one Science Module",
+//         credits: 8,
+//       },
+//     ],
+//     respawnables: [],
+//   },
+//   {
+//     title: "Elective Modules",
+//     description: "",
+//     totalCredits: 32,
+//     modules: [
+//       { code: "Any UE:1", name: "Select A Module", credits: null },
+//       { code: "Any UE:2", name: "Select A Module", credits: null },
+//       { code: "Any UE:3", name: "Select A Module", credits: null },
+//       { code: "Any UE:4", name: "Select A Module", credits: null },
+//       { code: "Any UE:5", name: "Select A Module", credits: null },
+//       { code: "Any UE:6", name: "Select A Module", credits: null },
+//       { code: "Any UE:7", name: "Select A Module", credits: null },
+//       { code: "Any UE:8", name: "Select A Module", credits: null },
+//     ],
+//     respawnables: [],
+//   },
+// ];
 
-export const dummyModuleState: ModulesState = {
-  requirements: JSON.parse(JSON.stringify(sampleModuleRequirements)),
-  planner: [
-    {
-      // Exemptions
-      year: 0,
-      semester: 0,
-      modules: [],
-    },
-    {
-      year: 1,
-      semester: 1,
-      modules: [],
-    },
-    {
-      year: 1,
-      semester: 2,
-      modules: [],
-    },
-    {
-      year: 2,
-      semester: 1,
-      modules: [],
-    },
-    {
-      year: 2,
-      semester: 2,
-      modules: [],
-    },
-    {
-      year: 3,
-      semester: 1,
-      modules: [],
-    },
-    {
-      year: 3,
-      semester: 2,
-      modules: [],
-    },
-    {
-      year: 4,
-      semester: 1,
-      modules: [],
-    },
-    {
-      year: 4,
-      semester: 2,
-      modules: [],
-    },
-  ],
-  exemptions: [],
-  startYear: "",
-};
+// export const dummyModuleState: ModulesState = {
+//   requirements: JSON.parse(JSON.stringify(sampleModuleRequirements)),
+//   planner: [
+//     {
+//       // Exemptions
+//       year: 0,
+//       semester: 0,
+//       modules: [],
+//     },
+//     {
+//       year: 1,
+//       semester: 1,
+//       modules: [],
+//     },
+//     {
+//       year: 1,
+//       semester: 2,
+//       modules: [],
+//     },
+//     {
+//       year: 2,
+//       semester: 1,
+//       modules: [],
+//     },
+//     {
+//       year: 2,
+//       semester: 2,
+//       modules: [],
+//     },
+//     {
+//       year: 3,
+//       semester: 1,
+//       modules: [],
+//     },
+//     {
+//       year: 3,
+//       semester: 2,
+//       modules: [],
+//     },
+//     {
+//       year: 4,
+//       semester: 1,
+//       modules: [],
+//     },
+//     {
+//       year: 4,
+//       semester: 2,
+//       modules: [],
+//     },
+//   ],
+//   exemptions: [],
+//   startYear: "",
+// };
 
-export const majors = [
-  "Computer Science",
-  "Information Systems",
-  "Computer Engineering",
-  "Business Analytics",
-  "Information Security",
-];
+// export const majors = [
+//   "Computer Science",
+//   "Information Systems",
+//   "Computer Engineering",
+//   "Business Analytics",
+//   "Information Security",
+// ];
 
-export const specialisations = [
-  "Algorithms & Theory",
-  "Artificial Intelligence",
-  "Computer Graphics and Games",
-  "Computer Security",
-  "Database Systems",
-  "Multimedia Information Retrieval",
-  "Networking and Distributed Systems",
-  "Parallel Computing",
-  "Programming Languages",
-  "Software Engineering",
-];
+// export const specialisations = [
+//   "Algorithms & Theory",
+//   "Artificial Intelligence",
+//   "Computer Graphics and Games",
+//   "Computer Security",
+//   "Database Systems",
+//   "Multimedia Information Retrieval",
+//   "Networking and Distributed Systems",
+//   "Parallel Computing",
+//   "Programming Languages",
+//   "Software Engineering",
+// ];
 
-export const primaries = [
-  "CS3231 Theory of Computation",
-  "CS3236 Introduction to Information Theory",
-  "CS4231 Parallel and Distributed Algorithms",
-  "CS4232 Theory of Computation",
-  "CS4234 Optimisation Algorithms",
-  "CS3233 Competitive Programming",
-  "CS4257 Algorithmic Foundations of Privacy",
-  "CS4261 Algorithmic Mechanism Design",
-  "CS4268 Quantum Computing",
-  "CS4269 Fundamentals of Logic in Computer Science",
-  "CS4330 Combinatorial Methods in Bioinformatics",
-  "CS5230 Computational Complexity",
-  "CS5234 Algorithms at Scale",
-  "CS5236 Advanced Automata Theory",
-  "CS5237 Computational Geometry and Applications",
-  "CS5238 Advanced Combinatorial Methods in Bioinformatics",
-  "CS5330 Randomized Algorithms",
-];
+// export const primaries = [
+//   "CS3231 Theory of Computation",
+//   "CS3236 Introduction to Information Theory",
+//   "CS4231 Parallel and Distributed Algorithms",
+//   "CS4232 Theory of Computation",
+//   "CS4234 Optimisation Algorithms",
+//   "CS3233 Competitive Programming",
+//   "CS4257 Algorithmic Foundations of Privacy",
+//   "CS4261 Algorithmic Mechanism Design",
+//   "CS4268 Quantum Computing",
+//   "CS4269 Fundamentals of Logic in Computer Science",
+//   "CS4330 Combinatorial Methods in Bioinformatics",
+//   "CS5230 Computational Complexity",
+//   "CS5234 Algorithms at Scale",
+//   "CS5236 Advanced Automata Theory",
+//   "CS5237 Computational Geometry and Applications",
+//   "CS5238 Advanced Combinatorial Methods in Bioinformatics",
+//   "CS5330 Randomized Algorithms",
+// ];

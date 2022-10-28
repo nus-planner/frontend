@@ -3,6 +3,10 @@
   "patternProperties": {
     "^.*$": {
       "properties": {
+        "expected_mcs": {
+          "type": "integer",
+          "description": "A rough estimate on the number of mcs. This is only needed for top level requirements."
+        },
         "tag": {
           "type": "string",
           "description": "A tag to label all modules nested recursively underneath"
