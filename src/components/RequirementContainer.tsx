@@ -15,6 +15,7 @@ import {
   HStack,
   Badge,
   Tag,
+  Spacer,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
@@ -49,13 +50,15 @@ const RequirementContainer = ({
       return (
         <Button
           key={respawnable.code}
-          minW="12rem"
+          w="12rem"
           minH="5rem"
           colorScheme={"white"}
           variant={"outline"}
           alignContent="center"
           borderRadius="0.4rem"
           padding="0.2rem 0.5rem"
+          whiteSpace={"initial"}
+          fontSize="sm"
           onClick={() => {
             const newViewModel = new MultiModuleViewModel(
               respawnable.code,
@@ -74,7 +77,8 @@ const RequirementContainer = ({
             forceUpdate();
           }}
         >
-          + Add {respawnable.name}
+          <Text fontSize={"xl"} colorScheme={"white"}>  + </Text>
+           {respawnable.name}
         </Button>
       );
     });
