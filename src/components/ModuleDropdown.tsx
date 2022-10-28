@@ -1,12 +1,11 @@
 import Select, { ActionMeta, SingleValue } from "react-select";
+import { WindowedMenuList } from "react-windowed-select";
 import { FormControl, Text, useDisclosure } from "@chakra-ui/react";
 import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import { Module } from "../interfaces/planner";
 import * as models from "../models";
 import { useAppContext } from "./AppContext";
 import { DEFAULT_MODULE_COLOR, moduleColor } from "../constants/moduleColor";
-import { labelModules } from "../utils/plannerUtils";
-import { Context } from "@dnd-kit/sortable/dist/components";
 import React, { useEffect } from "react";
 
 interface ModuleDropdownProps {
@@ -174,11 +173,7 @@ const ModuleDropdown = ({
       <FormControl>
         <Select
           options={[{ options: options, label: module.code.slice(1, 4) }]}
-          placeholder={
-            module.name === "Unrestricted Electives"
-              ? "Key in a module"
-              : "Select a module"
-          }
+          placeholder={"Select a module"}
           value={
             !!underlyingModule
               ? {
@@ -195,6 +190,7 @@ const ModuleDropdown = ({
           menuIsOpen={isOpen}
           onMenuOpen={onOpen}
           onMenuClose={onClose}
+          components={{ MenuList: WindowedMenuList }}
         />
       </FormControl>
       {selectedModuleNameDisplay}
