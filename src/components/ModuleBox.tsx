@@ -14,10 +14,8 @@ import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 import {
-  getGEsFromModuleList,
   getNonDuplicateUEs,
   getNUSModsModulePage,
-  fetchedModuleListPromise,
 } from "../utils/moduleUtils";
 import { useAppContext } from "./AppContext";
 import ModuleDropdown from "./ModuleDropdown";
@@ -46,7 +44,7 @@ const ModuleBox = ({
   }
 
   let options: any[] = [];
-  let moduleBoxBody: React.ReactElement;
+
   const [mods, setMods] = useState<Module[]>([]);
   const existingModules: string[] = [];
   for (let i = 0; i < mainViewModel.requirements.length; i++) {
@@ -84,13 +82,6 @@ const ModuleBox = ({
         value: mod.code,
       });
     }
-    moduleBoxBody = <ModuleDropdown module={module} options={options}/>;
-  } else {
-    moduleBoxBody = (
-      <Text color="black.900" fontSize={"xs"}>
-        {module.name}
-      </Text>
-    );
   }
 
   let prereqsViolationText: any;
@@ -186,7 +177,17 @@ const ModuleBox = ({
                     />
                   )}
                 </Flex>
-                {moduleBoxBody}
+                {module.isMultiModule ? (
+                  <ModuleDropdown
+                    module={module}
+                    options={options}
+                    isDragging={snapshot.isDragging}
+                  />
+                ) : (
+                  <Text color="black.900" fontSize={"xs"}>
+                    {module.name}
+                  </Text>
+                )}
                 {text}
                 {prereqsViolationText}
                 {coreqsViolationText}

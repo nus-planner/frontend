@@ -1,8 +1,5 @@
-import Select, {
-  ActionMeta,
-  SingleValue,
-} from "react-select";
-import { FormControl, Text } from "@chakra-ui/react";
+import Select, { ActionMeta, SingleValue } from "react-select";
+import { FormControl, Text, useDisclosure } from "@chakra-ui/react";
 import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import { Module } from "../interfaces/planner";
 import * as models from "../models";
@@ -10,15 +7,24 @@ import { useAppContext } from "./AppContext";
 import { DEFAULT_MODULE_COLOR, moduleColor } from "../constants/moduleColor";
 import { labelModules } from "../utils/plannerUtils";
 import { Context } from "@dnd-kit/sortable/dist/components";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface ModuleDropdownProps {
   module: Module;
   options: any;
+  isDragging: boolean;
 }
 
-const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
+const ModuleDropdown = ({
+  module,
+  options,
+  isDragging,
+}: ModuleDropdownProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(onClose, [isDragging]);
+
   let underlyingModule: models.Module | null = null;
 
   if (module.getUnderlyingModule) {
@@ -134,11 +140,11 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
         ...provided,
         position: "absolute",
       };
-    }
+    },
   };
-    
+
   const [selectedModuleName, setSelectedModuleName] = React.useState("");
- 
+
   const formatOptionLabel = (data: { label: string; value: string }) => {
     if (data.value === "placeholder") {
       return (
@@ -155,15 +161,24 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
   };
 
   const selectedModuleNameDisplay =
-    selectedModuleName === "" ? <></> 
-    : <Text color="black.900" fontSize={"xs"}>{selectedModuleName}</Text>;
+    selectedModuleName === "" ? (
+      <></>
+    ) : (
+      <Text color="black.900" fontSize={"xs"}>
+        {selectedModuleName}
+      </Text>
+    );
 
   return (
     <>
       <FormControl>
         <Select
           options={[{ options: options, label: module.code.slice(1, 4) }]}
-          placeholder={module.name === "Unrestricted Electives" ? "Key in a module" : "Select a module"}
+          placeholder={
+            module.name === "Unrestricted Electives"
+              ? "Key in a module"
+              : "Select a module"
+          }
           value={
             !!underlyingModule
               ? {
@@ -177,6 +192,9 @@ const ModuleDropdown = ({ module, options }: ModuleDropdownProps) => {
           menuPortalTarget={document.querySelector("body")}
           onChange={handleChange}
           formatOptionLabel={formatOptionLabel}
+          menuIsOpen={isOpen}
+          onMenuOpen={onOpen}
+          onMenuClose={onClose}
         />
       </FormControl>
       {selectedModuleNameDisplay}
