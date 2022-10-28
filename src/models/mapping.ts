@@ -111,6 +111,8 @@ export class MultiModuleViewModel implements frontend.Module {
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: string[][];
+  @Expose()
+  @Type(() => plan.Module)
   selectedModule?: plan.Module;
   public get isMultiModule(): boolean {
     return true;
