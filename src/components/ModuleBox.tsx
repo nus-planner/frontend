@@ -13,10 +13,7 @@ import { Module } from "../interfaces/planner";
 import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
-import {
-  getNonDuplicateUEs,
-  getNUSModsModulePage,
-} from "../utils/moduleUtils";
+import { getNonDuplicateUEs, getNUSModsModulePage } from "../utils/moduleUtils";
 import { useAppContext } from "./AppContext";
 import ModuleDropdown from "./ModuleDropdown";
 import { useEffect, useState } from "react";
@@ -37,7 +34,22 @@ const ModuleBox = ({
   idx,
 }: ModuleBoxProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
-  const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
+  let moduleColor: string;
+  if (module.color) {
+    if (module.color.length === 1) {
+      moduleColor = module.color[0];
+    } else {
+      moduleColor = "linear(to-r,";
+      for (let i = 0; i < module.color.length; i++) {
+        moduleColor += module.color[i] + ",";
+      }
+      moduleColor += ")";
+    }
+  } else {
+    moduleColor = DEFAULT_MODULE_COLOR;
+  }
+  console.log("moduleColor " + moduleColor);
+
   let text: any;
   if (module.credits != null && module.credits > 0) {
     text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
@@ -145,6 +157,7 @@ const ModuleBox = ({
                 w="12rem"
                 minH="5rem"
                 bgColor={moduleColor}
+                bgGradient={moduleColor}
                 alignContent="center"
                 borderRadius="0.4rem"
                 padding="0.2rem 0.5rem"

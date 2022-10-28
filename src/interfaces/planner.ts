@@ -3,7 +3,7 @@ export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
 export interface Module {
   readonly id: string;
-  color?: string;
+  color?: string[];
   readonly code: string;
   name: string;
   credits: number | null;

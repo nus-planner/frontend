@@ -36,7 +36,7 @@ interface GlobalModuleViewModelStateDelegate {
 export class ModuleViewModel implements frontend.Module {
   type = "module";
   requirementDelegate: RequirementDelegate;
-  color?: string;
+  color?: string[];
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: string[][];
@@ -104,7 +104,7 @@ export class MultiModuleViewModel implements frontend.Module {
   static count: number = 0;
   id: string;
   type = "multi-module";
-  color?: string;
+  color?: string[];
   code: string;
   name: string;
   credits: number;

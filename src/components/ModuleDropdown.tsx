@@ -67,7 +67,7 @@ const ModuleDropdown = ({
     setSelectedModuleName(name);
   };
 
-  const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
+  const moduleColor = module.color ? module.color[0] : DEFAULT_MODULE_COLOR;
   const moduleColorInReact =
     "var(--chakra-colors-" +
     moduleColor.split(".")[0] +

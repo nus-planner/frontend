@@ -22,12 +22,8 @@ const ExemptionContainer = ({
       borderRadius="0.4rem"
       minH="22sem"
     >
-      <Flex>
-        <Box>
-        </Box>
-        <Spacer />
-      </Flex>
-      <Droppable droppableId={id}>
+      
+      {/* <Droppable droppableId={id}>
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
             <VStack minW="12rem" minH="18em" padding="0.5rem 0rem">
@@ -45,7 +41,9 @@ const ExemptionContainer = ({
             {provided.placeholder}
           </div>
         )}
-      </Droppable>
+      </Droppable> */}
+
+      
     </Box>
   );
 };

@@ -15,8 +15,12 @@ export const addColorToModules = (moduleRequirements: Requirement[]) => {
 export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
   for (let i = 0; i < moduleRequirements.length; i++) {
     for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
-      moduleRequirements[i].modules[j].color =
-        moduleColor[i % moduleColor.length];
+      moduleRequirements[i].modules[j].color = [];
+    }
+  }
+  for (let i = 0; i < moduleRequirements.length; i++) {
+    for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
+      moduleRequirements[i].modules[j].color?.push(moduleColor[i % moduleColor.length]);
     }
   }
 };
