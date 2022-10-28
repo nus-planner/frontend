@@ -29,8 +29,6 @@ a {
   overflow-y: auto;
 }
 
-.verscroll {
-  height: 30em;
-  overflow-x: auto;
-  border-radius: 30px;
+.verscroll::-webkit-scrollbar {
+  display: none;
 }

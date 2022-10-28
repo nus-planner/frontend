@@ -20,7 +20,7 @@ import {
   useEffect,
   Dispatch,
   SetStateAction,
-} from "react"
+} from "react";
 import { Module } from "../interfaces/planner";
 import RequirementContainer from "./RequirementContainer";
 import StudyPlanContainer from "./StudyPlanContainer";
@@ -203,6 +203,7 @@ const Planner = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <HStack align="">
           <motion.div
+            className="verscroll"
             {...getDisclosureProps()}
             hidden={hidden}
             initial={true}
@@ -210,10 +211,10 @@ const Planner = () => {
             onAnimationComplete={() => setHidden(!isOpen)}
             animate={{ width: isOpen ? "100%" : 0 }}
             style={{
-              overflow: "hidden",
+              overflowY: "auto",
               whiteSpace: "nowrap",
               left: "0",
-              height: "100%",
+              height: "90vh",
               top: "0",
             }}
           >
@@ -236,6 +237,7 @@ const Planner = () => {
               ))}
             </Box>
           </motion.div>
+
           <HStack>
             <Button
               _hover={{ bg: "white" }}
@@ -257,7 +259,7 @@ const Planner = () => {
               </Circle>
             </Button>
           </HStack>
-          <Box minW="50%">
+          <Box minW="50%" h="90vh" overflowY={"auto"} className="verscroll">
             <HStack align={"center"} spacing="1rem">
               <Heading
                 padding="1em 0em 1.5em"
