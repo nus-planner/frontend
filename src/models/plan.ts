@@ -8,6 +8,7 @@ export class ModuleState {
   matchedBaskets: Array<Basket> = [];
 }
 export class Module {
+  static emptyModule: Module = new Module("EMPTY9999", "Empty", 0);
   @Exclude()
   state: ModuleState = new ModuleState();
   @Exclude()

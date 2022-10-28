@@ -39,7 +39,7 @@ export class ModuleViewModel implements frontend.Module {
   color?: string[];
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
-  prereqsViolated?: string[][];
+  prereqsViolated?: frontend.PrereqTree[];
 
   public get id(): string {
     return this.code;
@@ -110,7 +110,9 @@ export class MultiModuleViewModel implements frontend.Module {
   credits: number;
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
-  prereqsViolated?: string[][];
+  prereqsViolated?: frontend.PrereqTree[];
+  @Expose()
+  @Type(() => plan.Module)
   selectedModule?: plan.Module;
   public get isMultiModule(): boolean {
     return true;
@@ -346,7 +348,8 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
     this._trickle = new TrickleDownArray(
       this._modules,
       semPlan.modules,
-      (modViewModel) => modViewModel.getUnderlyingModule!()!, // TODO: Deal with !
+      (modViewModel) =>
+        modViewModel.getUnderlyingModule!() || plan.Module.emptyModule, // TODO: Deal with !
       (mod) => new ModuleViewModel(this.requirementDelegate, mod),
     );
   }

@@ -10,7 +10,7 @@ export interface Module {
   editable?: boolean;
   prereqs?: PrereqTree | null;
   preclusions?: string[] | null;
-  prereqsViolated?: string[][] | null;
+  prereqsViolated?: PrereqTree[] | null;
   coreqs?: string[] | null;
   coreqsViolated?: string[] | null;
   tags?: string[];

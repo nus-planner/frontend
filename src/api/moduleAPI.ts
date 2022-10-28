@@ -74,13 +74,13 @@ export const fetchBasicModuleInfo = async (
   console.log({
     moduleCode: res.moduleCode,
     title: res.title,
-    moduleCredit: res.moduleCredit,
+    moduleCredit: Number.parseInt(res.moduleCredit),
   });
 
   return {
     moduleCode: res.moduleCode,
     title: res.title,
-    moduleCredit: res.moduleCredit,
+    moduleCredit: Number.parseInt(res.moduleCredit),
   };
 };
 
