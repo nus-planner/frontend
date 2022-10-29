@@ -691,7 +691,8 @@ export class MainViewModel
   @Type(() => AcademicPlanViewModel)
   readonly academicPlanViewModel: AcademicPlanViewModel;
 
-  readonly sampleStudyPlanUrl?: string;
+  @Expose()
+  sampleStudyPlanUrl?: string;
 
   readonly moduleViewModelsMap: Map<string, frontend.Module>;
 
@@ -833,6 +834,7 @@ export class MainViewModel
     this.validatorState.hydrate(stored.validatorState);
     this.academicPlanViewModel.hydrate(stored.academicPlanViewModel);
     this._requirements = undefined;
+    this.sampleStudyPlanUrl = stored.sampleStudyPlanUrl;
   }
 
   hydrateWithStorageString(storedString: string) {
