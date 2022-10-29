@@ -302,11 +302,11 @@ const Planner = () => {
                 fontSize={"xl"}
                 fontWeight={"bold"}
                 fontFamily={"body"}
-                padding="1.4em 0em 0.5rem"
+                padding="1.5em 0em 1rem"
               >
                 Exemptions
               </Heading>
-              <Box borderColor="black" mb={"2rem"}>
+              <Box borderColor="black" mb={"3rem"}>
                 <ExemptionContainer
                   exemptedModules={mainViewModel.planner[0].modules}
                   handleModuleClose={handleModuleClose}
