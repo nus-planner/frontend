@@ -64,7 +64,14 @@
           "expected_mcs": 8,
           "state": "overallDegreeState",
           "or": [
-            "CS3203",
+            {
+              "CS3203": {
+                "module": {
+                  "code": "CS3203",
+                  "mc": 8
+                }
+              }
+            },
             {
               "CS3216/17 combo": {
                 "and": [
