@@ -4,12 +4,24 @@ import * as baskets from "./basket";
 import * as plan from "./plan";
 import { Hydratable } from "../interfaces/planner";
 
+type Filter = {
+  code_pattern?: string;
+  code_prefix?: string;
+  code_suffix?: string;
+  level?: Array<number>;
+};
+
+type FulfillmentCriteria = {
+  at_least_n_mcs?: number;
+  at_least_n_modules?: number;
+} & Filter;
+
 type Shared<T> = T & {
   tag?: string;
   title?: string;
   description?: string;
   state?: string;
-  at_least_n_mcs?: number;
+  fulfillment_criteria?: FulfillmentCriteria;
   expected_mcs?: number;
 };
 
@@ -17,14 +29,10 @@ type ModuleCode = string;
 type ModuleBasket = {
   code?: string;
   mc?: number;
-  code_pattern?: string;
-  code_prefix?: string;
-  code_suffix?: string;
-  level?: number;
   double_count?: boolean;
   required_mcs?: number;
   early_terminate?: boolean;
-};
+} & Filter;
 
 type BasketOption = Shared<
   | { at_least_n_of: { n: number; baskets: ArrayBasket } }
@@ -104,6 +112,23 @@ export class ValidatorState implements Hydratable {
     return this.allModules.get(moduleCode)!;
   }
 
+  private convertFilter(filter: Filter): baskets.ModuleFilter {
+    return new baskets.ModuleFilter({
+      moduleCodePrefix: filter.code_prefix
+        ? new Set([filter.code_prefix])
+        : undefined,
+      moduleCodeSuffix: filter.code_suffix
+        ? new Set([filter.code_suffix])
+        : undefined,
+      moduleCodePattern: filter.code_pattern
+        ? new RegExp(filter.code_pattern)
+        : undefined,
+      level: filter.level
+        ? new Set(filter.level.map((level) => level / 1000))
+        : undefined,
+    });
+  }
+
   private convertArrayBasketElement(
     arrayBasketElement: ArrayBasketElement,
   ): baskets.Basket {
@@ -166,18 +191,7 @@ export class ValidatorState implements Hydratable {
       ) {
         basket = new baskets.MultiModuleBasket({
           title: basketOption.title,
-          moduleCodePrefix: basketOption.module.code_prefix
-            ? new Set([basketOption.module.code_prefix])
-            : undefined,
-          moduleCodeSuffix: basketOption.module.code_suffix
-            ? new Set([basketOption.module.code_suffix])
-            : undefined,
-          moduleCodePattern: basketOption.module.code_pattern
-            ? new RegExp(basketOption.module.code_pattern)
-            : undefined,
-          level: basketOption.module.level
-            ? new Set([basketOption.module.level / 1000])
-            : undefined,
+          filter: this.convertFilter(basketOption.module),
           requiredMCs: basketOption.module.required_mcs,
           earlyTerminate: basketOption.module.early_terminate,
         });
@@ -200,10 +214,14 @@ export class ValidatorState implements Hydratable {
       throw new Error("Malformed config");
     }
 
-    if (basketOption.at_least_n_mcs !== undefined) {
-      basket = baskets.FulfillmentResultBasket.atLeastNMCs(
+    if (basketOption.fulfillment_criteria !== undefined) {
+      basket = baskets.FulfillmentResultBasket.withCriterion(
         "",
-        basketOption.at_least_n_mcs,
+        {
+          numMCs: basketOption.fulfillment_criteria.at_least_n_mcs,
+          numberOfModules: basketOption.fulfillment_criteria.at_least_n_modules,
+          filter: this.convertFilter(basketOption.fulfillment_criteria),
+        },
         basket,
       );
     }

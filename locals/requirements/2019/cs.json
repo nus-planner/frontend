@@ -39,6 +39,7 @@
       {
         "CS Foundation": {
           "state": "overallDegreeState",
+          "expected_mcs": 36,
           "title": "CS foundation",
           "and": [
             {
@@ -60,9 +61,17 @@
       },
       {
         "Team Project Requirement": {
+          "expected_mcs": 8,
           "state": "overallDegreeState",
           "or": [
-            "CS3203",
+            {
+              "CS3203": {
+                "module": {
+                  "code": "CS3203",
+                  "mc": 8
+                }
+              }
+            },
             {
               "CS3216/17 combo": {
                 "and": [
@@ -95,6 +104,7 @@
       },
       {
         "IT Professionalism": {
+          "expected_mcs": 12,
           "state": "overallDegreeState",
           "and": [
             {
@@ -109,11 +119,21 @@
       },
       {
         "Industry Experience Requirement": {
+          "expected_mcs": 12,
           "state": "overallDegreeState",
           "or": [
-            "CP3880",
             {
-              "": {
+              "ATAP": {
+                "tag": "ATAP",
+                "module": {
+                  "code": "CP3880",
+                  "mc": 12
+                }
+              }
+            },
+            {
+              "SIP I/II": {
+                "tag": "SIP",
                 "and": [
                   {
                     "cp3200": {
@@ -123,12 +143,20 @@
                       }
                     }
                   },
-                  "CP3202"
+                  {
+                    "CP3202": {
+                      "module": {
+                        "code": "CP3202",
+                        "mc": 6
+                      }
+                    }
+                  }
                 ]
               }
             },
             {
-              "": {
+              "CVWO": {
+                "tag": "CVWO",
                 "and": ["CP3107", "CP3110"]
               }
             },
@@ -139,9 +167,11 @@
       },
       {
         "CS Breadth and Depth": {
-          "tag": "B&D",
+          "expected_mcs": 24,
           "state": "overallDegreeState",
-          "at_least_n_mcs": 24,
+          "fulfillment_criteria": {
+            "at_least_n_mcs": 24
+          },
           "or": [
             {
               "Focus Areas sharing primary with CFM": {
@@ -152,8 +182,10 @@
                       "or": [
                         {
                           "swe_focus_area_primaries": {
-                            "at_least_n_modules": 3,
-                            "tag": "swe",
+                            "fulfillment_criteria": {
+                              "at_least_n_modules": 3
+                            },
+                            "tag": "SWE Primary",
                             "and": [
                               {
                                 "SWE FA at least 1 Level 4000": {
@@ -192,7 +224,7 @@
                         },
                         {
                           "algo_focus_area_primaries": {
-                            "tag": "algo",
+                            "tag": "Algorithms Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
@@ -234,7 +266,7 @@
                         },
                         {
                           "networks_focus_area_primaries": {
-                            "tag": "networks",
+                            "tag": "Networks Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
@@ -299,8 +331,10 @@
                       "or": [
                         {
                           "security_focus_area_primaries": {
-                            "at_least_n_modules": 3,
-                            "tag": "security",
+                            "fulfillment_criteria": {
+                              "at_least_n_modules": 3
+                            },
+                            "tag": "Security Primary",
                             "and": [
                               {
                                 "Security FA at least 1 Level 4000": {
@@ -361,12 +395,23 @@
           "state": "overallDegreeState",
           "and": [
             {
-              "": { "or": [{ "": { "and": ["ST2131", "ST2132"] } }, "ST2334"] }
+              "Statistics": {
+                "or": [
+                  {
+                    "": {
+                      "tag": "ST2131/2132 Pair",
+                      "and": ["ST2131", "ST2132"]
+                    }
+                  },
+                  "ST2334"
+                ]
+              }
             },
             "MA1101R",
             "MA1521",
             {
               "physics": {
+                "tag": "1 sci mod",
                 "or": ["PC1221"]
               }
             }

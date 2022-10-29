@@ -346,6 +346,49 @@ export class FulfillmentResultBasket extends Basket {
     this.basket.parentBasket = this;
     this.predicate = predicate;
   }
+
+  static withCriterion(
+    name: string,
+    {
+      numMCs,
+      numberOfModules,
+      filter,
+    }: Partial<{
+      numMCs: number;
+      numberOfModules: number;
+      filter: ModuleFilter;
+    }>,
+    basket: Basket,
+  ) {
+    return new FulfillmentResultBasket(name, basket, (result) => {
+      let matchedMCs: number;
+      let matchedModuleCount: number;
+      if (filter) {
+        const matchedModules = Array.from(result.matchedModules).filter(
+          filter.filter.bind(filter),
+        );
+        matchedMCs = 0;
+        for (const mod of matchedModules) {
+          matchedMCs += mod.credits;
+        }
+        matchedModuleCount = matchedModules.length;
+      } else {
+        matchedMCs = result.matchedMCs;
+        matchedModuleCount = result.matchedModules.size;
+      }
+
+      if (numMCs && matchedMCs < numMCs) {
+        return false;
+      }
+
+      if (numberOfModules && matchedModuleCount < numberOfModules) {
+        return false;
+      }
+
+      return true;
+    });
+  }
+
   static atLeastNMCs(name: string, numMCs: number, basket: Basket) {
     return new FulfillmentResultBasket(
       name,
@@ -435,19 +478,64 @@ export class ModuleBasket extends Basket {
   }
 }
 
-export class MultiModuleBasket extends Basket {
+export class ModuleFilter {
   moduleCodePattern?: RegExp;
   moduleCodePrefix?: Set<string>;
   moduleCodeSuffix?: Set<string>;
   level?: Set<number>;
-  requiredMCs?: number;
-  earlyTerminate?: boolean;
-  constructor(basket: Partial<MultiModuleBasket>) {
-    super(basket.title);
+  constructor(basket: Partial<ModuleFilter>) {
     this.moduleCodePattern = basket.moduleCodePattern;
     this.moduleCodePrefix = basket.moduleCodePrefix;
     this.moduleCodeSuffix = basket.moduleCodeSuffix;
     this.level = basket.level;
+  }
+
+  filter(module: Module) {
+    if (this.moduleCodePattern && !this.moduleCodePattern.test(module.code)) {
+      return false;
+    }
+
+    if (
+      this.moduleCodePrefix !== undefined &&
+      !this.moduleCodePrefix.has(module.prefix)
+    ) {
+      return false;
+    }
+
+    if (
+      this.moduleCodeSuffix !== undefined &&
+      !this.moduleCodeSuffix.has(module.suffix)
+    ) {
+      return false;
+    }
+
+    if (this.level !== undefined && !this.level.has(module.level)) {
+      return false;
+    }
+
+    return true;
+  }
+}
+
+export class MultiModuleBasket extends Basket {
+  filter: ModuleFilter;
+  get moduleCodePattern(): RegExp | undefined {
+    return this.filter.moduleCodePattern;
+  }
+  get moduleCodePrefix(): Set<string> | undefined {
+    return this.filter.moduleCodePrefix;
+  }
+  get moduleCodeSuffix(): Set<string> | undefined {
+    return this.filter.moduleCodeSuffix;
+  }
+  get level(): Set<number> | undefined {
+    return this.filter.level;
+  }
+  requiredMCs?: number;
+  earlyTerminate?: boolean;
+  constructor(basket: Partial<MultiModuleBasket> & { filter: ModuleFilter }) {
+    super(basket.title);
+    this.filter = basket.filter;
     this.requiredMCs = basket.requiredMCs;
     this.earlyTerminate = basket.earlyTerminate ?? true;
   }
@@ -523,7 +611,7 @@ export class MultiModuleBasket extends Basket {
       new Set(filteredModules),
     );
   }
-  // /(?<prefix>[A-Z]+)(?<codeNumber>\d)\d+(?<suffix>[A-Z]*)/
+
   getEffectivePattern(): string {
     if (this.moduleCodePattern) {
       return this.moduleCodePattern.source;
