@@ -189,7 +189,8 @@ export class ValidatorState implements Hydratable {
         basketOption.module.code_prefix !== undefined ||
         basketOption.module.code_suffix !== undefined ||
         basketOption.module.code_pattern !== undefined ||
-        basketOption.module.level
+        basketOption.module.level !== undefined ||
+        basketOption.module.codes !== undefined
       ) {
         basket = new baskets.MultiModuleBasket({
           title: basketOption.title,
