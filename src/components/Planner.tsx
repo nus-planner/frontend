@@ -291,7 +291,7 @@ const Planner = () => {
                 isDisabled={isValidateButtonDisabled}
               />
             </HStack>
-            <Box className="horiscroll" borderColor="black">
+            <Box className="verscroll" borderColor="black">
               <Stack>
                 {studyPlanRow(plannerYears.slice(0, 2))}
                 {studyPlanRow(plannerYears.slice(2, 4))}

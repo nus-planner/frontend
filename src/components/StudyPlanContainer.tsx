@@ -7,6 +7,7 @@ import {
   VStack,
   HStack,
   Button,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import DeleteIcon from "@chakra-ui/icons";
@@ -45,25 +46,31 @@ const StudyPlanContainer = ({
     forceUpdate();
   };
 
-  const removeSpecialTerm = () => {
+  const removeSpecialTerm = (year: number) => {
     semesters.pop();
     semesters.pop();
     setSems(semesters);
-    //TODO: clear modules in special term 
+    for (let i = year*4 - 1; i <= year*4; i++) {
+      for (let mod of plannerSemesters[i].modules) {
+        handleModuleClose(mod)
+      }
+    }
     forceUpdate();
   };
   
-const specialTermButton = () => {
+const SpecialTermButton = (year: Number) => {
     if (sems.length === 4) {
       return (
+        <Tooltip label="All modules in special terms will be cleared">
         <Button
           colorScheme="white"
           variant="outline"
-          onClick={removeSpecialTerm}
-          size="sm"
+          onClick={() => removeSpecialTerm(year.valueOf())}
+          size="xs"
         >
-          Clear Special Term
+          Clear Special Terms
         </Button>
+        </Tooltip>
       );
     } else {
       return (
@@ -71,7 +78,7 @@ const specialTermButton = () => {
           colorScheme="white"
           variant="outline"
           onClick={addSpecialTerm}
-          size="sm"
+          size="xs"
         >
           + Special Term
         </Button>
@@ -87,12 +94,12 @@ const specialTermButton = () => {
       minH="22em"
       padding={2}
     >
-      <Flex>
-          <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"}>
+      <Flex pb={"0.3rem"} align="center">
+          <Text fontSize={"sm"} fontWeight="bold" color={"blackAlpha.600"}>
             Year {year}
           </Text>
           <Spacer />
-          {specialTermButton()}
+          {SpecialTermButton(year)}
         
       </Flex>
       <HStack scrollBehavior={"auto"} w="100%" align="">

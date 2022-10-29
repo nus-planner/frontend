@@ -9,6 +9,7 @@ type Filter = {
   code_prefix?: string;
   code_suffix?: string;
   level?: Array<number>;
+  codes?: Array<string>;
 };
 
 type FulfillmentCriteria = {
@@ -126,6 +127,7 @@ export class ValidatorState implements Hydratable {
       level: filter.level
         ? new Set(filter.level.map((level) => level / 1000))
         : undefined,
+      codes: filter.codes ? new Set(filter.codes) : undefined,
     });
   }
 
@@ -187,7 +189,8 @@ export class ValidatorState implements Hydratable {
         basketOption.module.code_prefix !== undefined ||
         basketOption.module.code_suffix !== undefined ||
         basketOption.module.code_pattern !== undefined ||
-        basketOption.module.level
+        basketOption.module.level !== undefined ||
+        basketOption.module.codes !== undefined
       ) {
         basket = new baskets.MultiModuleBasket({
           title: basketOption.title,
