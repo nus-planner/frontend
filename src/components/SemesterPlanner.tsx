@@ -1,15 +1,8 @@
 import {
-  Spacer,
-  Flex,
-  IconButton,
   Text,
   Box,
   VStack,
-  HStack,
 } from "@chakra-ui/react";
-
-import DeleteIcon from "@chakra-ui/icons";
-
 import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
@@ -30,14 +23,23 @@ const SemesterPlanner = ({
   semesterIdx,
   handleModuleClose,
 }: SemesterPlannerProps) => {
-  const semTitle = semesterNumber > 2 ? `Special Term ${semesterNumber-2}` : `Semester ${semesterNumber}`;
+  const semTitle =
+    semesterNumber > 2
+      ? `Special Term ${semesterNumber - 2}`
+      : `Semester ${semesterNumber}`;
 
   return (
     <Box>
       <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
         {semTitle}
       </Text>
-      <Box border="dotted" borderColor={"blackAlpha.400"} borderRadius="0.4rem" w="13rem" minH="22.5rem">
+      <Box
+        border="dotted"
+        borderColor={"blackAlpha.400"}
+        borderRadius="0.4rem"
+        w="13rem"
+        minH="22.5rem"
+      >
         <Droppable droppableId={id}>
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>

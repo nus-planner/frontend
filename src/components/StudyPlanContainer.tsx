@@ -36,13 +36,48 @@ const StudyPlanContainer = ({
   handleModuleClose,
 }: PlannerContainerProps) => {
   const [sems, setSems] = useState<number[]>(semesters);
+  const [, updateState] = useState<{}>();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
   const addSpecialTerm = () => {
     semesters.push(sems.length + 1);
     setSems(semesters);
     forceUpdate();
   };
-  const [, updateState] = useState<{}>();
-  const forceUpdate = useCallback(() => updateState({}), []);
+
+  const removeSpecialTerm = () => {
+    semesters.pop();
+    semesters.pop();
+    setSems(semesters);
+    //TODO: clear modules in special term 
+    forceUpdate();
+  };
+  
+const specialTermButton = () => {
+    if (sems.length === 4) {
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          onClick={removeSpecialTerm}
+          size="sm"
+        >
+          Clear Special Term
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          onClick={addSpecialTerm}
+          size="sm"
+        >
+          + Special Term
+        </Button>
+      );
+    }
+  }
 
   return (
     <Box
@@ -57,12 +92,7 @@ const StudyPlanContainer = ({
             Year {year}
           </Text>
           <Spacer />
-          <Button size="sm"
-            colorScheme={"white"}
-            variant="outline"
-            onClick={addSpecialTerm}
-            disabled={sems.length >= 4}
-            > + Special Term </Button>
+          {specialTermButton()}
         
       </Flex>
       <HStack scrollBehavior={"auto"} w="100%" align="">
