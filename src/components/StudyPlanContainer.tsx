@@ -7,6 +7,7 @@ import {
   VStack,
   HStack,
   Button,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import DeleteIcon from "@chakra-ui/icons";
@@ -60,6 +61,7 @@ const StudyPlanContainer = ({
 const SpecialTermButton = (year: Number) => {
     if (sems.length === 4) {
       return (
+        <Tooltip label="All modules in special terms will be cleared">
         <Button
           colorScheme="white"
           variant="outline"
@@ -68,6 +70,7 @@ const SpecialTermButton = (year: Number) => {
         >
           Clear Special Terms
         </Button>
+        </Tooltip>
       );
     } else {
       return (
