@@ -8,12 +8,15 @@ import {
   Link,
   UnorderedList,
   HStack,
+  Tag,
+  Badge,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { Draggable } from "react-beautiful-dnd";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
 import {
+  convertPrereqTreeToString,
   getNonDuplicateUEs,
   getNUSModsModulePage,
 } from "../utils/moduleUtils";
@@ -37,11 +40,21 @@ const ModuleBox = ({
   idx,
 }: ModuleBoxProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
-  const moduleColor = module.color ?? DEFAULT_MODULE_COLOR;
-  let text: any;
-  if (module.credits != null && module.credits > 0) {
-    text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
+  let moduleColor: string;
+  if (module.color) {
+    if (module.color.length === 1) {
+      moduleColor = module.color[0];
+    } else {
+      moduleColor = "linear(to-r,";
+      for (let i = 0; i < module.color.length; i++) {
+        moduleColor += module.color[i] + ",";
+      }
+      moduleColor += ")";
+    }
+  } else {
+    moduleColor = DEFAULT_MODULE_COLOR;
   }
+  console.log("moduleColor " + moduleColor);
 
   let options: any[] = [];
 
@@ -84,48 +97,6 @@ const ModuleBox = ({
     }
   }
 
-  let prereqsViolationText: any;
-  if (module.prereqsViolated?.length) {
-    let violations: string[] = [];
-    for (let or of module.prereqsViolated) {
-      violations.push(or.join(" or "));
-    }
-    prereqsViolationText = (
-      <div>
-        <HStack>
-          <Icon as={WarningTwoIcon} color="red.500" />
-          <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
-            These modules might need to be taken first:
-          </Text>
-        </HStack>
-        <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
-          {violations.map((v, idx) => (
-            <li key={idx}>{v}</li>
-          ))}
-        </UnorderedList>
-      </div>
-    );
-  }
-
-  let coreqsViolationText: any;
-  if (module.coreqsViolated?.length) {
-    coreqsViolationText = (
-      <div>
-        <HStack>
-          <Icon as={WarningTwoIcon} color="red.500" />
-          <Text fontSize={"xs"} fontWeight="bold" color={"red.500"} pt="1">
-            These modules might need to be taken at the same time:
-          </Text>
-        </HStack>
-        <UnorderedList fontSize={"xs"} fontWeight="bold" color={"red.500"}>
-          {module.coreqsViolated.map((v, idx) => (
-            <li key={idx}>{v}</li>
-          ))}
-        </UnorderedList>
-      </div>
-    );
-  }
-
   return (
     <div>
       <Draggable
@@ -141,14 +112,16 @@ const ModuleBox = ({
               ref={provided.innerRef}
               style={getStyle(provided.draggableProps.style, snapshot)}
             >
-              <Box
+              <Flex
                 w="12rem"
-                minH="5rem"
+                minH="5.5rem"
                 bgColor={moduleColor}
+                bgGradient={moduleColor}
                 alignContent="center"
                 borderRadius="0.4rem"
                 padding="0.2rem 0.5rem"
                 whiteSpace={"initial"}
+                flexDirection="column"
               >
                 <Flex>
                   <Text fontSize={"medium"} color="black.900" fontWeight="bold">
@@ -188,11 +161,79 @@ const ModuleBox = ({
                     {module.name}
                   </Text>
                 )}
-                {text}
-                {prereqsViolationText}
-                {coreqsViolationText}
-                <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
-              </Box>
+                <Spacer />
+                <Flex>
+                  {/* <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text> */}
+                  <HStack ml='-0.2rem' spacing='1'>
+                    {module.tags?.map((tag, idx) => (
+                      <Badge
+                        key={idx}
+                        size="sm"
+                        fontSize='0.5rem'
+                        variant='outline'
+                        margin='0'
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </HStack>
+                  <Spacer />
+                  {module.credits != null && module.credits > 0 && (
+                    <Text fontSize={"x-small"}>{module.credits}MCs</Text>
+                  )}
+                </Flex>
+
+                {!!module.prereqsViolated?.length && (
+                  <div>
+                    <HStack>
+                      <Icon as={WarningTwoIcon} color="red.500" />
+                      <Text
+                        fontSize={"xs"}
+                        fontWeight="bold"
+                        color={"red.500"}
+                        pt="1"
+                      >
+                        These modules might need to be taken first:
+                      </Text>
+                    </HStack>
+                    <UnorderedList
+                      fontSize={"xs"}
+                      fontWeight="bold"
+                      color={"red.500"}
+                    >
+                      {module.prereqsViolated
+                        .map((x) => convertPrereqTreeToString(x))
+                        .map((v, idx) => (
+                          <li key={idx}>{v}</li>
+                        ))}
+                    </UnorderedList>
+                  </div>
+                )}
+                {!!module.coreqsViolated?.length && (
+                  <div>
+                    <HStack>
+                      <Icon as={WarningTwoIcon} color="red.500" />
+                      <Text
+                        fontSize={"xs"}
+                        fontWeight="bold"
+                        color={"red.500"}
+                        pt="1"
+                      >
+                        These modules might need to be taken at the same time:
+                      </Text>
+                    </HStack>
+                    <UnorderedList
+                      fontSize={"xs"}
+                      fontWeight="bold"
+                      color={"red.500"}
+                    >
+                      {module.coreqsViolated.map((v, idx) => (
+                        <li key={idx}>{v}</li>
+                      ))}
+                    </UnorderedList>
+                  </div>
+                )}
+              </Flex>
             </div>
             {snapshot.isDragging && <Box w="12rem" visibility="hidden" />}
           </div>

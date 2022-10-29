@@ -63,8 +63,9 @@ const RequirementContainer = ({
               -1,
             );
 
-            newViewModel.color =
-              moduleColor[parseInt(id.split(":")[1]) % moduleColor.length];
+            newViewModel.color = [
+              moduleColor[parseInt(id.split(":")[1]) % moduleColor.length],
+            ];
 
             requirement.modules.push(newViewModel);
             mainViewModel.addModuleViewModelToGlobalState(newViewModel);
@@ -119,7 +120,7 @@ const RequirementContainer = ({
                       ? "green"
                       : "red"
                   }
-                  size='sm'
+                  size="sm"
                 >
                   {requirement.matchedMCs} / {requirement.expectedMcs || 0} MCs
                   Fulfilled

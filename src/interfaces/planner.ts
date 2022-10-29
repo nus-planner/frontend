@@ -3,14 +3,14 @@ export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
 export interface Module {
   readonly id: string;
-  color?: string;
+  color?: string[];
   readonly code: string;
   name: string;
   credits: number | null;
   editable?: boolean;
   prereqs?: PrereqTree | null;
   preclusions?: string[] | null;
-  prereqsViolated?: string[][] | null;
+  prereqsViolated?: PrereqTree[] | null;
   coreqs?: string[] | null;
   coreqsViolated?: string[] | null;
   tags?: string[];

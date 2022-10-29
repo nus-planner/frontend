@@ -15,8 +15,12 @@ export const addColorToModules = (moduleRequirements: Requirement[]) => {
 export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
   for (let i = 0; i < moduleRequirements.length; i++) {
     for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
-      moduleRequirements[i].modules[j].color =
-        moduleColor[i % moduleColor.length];
+      moduleRequirements[i].modules[j].color = [];
+    }
+  }
+  for (let i = 0; i < moduleRequirements.length; i++) {
+    for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
+      moduleRequirements[i].modules[j].color?.push(moduleColor[i % moduleColor.length]);
     }
   }
 };
@@ -63,7 +67,7 @@ export const applyPrereqValidation = async (
       // Handles 2 cases:
       // module.prereqs is still undefined due to error, or module.prereqs is null (no prereqs)
       if (!!mod.prereqs) {
-        mod.prereqsViolated = evaluatePrereqTreeMods(
+        mod.prereqsViolated = evaluatePrereqTreeModsV2(
           mod.prereqs,
           takenModuleSet,
         );
@@ -110,6 +114,49 @@ const evaluatePrereqTree = (
   if ("or" in prereqTree) {
     return prereqTree.or?.some((x) => evaluatePrereqTree(x, moduleSet));
   }
+};
+
+const evaluatePrereqTreeModsV2 = (
+  prereqTree: PrereqTree,
+  moduleSet: Set<string>,
+): PrereqTree[] | null => {
+  if (typeof prereqTree === "string") {
+    return moduleSet.has(prereqTree) ? null : [prereqTree];
+  }
+  if ("and" in prereqTree) {
+    const unfulfilledTrees = (prereqTree.and as PrereqTree[])
+      .map((x) => evaluatePrereqTreeModsV2(x, moduleSet))
+      .filter((x) => !!x)
+      .flat(1);
+    return unfulfilledTrees.length > 0
+      ? (unfulfilledTrees as PrereqTree[])
+      : null;
+  }
+  if ("or" in prereqTree) {
+    const orNotFulfilled = (prereqTree.or as PrereqTree[]).every(
+      (x) => !!evaluatePrereqTreeModsV2(x, moduleSet),
+    );
+    return orNotFulfilled ? ([prereqTree] as PrereqTree[]) : null;
+  }
+  return null;
+};
+
+export const convertPrereqTreeToString = (prereqTree: PrereqTree): string => {
+  if (typeof prereqTree === "string") {
+    return prereqTree;
+  }
+  if ("and" in prereqTree) {
+    return "(" + (prereqTree.and as PrereqTree[])
+      .map(convertPrereqTreeToString)
+      .join(" and ") + ")";
+  }
+  if ("or" in prereqTree) {
+    return (prereqTree.or as PrereqTree[])
+      .map(convertPrereqTreeToString)
+      .join(" or ");
+  }
+
+  return "";
 };
 
 // Returns null if all prerequisites are fulfilled

@@ -39,10 +39,10 @@ interface GlobalModuleViewModelStateDelegate {
 export class ModuleViewModel implements frontend.Module {
   type = "module";
   requirementDelegate: RequirementDelegate;
-  color?: string;
+  color?: string[];
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
-  prereqsViolated?: string[][];
+  prereqsViolated?: frontend.PrereqTree[];
 
   public get id(): string {
     return this.code;
@@ -107,13 +107,13 @@ export class MultiModuleViewModel implements frontend.Module {
   static count: number = 0;
   id: string;
   type = "multi-module";
-  color?: string;
+  color?: string[];
   code: string;
   name: string;
   credits: number;
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
-  prereqsViolated?: string[][];
+  prereqsViolated?: frontend.PrereqTree[];
   @Expose()
   @Type(() => plan.Module)
   selectedModule?: plan.Module;

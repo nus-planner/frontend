@@ -1,6 +1,6 @@
 export const moduleColor: string[] = [
-  "blue.100",
   "orange.100",
+  "blue.100",
   "purple.100",
   "green.100",
   "red.100",
