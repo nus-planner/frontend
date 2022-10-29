@@ -483,14 +483,20 @@ export class ModuleFilter {
   moduleCodePrefix?: Set<string>;
   moduleCodeSuffix?: Set<string>;
   level?: Set<number>;
+  codes?: Set<string>;
   constructor(basket: Partial<ModuleFilter>) {
     this.moduleCodePattern = basket.moduleCodePattern;
     this.moduleCodePrefix = basket.moduleCodePrefix;
     this.moduleCodeSuffix = basket.moduleCodeSuffix;
     this.level = basket.level;
+    this.codes = basket.codes;
   }
 
   filter(module: Module) {
+    if (this.codes && !this.codes.has(module.code)) {
+      return false;
+    }
+
     if (this.moduleCodePattern && !this.moduleCodePattern.test(module.code)) {
       return false;
     }
@@ -519,6 +525,10 @@ export class ModuleFilter {
 
 export class MultiModuleBasket extends Basket {
   filter: ModuleFilter;
+  get codes(): Set<string> | undefined {
+    return this.filter.codes;
+  }
+
   get moduleCodePattern(): RegExp | undefined {
     return this.filter.moduleCodePattern;
   }
@@ -615,6 +625,8 @@ export class MultiModuleBasket extends Basket {
   getEffectivePattern(): string {
     if (this.moduleCodePattern) {
       return this.moduleCodePattern.source;
+    } else if (this.codes) {
+      return `(${Array.from(this.codes).join("|")})`;
     } else {
       let str: string;
       if (this.level) {
