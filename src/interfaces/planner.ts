@@ -15,6 +15,7 @@ export interface Module {
   coreqsViolated?: string[] | null;
   tags?: string[];
   isMultiModule?: boolean;
+  respawnable?: boolean;
   getUnderlyingModule?(): models.Module | undefined;
   getMatchedRequirements?(): models.RequirementViewModel[];
   selectModule?(module: models.Module): void; // specific to MultiModule

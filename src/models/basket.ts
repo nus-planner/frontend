@@ -543,11 +543,13 @@ export class MultiModuleBasket extends Basket {
   }
   requiredMCs?: number;
   earlyTerminate?: boolean;
+  respawnable: boolean;
   constructor(basket: Partial<MultiModuleBasket> & { filter: ModuleFilter }) {
     super(basket.title);
     this.filter = basket.filter;
     this.requiredMCs = basket.requiredMCs;
     this.earlyTerminate = basket.earlyTerminate ?? true;
+    this.respawnable = basket.respawnable ?? false;
   }
 
   accept<ReturnValue>(visitor: BasketVisitor<ReturnValue>): ReturnValue {

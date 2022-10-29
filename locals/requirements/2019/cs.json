@@ -315,7 +315,8 @@
                       "module": {
                         "code_prefix": "CS",
                         "required_mcs": 16,
-                        "early_terminate": true
+                        "early_terminate": true,
+                        "respawnable": true
                       }
                     }
                   }
@@ -379,7 +380,8 @@
                       "module": {
                         "code_prefix": "CS",
                         "required_mcs": 12,
-                        "early_terminate": true
+                        "early_terminate": true,
+                        "respawnable": true
                       }
                     }
                   }
@@ -425,7 +427,8 @@
           "module": {
             "code_pattern": ".",
             "required_mcs": 32,
-            "early_terminate": false
+            "early_terminate": false,
+            "respawnable": true
           }
         }
       }

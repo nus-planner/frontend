@@ -48,6 +48,10 @@ export class ModuleViewModel implements frontend.Module {
     return this.code;
   }
 
+  public get respawnable(): boolean {
+    return false;
+  }
+
   @Expose()
   @Type(() => plan.Module)
   private module: plan.Module;
@@ -117,6 +121,7 @@ export class MultiModuleViewModel implements frontend.Module {
   @Expose()
   @Type(() => plan.Module)
   selectedModule?: plan.Module;
+  respawnable: boolean = false;
   public get isMultiModule(): boolean {
     return true;
   }
@@ -249,13 +254,13 @@ export class RequirementViewModel implements frontend.Requirement {
             new ModuleViewModel(requirementDelegate, basket.module),
           );
         } else {
-          return moduleStateDelegate.addModuleViewModelToGlobalState(
-            new MultiModuleViewModel(
-              basket.getEffectivePattern(),
-              basket.title,
-              -1,
-            ),
+          const model = new MultiModuleViewModel(
+            basket.getEffectivePattern(),
+            basket.title,
+            -1,
           );
+          model.respawnable = basket.respawnable;
+          return moduleStateDelegate.addModuleViewModelToGlobalState(model);
         }
       });
 
@@ -275,7 +280,9 @@ export class RequirementViewModel implements frontend.Requirement {
   }
 
   public get respawnables(): frontend.Module[] {
-    return this.allModules.filter((mod) => mod.isMultiModule);
+    return this.allModules.filter(
+      (mod) => mod.isMultiModule && mod.respawnable,
+    );
   }
 
   public get isFulfilled(): boolean {

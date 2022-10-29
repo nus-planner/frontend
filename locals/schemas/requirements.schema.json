@@ -130,6 +130,10 @@
                         },
                         "early_terminate": {
                           "type": "boolean"
+                        },
+                        "respawnable": {
+                          "type": "boolean",
+                          "default": false
                         }
                       }
                     }
