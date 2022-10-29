@@ -54,7 +54,6 @@ const ModuleBox = ({
   } else {
     moduleColor = DEFAULT_MODULE_COLOR;
   }
-  console.log("moduleColor " + moduleColor);
 
   let options: any[] = [];
 
@@ -71,6 +70,7 @@ const ModuleBox = ({
       return;
     }
     getNonDuplicateUEs(existingModules).then((mods) => {
+      console.log(module);
       const regexp = new RegExp(module.code);
       const filterResult = mods.filter((mod) => regexp.test(mod.code));
       setMods(filterResult);
@@ -155,6 +155,7 @@ const ModuleBox = ({
                     module={module}
                     options={options}
                     isDragging={snapshot.isDragging}
+                    isExemption={false}
                   />
                 ) : (
                   <Text color="black.900" fontSize={"xs"}>

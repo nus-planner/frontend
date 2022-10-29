@@ -259,7 +259,7 @@ const Planner = () => {
               </Circle>
             </Button>
           </HStack>
-          <Box minW="50%" h="90vh" overflowY={"auto"} className="verscroll">
+          <Box minW="50%" h={"90vh"} overflowY={"auto"} className="verscroll">
             <HStack align={"center"} spacing="1rem">
               <Heading
                 padding="1em 0em 1.5em"
@@ -306,7 +306,7 @@ const Planner = () => {
               >
                 Exemptions
               </Heading>
-              <Box borderColor="black" w="16rem">
+              <Box borderColor="black" mb={"2rem"}>
                 <ExemptionContainer
                   exemptedModules={mainViewModel.planner[0].modules}
                   handleModuleClose={handleModuleClose}

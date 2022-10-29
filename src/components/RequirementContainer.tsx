@@ -78,7 +78,7 @@ const RequirementContainer = ({
           }}
         >
           <Text fontSize={"xl"} colorScheme={"white"}>  + </Text>
-           {respawnable.name}
+           &nbsp;{respawnable.name}
         </Button>
       );
     });

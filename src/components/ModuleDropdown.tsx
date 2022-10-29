@@ -5,20 +5,30 @@ import { fetchBasicModuleInfo } from "../api/moduleAPI";
 import { Module } from "../interfaces/planner";
 import * as models from "../models";
 import { useAppContext } from "./AppContext";
-import { DEFAULT_MODULE_COLOR, moduleColor } from "../constants/moduleColor";
-import React, { useEffect } from "react";
+import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
+import React, { useCallback, useEffect, useState } from "react";
+import { Context } from "@dnd-kit/sortable/dist/components";
+import { FormatOptionLabelMeta } from "react-select/dist/declarations/src/Select";
+import { MultiModuleViewModel } from "../models";
+import { applyPrereqValidation } from "../utils/moduleUtils";
+import { useForceUpdate } from "framer-motion";
+import { handleClientScriptLoad } from "next/script";
 
 interface ModuleDropdownProps {
   module: Module;
   options: any;
   isDragging: boolean;
+  isExemption: boolean;
 }
 
 const ModuleDropdown = ({
   module,
   options,
   isDragging,
+  isExemption,
 }: ModuleDropdownProps) => {
+  const [, updateState] = useState<{}>();
+  const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -65,6 +75,22 @@ const ModuleDropdown = ({
 
     const name = selectedModule.label.replace(selectedModule.value, "");
     setSelectedModuleName(name);
+    console.log(mainViewModel.planner);
+
+    if (isExemption) {
+      if (basicModuleInfo !== undefined) {
+        const [_, newExemptionModule] =
+          mainViewModel.addModuleAndViewModelToGlobalState(
+            basicModuleInfo.moduleCode,
+            basicModuleInfo.title,
+            basicModuleInfo.moduleCredit,
+          );
+        mainViewModel.planner[0].addModule(newExemptionModule);
+        applyPrereqValidation(mainViewModel.planner);
+        mainViewModel.validate();
+        forceUpdate();
+      }
+    }
   };
 
   const moduleColor = module.color ? module.color[0] : DEFAULT_MODULE_COLOR;
@@ -144,11 +170,14 @@ const ModuleDropdown = ({
 
   const [selectedModuleName, setSelectedModuleName] = React.useState("");
 
-  const formatOptionLabel = (data: { label: string; value: string }) => {
-    if (data.value === "placeholder") {
+  const formatOptionLabel = (
+    data: { label: string; value: string },
+    formatOptionLabelMeta: FormatOptionLabelMeta<{ label: string; value: any }>,
+  ) => {
+    if (formatOptionLabelMeta.context === "value") {
       return (
         <Text fontSize="0.8rem" color="black">
-          {data.label}
+          {data.value}
         </Text>
       );
     }
@@ -184,7 +213,8 @@ const ModuleDropdown = ({
           }
           closeMenuOnSelect={true}
           styles={customStyles}
-          menuPortalTarget={document.querySelector("body")}
+          //menuPortalTarget={document.querySelector("body")}
+          menuPosition="fixed"
           onChange={handleChange}
           formatOptionLabel={formatOptionLabel}
           menuIsOpen={isOpen}
@@ -193,7 +223,7 @@ const ModuleDropdown = ({
           components={{ MenuList: WindowedMenuList }}
         />
       </FormControl>
-      {selectedModuleNameDisplay}
+      {!isExemption && selectedModuleNameDisplay}
     </>
   );
 };
