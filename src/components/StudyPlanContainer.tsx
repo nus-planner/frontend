@@ -66,7 +66,7 @@ const SpecialTermButton = (year: Number) => {
           colorScheme="white"
           variant="outline"
           onClick={() => removeSpecialTerm(year.valueOf())}
-          size="sm"
+          size="xs"
         >
           Clear Special Terms
         </Button>
@@ -78,7 +78,7 @@ const SpecialTermButton = (year: Number) => {
           colorScheme="white"
           variant="outline"
           onClick={addSpecialTerm}
-          size="sm"
+          size="xs"
         >
           + Special Term
         </Button>
@@ -94,8 +94,8 @@ const SpecialTermButton = (year: Number) => {
       minH="22em"
       padding={2}
     >
-      <Flex>
-          <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"}>
+      <Flex pb={"0.3rem"} align="center">
+          <Text fontSize={"sm"} fontWeight="bold" color={"blackAlpha.600"}>
             Year {year}
           </Text>
           <Spacer />
