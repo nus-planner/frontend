@@ -45,24 +45,28 @@ const StudyPlanContainer = ({
     forceUpdate();
   };
 
-  const removeSpecialTerm = () => {
+  const removeSpecialTerm = (year: number) => {
     semesters.pop();
     semesters.pop();
     setSems(semesters);
-    //TODO: clear modules in special term 
+    for (let i = year*4 - 1; i <= year*4; i++) {
+      for (let mod of plannerSemesters[i].modules) {
+        handleModuleClose(mod)
+      }
+    }
     forceUpdate();
   };
   
-const specialTermButton = () => {
+const SpecialTermButton = (year: Number) => {
     if (sems.length === 4) {
       return (
         <Button
           colorScheme="white"
           variant="outline"
-          onClick={removeSpecialTerm}
+          onClick={() => removeSpecialTerm(year.valueOf())}
           size="sm"
         >
-          Clear Special Term
+          Clear Special Terms
         </Button>
       );
     } else {
@@ -92,7 +96,7 @@ const specialTermButton = () => {
             Year {year}
           </Text>
           <Spacer />
-          {specialTermButton()}
+          {SpecialTermButton(year)}
         
       </Flex>
       <HStack scrollBehavior={"auto"} w="100%" align="">
