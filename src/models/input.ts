@@ -33,6 +33,7 @@ type ModuleBasket = {
   double_count?: boolean;
   required_mcs?: number;
   early_terminate?: boolean;
+  respawnable?: boolean;
 } & Filter;
 
 type BasketOption = Shared<
@@ -197,6 +198,7 @@ export class ValidatorState implements Hydratable {
           filter: this.convertFilter(basketOption.module),
           requiredMCs: basketOption.module.required_mcs,
           earlyTerminate: basketOption.module.early_terminate,
+          respawnable: basketOption.module.respawnable,
         });
       } else {
         throw new Error(

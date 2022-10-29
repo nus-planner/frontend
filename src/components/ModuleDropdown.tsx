@@ -6,19 +6,16 @@ import { Module } from "../interfaces/planner";
 import * as models from "../models";
 import { useAppContext } from "./AppContext";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
-import React, { useCallback, useEffect, useState } from "react";
-import { Context } from "@dnd-kit/sortable/dist/components";
+import React, { useEffect } from "react";
 import { FormatOptionLabelMeta } from "react-select/dist/declarations/src/Select";
-import { MultiModuleViewModel } from "../models";
 import { applyPrereqValidation } from "../utils/moduleUtils";
-import { useForceUpdate } from "framer-motion";
-import { handleClientScriptLoad } from "next/script";
 
 interface ModuleDropdownProps {
   module: Module;
   options: any;
   isDragging: boolean;
   isExemption: boolean;
+  forceUpdate?: () => void;
 }
 
 const ModuleDropdown = ({
@@ -26,9 +23,8 @@ const ModuleDropdown = ({
   options,
   isDragging,
   isExemption,
+  forceUpdate,
 }: ModuleDropdownProps) => {
-  const [, updateState] = useState<{}>();
-  const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -86,9 +82,12 @@ const ModuleDropdown = ({
             basicModuleInfo.moduleCredit,
           );
         mainViewModel.planner[0].addModule(newExemptionModule);
-        applyPrereqValidation(mainViewModel.planner);
-        mainViewModel.validate();
-        forceUpdate();
+        await applyPrereqValidation(mainViewModel.planner).then((_) => {
+          mainViewModel.validate();
+          if (forceUpdate !== undefined) {
+            forceUpdate();
+          }
+        });
       }
     }
   };

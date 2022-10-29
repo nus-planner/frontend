@@ -311,6 +311,7 @@ const Planner = () => {
                   exemptedModules={mainViewModel.planner[0].modules}
                   handleModuleClose={handleModuleClose}
                   id={"planner:0"}
+                  forceUpdate={forceUpdate}
                 />
               </Box>
             </div>

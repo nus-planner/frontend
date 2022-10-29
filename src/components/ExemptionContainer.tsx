@@ -1,10 +1,5 @@
 import {
-  IconButton,
-  Text,
   Box,
-  VStack,
-  Flex,
-  Spacer,
   Tag,
   TagLabel,
   TagCloseButton,
@@ -22,12 +17,14 @@ interface ExemptionContainerProps {
   exemptedModules: Module[];
   id: string;
   handleModuleClose: (module: Module) => void;
+  forceUpdate: () => void;
 }
 
 const ExemptionContainer = ({
   exemptedModules,
   id,
   handleModuleClose,
+  forceUpdate,
 }: ExemptionContainerProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   const [mods, setMods] = useState<Module[]>([]);
@@ -75,6 +72,7 @@ const ExemptionContainer = ({
         isDragging={false}
         isExemption={true}
         module={{ code: ".", name: "exemptions", id: id, credits: -1 }}
+        forceUpdate={forceUpdate}
       />
       {exemptedModules.map((module) => exemptionTag(module))}
     </Box>

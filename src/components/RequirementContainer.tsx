@@ -45,8 +45,6 @@ const RequirementContainer = ({
   const respawnButtons = requirement.respawnables
     .uniqueByKey("name")
     .map((respawnable) => {
-      console.log(respawnable);
-      console.log(respawnable.name);
       return (
         <Button
           key={respawnable.code}
@@ -77,8 +75,11 @@ const RequirementContainer = ({
             forceUpdate();
           }}
         >
-          <Text fontSize={"xl"} colorScheme={"white"}>  + </Text>
-           &nbsp;{respawnable.name}
+          <Text fontSize={"xl"} colorScheme={"white"}>
+            {" "}
+            +{" "}
+          </Text>
+          &nbsp;{respawnable.name}
         </Button>
       );
     });

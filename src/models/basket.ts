@@ -543,11 +543,13 @@ export class MultiModuleBasket extends Basket {
   }
   requiredMCs?: number;
   earlyTerminate?: boolean;
+  respawnable: boolean;
   constructor(basket: Partial<MultiModuleBasket> & { filter: ModuleFilter }) {
     super(basket.title);
     this.filter = basket.filter;
     this.requiredMCs = basket.requiredMCs;
     this.earlyTerminate = basket.earlyTerminate ?? true;
+    this.respawnable = basket.respawnable ?? false;
   }
 
   accept<ReturnValue>(visitor: BasketVisitor<ReturnValue>): ReturnValue {
@@ -622,11 +624,15 @@ export class MultiModuleBasket extends Basket {
     );
   }
 
+  private setToRegex(set: Set<string>) {
+    return `(${Array.from(set).join("|")})`;
+  }
+
   getEffectivePattern(): string {
     if (this.moduleCodePattern) {
       return this.moduleCodePattern.source;
     } else if (this.codes) {
-      return `(${Array.from(this.codes).join("|")})`;
+      return this.setToRegex(this.codes);
     } else {
       let str: string;
       if (this.level) {
@@ -636,11 +642,11 @@ export class MultiModuleBasket extends Basket {
       }
 
       if (this.moduleCodePrefix) {
-        str = `^${this.moduleCodePrefix}` + str;
+        str = `^${this.setToRegex(this.moduleCodePrefix)}` + str;
       }
 
       if (this.moduleCodeSuffix) {
-        str = str + `${this.moduleCodeSuffix}$`;
+        str = str + `${this.setToRegex(this.moduleCodeSuffix)}$`;
       }
 
       return str;
