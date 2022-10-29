@@ -39,6 +39,7 @@
       {
         "CS Foundation": {
           "state": "overallDegreeState",
+          "expected_mcs": 36,
           "title": "CS foundation",
           "and": [
             {
@@ -60,6 +61,7 @@
       },
       {
         "Team Project Requirement": {
+          "expected_mcs": 8,
           "state": "overallDegreeState",
           "or": [
             "CS3203",
@@ -95,6 +97,7 @@
       },
       {
         "IT Professionalism": {
+          "expected_mcs": 12,
           "state": "overallDegreeState",
           "and": [
             {
@@ -109,6 +112,7 @@
       },
       {
         "Industry Experience Requirement": {
+          "expected_mcs": 12,
           "state": "overallDegreeState",
           "or": [
             "CP3880",
@@ -139,6 +143,7 @@
       },
       {
         "CS Breadth and Depth": {
+          "expected_mcs": 24,
           "tag": "B&D",
           "state": "overallDegreeState",
           "fulfillment_criteria": {
@@ -373,6 +378,7 @@
             "MA1521",
             {
               "physics": {
+                "tag": "1 sci mod",
                 "or": ["PC1221"]
               }
             }
