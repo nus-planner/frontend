@@ -141,7 +141,9 @@
         "CS Breadth and Depth": {
           "tag": "B&D",
           "state": "overallDegreeState",
-          "at_least_n_mcs": 24,
+          "fulfillment_criteria": {
+            "at_least_n_mcs": 24
+          },
           "or": [
             {
               "Focus Areas sharing primary with CFM": {
@@ -152,7 +154,9 @@
                       "or": [
                         {
                           "swe_focus_area_primaries": {
-                            "at_least_n_modules": 3,
+                            "fulfillment_criteria": {
+                              "at_least_n_modules": 3
+                            },
                             "tag": "swe",
                             "and": [
                               {
@@ -299,7 +303,9 @@
                       "or": [
                         {
                           "security_focus_area_primaries": {
-                            "at_least_n_modules": 3,
+                            "fulfillment_criteria": {
+                              "at_least_n_modules": 3
+                            },
                             "tag": "security",
                             "and": [
                               {

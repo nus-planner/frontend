@@ -101,7 +101,9 @@
                   },
                   {
                     "Technical Electives": {
-                      "at_least_n_mcs": 12,
+                      "fulfillment_criteria": {
+                        "at_least_n_mcs": 12
+                      },
                       "at_least_n_of": {
                         "n": 3,
                         "baskets": [

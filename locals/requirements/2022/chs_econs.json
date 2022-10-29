@@ -113,7 +113,7 @@
             {
               "3k Requirement": {
                 "module": {
-                  "level": 3000,
+                  "level": [3000],
                   "required_mcs": 4,
                   "early_terminate": true
                 }
@@ -122,7 +122,7 @@
             {
               "4k Requirement": {
                 "module": {
-                  "level": 4000,
+                  "level": [4000],
                   "required_mcs": 20,
                   "early_terminate": true
                 }

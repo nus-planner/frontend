@@ -2,78 +2,55 @@
   "type": "object",
   "patternProperties": {
     "^.*$": {
-      "properties": {
-        "expected_mcs": {
-          "type": "integer",
-          "description": "A rough estimate on the number of mcs. This is only needed for top level requirements."
-        },
-        "tag": {
-          "type": "string",
-          "description": "A tag to label all modules nested recursively underneath"
-        },
-        "state": {
-          "type": "string",
-          "description": "This creates a StatefulBasket. TODO: Make this message more user friendly?"
-        },
-        "title": {
-          "type": "string",
-          "description": "The name of this requirement"
-        },
-        "description": {
-          "type": "string",
-          "description": "A more verbose descriptions of the requirement specifics"
-        },
-        "at_least_n_mcs": {
-          "type": "number",
-          "description": "At least a certain number of MCs fulfilled"
-        },
-        "at_least_n_modules": {
-          "type": "number",
-          "description": "At least a certain number of modules fulfilled"
-        }
-      },
-      "anyOf": [
+      "allOf": [
         {
-          "type": "object",
           "properties": {
-            "and": {
-              "description": "All of these baskets must be fulfilled",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  { "type": "string" },
-                  { "type": "object", "$ref": "#" }
-                ]
-              }
+            "expected_mcs": {
+              "type": "integer",
+              "description": "A rough estimate on the number of mcs. This is only needed for top level requirements."
+            },
+            "tag": {
+              "type": "string",
+              "description": "A tag to label all modules nested recursively underneath"
+            },
+            "state": {
+              "type": "string",
+              "description": "This creates a StatefulBasket. TODO: Make this message more user friendly?"
+            },
+            "title": {
+              "type": "string",
+              "description": "The name of this requirement"
+            },
+            "description": {
+              "type": "string",
+              "description": "A more verbose descriptions of the requirement specifics"
+            },
+            "fulfillment_criteria": {
+              "allOf": [
+                { "$ref": "#/filters" },
+                {
+                  "properties": {
+                    "at_least_n_mcs": {
+                      "type": "number",
+                      "description": "At least a certain number of MCs fulfilled"
+                    },
+                    "at_least_n_modules": {
+                      "type": "number",
+                      "description": "At least a certain number of modules fulfilled"
+                    }
+                  }
+                }
+              ]
             }
           }
         },
         {
-          "type": "object",
-          "properties": {
-            "or": {
-              "description": "At least one of these baskets must be fulfilled",
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  { "type": "string" },
-                  { "type": "object", "$ref": "#" }
-                ]
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "properties": {
-            "at_least_n_of": {
-              "description": "At least n of these baskets must be fulfilled",
+          "anyOf": [
+            {
               "type": "object",
               "properties": {
-                "n": {
-                  "type": "number"
-                },
-                "baskets": {
+                "and": {
+                  "description": "All of these baskets must be fulfilled",
                   "type": "array",
                   "items": {
                     "anyOf": [
@@ -83,54 +60,108 @@
                   }
                 }
               }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "properties": {
-            "module": {
-              "description": "Either a single Module or several modules by some kind of filter",
+            },
+            {
+              "type": "object",
               "properties": {
-                "code": {
-                  "description": "Module code",
-                  "type": "string"
-                },
-                "mc": {
-                  "description": "Number of MCs",
-                  "type": "number"
-                },
-                "code_prefix": {
-                  "description": "Module code prefix",
-                  "type": "string"
-                },
-                "code_suffix": {
-                  "description": "Module code suffix",
-                  "type": "string"
-                },
-                "code_pattern": {
-                  "desription": "Regex filter of module code",
-                  "type": "string"
-                },
-                "level": {
-                  "description": "Level filter",
-                  "enum": [1000, 2000, 3000, 4000, 5000, 6000]
-                },
-                "double_count": {
-                  "type": "boolean",
-                  "default": false
-                },
-                "required_mcs": {
-                  "type": "number"
-                },
-                "early_terminate": {
-                  "type": "boolean"
+                "or": {
+                  "description": "At least one of these baskets must be fulfilled",
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      { "type": "string" },
+                      { "type": "object", "$ref": "#" }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "at_least_n_of": {
+                  "description": "At least n of these baskets must be fulfilled",
+                  "type": "object",
+                  "properties": {
+                    "n": {
+                      "type": "number"
+                    },
+                    "baskets": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          { "type": "string" },
+                          { "type": "object", "$ref": "#" }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "module": {
+                  "description": "Either a single Module or several modules by some kind of filter",
+                  "allOf": [
+                    {
+                      "$ref": "#/filters"
+                    },
+                    {
+                      "properties": {
+                        "code": {
+                          "description": "Module code",
+                          "type": "string"
+                        },
+                        "mc": {
+                          "description": "Number of MCs",
+                          "type": "number"
+                        },
+                        "double_count": {
+                          "type": "boolean",
+                          "default": false
+                        },
+                        "required_mcs": {
+                          "type": "number"
+                        },
+                        "early_terminate": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
-          }
+          ]
         }
       ]
+    }
+  },
+  "filters": {
+    "properties": {
+      "code_prefix": {
+        "description": "Module code prefix",
+        "type": "string"
+      },
+      "code_suffix": {
+        "description": "Module code suffix",
+        "type": "string"
+      },
+      "code_pattern": {
+        "desription": "Regex filter of module code",
+        "type": "string"
+      },
+      "level": {
+        "description": "Level filter",
+        "type": "array",
+        "items": [
+          {
+            "enum": [1000, 2000, 3000, 4000, 5000, 6000]
+          }
+        ]
+      }
     }
   }
 }
