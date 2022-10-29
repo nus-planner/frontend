@@ -4,6 +4,7 @@
       {
         "University Level Requirements": {
           "expected_mcs": 20,
+          "description": "You must take the ULRs!",
           "state": "overallDegreeState",
           "title": "University Level Requirements",
           "and": [
