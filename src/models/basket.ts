@@ -622,11 +622,15 @@ export class MultiModuleBasket extends Basket {
     );
   }
 
+  private setToRegex(set: Set<string>) {
+    return `(${Array.from(set).join("|")})`;
+  }
+
   getEffectivePattern(): string {
     if (this.moduleCodePattern) {
       return this.moduleCodePattern.source;
     } else if (this.codes) {
-      return `(${Array.from(this.codes).join("|")})`;
+      return this.setToRegex(this.codes);
     } else {
       let str: string;
       if (this.level) {
@@ -636,11 +640,11 @@ export class MultiModuleBasket extends Basket {
       }
 
       if (this.moduleCodePrefix) {
-        str = `^${this.moduleCodePrefix}` + str;
+        str = `^${this.setToRegex(this.moduleCodePrefix)}` + str;
       }
 
       if (this.moduleCodeSuffix) {
-        str = str + `${this.moduleCodeSuffix}$`;
+        str = str + `${this.setToRegex(this.moduleCodeSuffix)}$`;
       }
 
       return str;
