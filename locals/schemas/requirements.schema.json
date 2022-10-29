@@ -156,11 +156,9 @@
       "level": {
         "description": "Level filter",
         "type": "array",
-        "items": [
-          {
-            "enum": [1000, 2000, 3000, 4000, 5000, 6000]
-          }
-        ]
+        "items": {
+          "enum": [1000, 2000, 3000, 4000, 5000, 6000]
+        }
       }
     }
   }
