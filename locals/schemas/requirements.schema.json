@@ -104,15 +104,18 @@
               "properties": {
                 "module": {
                   "description": "Either a single Module or several modules by some kind of filter",
+                  "type": "object",
                   "allOf": [
                     {
                       "$ref": "#/filters"
                     },
                     {
+                      "type": "object",
                       "properties": {
                         "code": {
                           "description": "Module code",
-                          "type": "string"
+                          "type": "string",
+                          "pattern": "^(?<prefix>[A-Z]+)(?<codeNumber>\\d)\\d+(?<suffix>[A-Z]*)$"
                         },
                         "mc": {
                           "description": "Number of MCs",
@@ -140,7 +143,16 @@
     }
   },
   "filters": {
+    "type": "object",
     "properties": {
+      "codes": {
+        "description": "A set of module codes",
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^(?<prefix>[A-Z]+)(?<codeNumber>\\d)\\d+(?<suffix>[A-Z]*)$"
+        }
+      },
       "code_prefix": {
         "description": "Module code prefix",
         "type": "string"

@@ -9,6 +9,7 @@ type Filter = {
   code_prefix?: string;
   code_suffix?: string;
   level?: Array<number>;
+  codes?: Array<string>;
 };
 
 type FulfillmentCriteria = {
@@ -126,6 +127,7 @@ export class ValidatorState implements Hydratable {
       level: filter.level
         ? new Set(filter.level.map((level) => level / 1000))
         : undefined,
+      codes: filter.codes ? new Set(filter.codes) : undefined,
     });
   }
 
