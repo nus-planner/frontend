@@ -8,6 +8,8 @@ import {
   Link,
   UnorderedList,
   HStack,
+  Tag,
+  Badge,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
@@ -53,11 +55,6 @@ const ModuleBox = ({
     moduleColor = DEFAULT_MODULE_COLOR;
   }
   console.log("moduleColor " + moduleColor);
-
-  let text: any;
-  if (module.credits != null && module.credits > 0) {
-    text = <Text fontSize={"xx-small"}>{module.credits}MCs</Text>;
-  }
 
   let options: any[] = [];
 
@@ -115,15 +112,16 @@ const ModuleBox = ({
               ref={provided.innerRef}
               style={getStyle(provided.draggableProps.style, snapshot)}
             >
-              <Box
+              <Flex
                 w="12rem"
-                minH="5rem"
+                minH="5.5rem"
                 bgColor={moduleColor}
                 bgGradient={moduleColor}
                 alignContent="center"
                 borderRadius="0.4rem"
                 padding="0.2rem 0.5rem"
                 whiteSpace={"initial"}
+                flexDirection="column"
               >
                 <Flex>
                   <Text fontSize={"medium"} color="black.900" fontWeight="bold">
@@ -163,8 +161,28 @@ const ModuleBox = ({
                     {module.name}
                   </Text>
                 )}
-                {text}
-                <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text>
+                <Spacer />
+                <Flex>
+                  {/* <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text> */}
+                  <HStack ml='-0.2rem' spacing='1'>
+                    {module.tags?.map((tag, idx) => (
+                      <Badge
+                        key={idx}
+                        size="sm"
+                        fontSize='0.5rem'
+                        variant='outline'
+                        margin='0'
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </HStack>
+                  <Spacer />
+                  {module.credits != null && module.credits > 0 && (
+                    <Text fontSize={"x-small"}>{module.credits}MCs</Text>
+                  )}
+                </Flex>
+
                 {!!module.prereqsViolated?.length && (
                   <div>
                     <HStack>
@@ -215,7 +233,7 @@ const ModuleBox = ({
                     </UnorderedList>
                   </div>
                 )}
-              </Box>
+              </Flex>
             </div>
             {snapshot.isDragging && <Box w="12rem" visibility="hidden" />}
           </div>
