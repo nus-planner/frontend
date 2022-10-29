@@ -8,8 +8,8 @@ import {
   Link,
   UnorderedList,
   HStack,
-  Tag,
   Badge,
+  Wrap,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
@@ -164,23 +164,23 @@ const ModuleBox = ({
                 )}
                 <Spacer />
                 <Flex>
-                  {/* <Text fontSize={"xx-small"}>{module.tags?.join(",")}</Text> */}
-                  <HStack ml='-0.2rem' spacing='1'>
+                  <Wrap ml="-0.2rem" spacing="1" alignSelf='flex-end'>
                     {module.tags?.map((tag, idx) => (
                       <Badge
                         key={idx}
                         size="sm"
-                        fontSize='0.5rem'
-                        variant='outline'
-                        margin='0'
+                        fontSize="0.5rem"
+                        variant="outline"
                       >
                         {tag}
                       </Badge>
                     ))}
-                  </HStack>
+                  </Wrap>
                   <Spacer />
                   {module.credits != null && module.credits > 0 && (
-                    <Text fontSize={"x-small"}>{module.credits}MCs</Text>
+                    <Text fontSize={"x-small"} alignSelf="flex-end">
+                      {module.credits}MCs
+                    </Text>
                   )}
                 </Flex>
 
