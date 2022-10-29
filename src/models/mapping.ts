@@ -22,6 +22,9 @@ interface RequirementDelegate {
 }
 
 interface GlobalModuleViewModelStateDelegate {
+  addModuleAndViewModelToGlobalState(
+    ...x: ConstructorParameters<typeof plan.Module>
+  ): [plan.Module, frontend.Module];
   addModuleViewModelToGlobalState(
     moduleViewModel: frontend.Module,
     addIfExists?: boolean,
@@ -710,6 +713,18 @@ export class MainViewModel
       (mod) => new ModuleViewModel(this, mod),
     );
     this.basketToRequirementViewModelMap = new Map();
+  }
+
+  addModuleAndViewModelToGlobalState(
+    code: string,
+    name: string,
+    credits: number,
+  ): [plan.Module, frontend.Module] {
+    let mod = new plan.Module(code, name, credits);
+    mod = this.addModuleToGlobalState(mod);
+    let modViewModel: frontend.Module = new ModuleViewModel(this, mod);
+    modViewModel = this.addModuleViewModelToGlobalState(modViewModel);
+    return [mod, modViewModel];
   }
 
   exemptions!: frontend.Module[];
