@@ -115,9 +115,18 @@
           "expected_mcs": 12,
           "state": "overallDegreeState",
           "or": [
-            "CP3880",
             {
-              "": {
+              "ATAP": {
+                "tag": "ATAP",
+                "module": {
+                  "code": "CP3880",
+                  "mc": 12
+                }
+              }
+            },
+            {
+              "SIP I/II": {
+                "tag": "SIP",
                 "and": [
                   {
                     "cp3200": {
@@ -127,12 +136,20 @@
                       }
                     }
                   },
-                  "CP3202"
+                  {
+                    "CP3202": {
+                      "module": {
+                        "code": "CP3202",
+                        "mc": 6
+                      }
+                    }
+                  }
                 ]
               }
             },
             {
-              "": {
+              "CVWO": {
+                "tag": "CVWO",
                 "and": ["CP3107", "CP3110"]
               }
             },
@@ -144,7 +161,6 @@
       {
         "CS Breadth and Depth": {
           "expected_mcs": 24,
-          "tag": "B&D",
           "state": "overallDegreeState",
           "fulfillment_criteria": {
             "at_least_n_mcs": 24
@@ -162,7 +178,7 @@
                             "fulfillment_criteria": {
                               "at_least_n_modules": 3
                             },
-                            "tag": "swe",
+                            "tag": "SWE Primary",
                             "and": [
                               {
                                 "SWE FA at least 1 Level 4000": {
@@ -201,7 +217,7 @@
                         },
                         {
                           "algo_focus_area_primaries": {
-                            "tag": "algo",
+                            "tag": "Algorithms Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
@@ -243,7 +259,7 @@
                         },
                         {
                           "networks_focus_area_primaries": {
-                            "tag": "networks",
+                            "tag": "Networks Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
@@ -311,7 +327,7 @@
                             "fulfillment_criteria": {
                               "at_least_n_modules": 3
                             },
-                            "tag": "security",
+                            "tag": "Security Primary",
                             "and": [
                               {
                                 "Security FA at least 1 Level 4000": {
@@ -372,7 +388,17 @@
           "state": "overallDegreeState",
           "and": [
             {
-              "": { "or": [{ "": { "and": ["ST2131", "ST2132"] } }, "ST2334"] }
+              "Statistics": {
+                "or": [
+                  {
+                    "": {
+                      "tag": "ST2131/2132 Pair",
+                      "and": ["ST2131", "ST2132"]
+                    }
+                  },
+                  "ST2334"
+                ]
+              }
             },
             "MA1101R",
             "MA1521",
