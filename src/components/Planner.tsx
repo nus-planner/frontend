@@ -309,7 +309,6 @@ const Planner = () => {
               <Box borderColor="black" mb={"3rem"}>
                 <ExemptionContainer
                   exemptedModules={mainViewModel.planner[0].modules}
-                  handleModuleClose={handleModuleClose}
                   id={"planner:0"}
                   forceUpdate={forceUpdate}
                 />

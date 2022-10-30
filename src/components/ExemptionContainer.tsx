@@ -8,25 +8,26 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { Module, Semester } from "../interfaces/planner";
-import ModuleBox from "./ModuleBox";
-import { Droppable } from "react-beautiful-dnd";
+import { Module } from "../interfaces/planner";
 import ModuleDropdown from "./ModuleDropdown";
 import { useEffect, useState } from "react";
-import { getNonDuplicateUEs, getNUSModsModulePage } from "../utils/moduleUtils";
+import {
+  applyPrereqValidation,
+  getNonDuplicateUEs,
+  getNUSModsModulePage,
+} from "../utils/moduleUtils";
 import { useAppContext } from "./AppContext";
+import { sortRequirementModules } from "../utils/plannerUtils";
 
 interface ExemptionContainerProps {
   exemptedModules: Module[];
   id: string;
-  handleModuleClose: (module: Module) => void;
   forceUpdate: () => void;
 }
 
 const ExemptionContainer = ({
   exemptedModules,
   id,
-  handleModuleClose,
   forceUpdate,
 }: ExemptionContainerProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
@@ -45,6 +46,29 @@ const ExemptionContainer = ({
       value: mod.code,
     });
   }
+
+  const handleExemptionClose = async (module: Module) => {
+    console.log("handle module close", module.code);
+
+    module.prereqsViolated = [];
+    module.coreqsViolated = [];
+    mainViewModel.planner[0].filtered((mod) => mod.code !== module.code);
+
+    // state.requirements[0].modules.push(module);
+    mainViewModel.removeModuleViewModelFromGlobalState(module.code);
+    await applyPrereqValidation(mainViewModel.planner).then((semesters) => {
+      const isPrereqsViolated =
+        semesters
+          .map((semester) => semester.modules)
+          .flat(1)
+          .filter((module) => module.prereqsViolated?.length).length > 0;
+      return isPrereqsViolated;
+    });
+
+    sortRequirementModules(mainViewModel);
+    mainViewModel.validate();
+    forceUpdate();
+  };
 
   return (
     <Box borderRadius="0.4rem" minH="22sem" color={"blackAlpha.50"}>
@@ -80,9 +104,7 @@ const ExemptionContainer = ({
             </TagLabel>
             <TagCloseButton
               onClick={() => {
-                if (handleModuleClose !== undefined) {
-                  handleModuleClose(module);
-                }
+                handleExemptionClose(module);
               }}
             />
           </Tag>
