@@ -11,6 +11,7 @@ import {
   Badge,
   Wrap,
   Button,
+  Divider,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
@@ -127,6 +128,9 @@ const ModuleBox = ({
                 padding="0.2rem 0.5rem"
                 whiteSpace={"initial"}
                 flexDirection="column"
+                  shadow="md"
+                  filter={(!!module.prereqsViolated?.length || !!module.coreqsViolated?.length) ? "drop-shadow(0 0 0.15rem red)" : "none"}
+                  
               >
                 <Flex>
                   <Text fontSize={"medium"} color="black.900" fontWeight="bold">
@@ -197,14 +201,18 @@ const ModuleBox = ({
                   )}
                 </Flex>
 
+                {(!!module.prereqsViolated?.length || !!module.coreqsViolated?.length)
+                && (
+                <Divider orientation='horizontal' borderColor={"blackAlpha.900"} borderStyle={"dotted"} mt="0.5rem" />)}
                 {!!module.prereqsViolated?.length && (
                   <div>
+                    
                     <HStack>
-                      <Icon as={WarningTwoIcon} color="red.500" />
+                      <Icon as={WarningTwoIcon} color="blackAlpha.900" />
                       <Text
                         fontSize={"xs"}
-                        fontWeight="bold"
-                        color={"red.500"}
+                        //fontWeight="bold"
+                        color={"blackAlpha.900"}
                         pt="1"
                       >
                         These modules might need to be taken first:
@@ -212,8 +220,8 @@ const ModuleBox = ({
                     </HStack>
                     <UnorderedList
                       fontSize={"xs"}
-                      fontWeight="bold"
-                      color={"red.500"}
+                      //fontWeight="bold"
+                      color={"blackAlpha.900"}
                     >
                       {module.prereqsViolated
                         .map((x) => convertPrereqTreeToString(x))
@@ -226,11 +234,11 @@ const ModuleBox = ({
                 {!!module.coreqsViolated?.length && (
                   <div>
                     <HStack>
-                      <Icon as={WarningTwoIcon} color="red.500" />
+                      <Icon as={WarningTwoIcon} color="blackAlpha.900"/>
                       <Text
                         fontSize={"xs"}
-                        fontWeight="bold"
-                        color={"red.500"}
+                        //fontWeight="bold"
+                        color={"blackAlpha.900"}
                         pt="1"
                       >
                         These modules might need to be taken at the same time:
@@ -238,8 +246,8 @@ const ModuleBox = ({
                     </HStack>
                     <UnorderedList
                       fontSize={"xs"}
-                      fontWeight="bold"
-                      color={"red.500"}
+                      //fontWeight="bold"
+                      color={"blackAlpha.900"}
                     >
                       {module.coreqsViolated.map((v, idx) => (
                         <li key={idx}>{v}</li>

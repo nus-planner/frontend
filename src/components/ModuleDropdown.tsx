@@ -191,7 +191,7 @@ const ModuleDropdown = ({
     <>
       <FormControl>
         <Select
-          options={[{ options: options, label: module.code.slice(1, 4) }]}
+          options={[{ options: options }]}
           placeholder={"Select a module"}
           value={
             !!underlyingModule
