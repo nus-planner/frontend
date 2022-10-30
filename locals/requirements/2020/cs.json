@@ -280,7 +280,8 @@
                         "code_pattern": "^(CS|CP|IFS)",
                         "level": [4000, 5000, 6000],
                         "required_mcs": 20,
-                        "early_terminate": true
+                        "early_terminate": true,
+                        "respawnable": true
                       }
                     }
                   }
@@ -383,7 +384,8 @@
                         "code_pattern": "^(CS|CP|IFS)",
                         "level": [4000, 5000, 6000],
                         "required_mcs": 16,
-                        "early_terminate": true
+                        "early_terminate": true,
+                        "respawnable": true
                       }
                     }
                   }
