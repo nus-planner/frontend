@@ -62,6 +62,7 @@
       },
       {
         "Team Project Requirement": {
+          "description": "Complete at least 8 MCs of Computer Systems Team Project modules from the following pairs, or modules approved by the Department of Computer Science:\nCS3203 Software Engineering Project, or\nCS3216 Software Product Engineering for Digital Markets and CS3217 Software Engineering on Modern Application Platforms, or\nCS3281 Thematic Systems Project I and CS3282 Thematic Systems Project II.",
           "expected_mcs": 8,
           "state": "overallDegreeState",
           "or": [
