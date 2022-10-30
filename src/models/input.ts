@@ -6,9 +6,9 @@ import { Hydratable } from "../interfaces/planner";
 
 type Filter = {
   code_pattern?: string;
-  code_prefix?: string;
-  code_suffix?: string;
-  level?: Array<number>;
+  code_prefix?: string | Array<string>;
+  code_suffix?: string | Array<string>;
+  level?: number | Array<number>;
   codes?: Array<string>;
 };
 
@@ -56,6 +56,16 @@ type ArrayBasketElement = BasketOptionRecord | ModuleCode;
 type ArrayBasket = Array<ArrayBasketElement>;
 
 type TopLevelBasket = BasketOptionRecord;
+
+function toArrayIfElement<T extends number | string>(
+  ele: T | Array<T>,
+): Array<T> {
+  if (typeof ele === "number" || typeof ele === "string") {
+    return [ele];
+  } else {
+    return ele;
+  }
+}
 
 @Exclude()
 export class ValidatorState implements Hydratable {
@@ -117,16 +127,16 @@ export class ValidatorState implements Hydratable {
   private convertFilter(filter: Filter): baskets.ModuleFilter {
     return new baskets.ModuleFilter({
       moduleCodePrefix: filter.code_prefix
-        ? new Set([filter.code_prefix])
+        ? new Set(toArrayIfElement(filter.code_prefix))
         : undefined,
       moduleCodeSuffix: filter.code_suffix
-        ? new Set([filter.code_suffix])
+        ? new Set(toArrayIfElement(filter.code_suffix))
         : undefined,
       moduleCodePattern: filter.code_pattern
         ? new RegExp(filter.code_pattern)
         : undefined,
       level: filter.level
-        ? new Set(filter.level.map((level) => level / 1000))
+        ? new Set(toArrayIfElement(filter.level).map((level) => level / 1000))
         : undefined,
       codes: filter.codes ? new Set(filter.codes) : undefined,
     });

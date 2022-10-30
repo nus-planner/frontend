@@ -414,9 +414,11 @@
             "MA1101R",
             "MA1521",
             {
-              "physics": {
+              "science": {
                 "tag": "1 sci mod",
-                "or": ["PC1221"]
+                "module": {
+                  "code_prefix": ["CM", "LSM", "PC", "MA", "ST"]
+                }
               }
             }
           ]

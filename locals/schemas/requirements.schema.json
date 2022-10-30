@@ -146,6 +146,19 @@
       ]
     }
   },
+  "string_array_or_string": {
+    "oneOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    ]
+  },
   "filters": {
     "type": "object",
     "properties": {
@@ -159,11 +172,31 @@
       },
       "code_prefix": {
         "description": "Module code prefix",
-        "type": "string"
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
       },
       "code_suffix": {
         "description": "Module code suffix",
-        "type": "string"
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
       },
       "code_pattern": {
         "desription": "Regex filter of module code",
@@ -171,10 +204,17 @@
       },
       "level": {
         "description": "Level filter",
-        "type": "array",
-        "items": {
-          "enum": [1000, 2000, 3000, 4000, 5000, 6000]
-        }
+        "oneOf": [
+          {
+            "enum": [1000, 2000, 3000, 4000, 5000, 6000]
+          },
+          {
+            "type": "array",
+            "items": {
+              "enum": [1000, 2000, 3000, 4000, 5000, 6000]
+            }
+          }
+        ]
       }
     }
   }
