@@ -4,7 +4,22 @@
       "faculty": "Computing",
       "cohort": 2019,
       "course": "Computer Science",
+      "resource": "https://www.comp.nus.edu.sg/cugresource/per-cohort/cs/cs-19-20/",
       "filename": "2019/cs.json"
+    },
+    {
+      "faculty": "Computing",
+      "cohort": 2020,
+      "course": "Computer Science",
+      "resource": "https://www.comp.nus.edu.sg/cugresource/per-cohort/cs/cs-20-21/",
+      "filename": "2020/cs.json"
+    },
+    {
+      "faculty": "Computing",
+      "cohort": 2021,
+      "course": "Computer Science",
+      "resource": "https://www.comp.nus.edu.sg/cugresource/per-cohort/cs/cs-21-22/",
+      "filename": "2021/cs.json"
     },
     {
       "faculty": "Engineering",
