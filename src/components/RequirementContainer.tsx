@@ -120,11 +120,7 @@ const RequirementContainer = ({
               <Text>{requirement.title}</Text>
               {requirement.expectedMcs !== undefined && (
                 <Tag
-                  colorScheme={
-                    requirement.matchedMCs >= (requirement.expectedMcs || 0)
-                      ? "green"
-                      : "red"
-                  }
+                  colorScheme={requirement.isFulfilled ? "green" : "red"}
                   size="sm"
                 >
                   {requirement.matchedMCs} / {requirement.expectedMcs || 0} MCs
