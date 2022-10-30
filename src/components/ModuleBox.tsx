@@ -10,6 +10,7 @@ import {
   HStack,
   Badge,
   Wrap,
+  Button,
 } from "@chakra-ui/react";
 import { Module } from "../interfaces/planner";
 import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
@@ -22,7 +23,7 @@ import {
 } from "../utils/moduleUtils";
 import { useAppContext } from "./AppContext";
 import ModuleDropdown from "./ModuleDropdown";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface ModuleBoxProps {
   module: Module;
@@ -40,6 +41,9 @@ const ModuleBox = ({
   idx,
 }: ModuleBoxProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
+  const [, updateState] = useState<{}>();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
   let moduleColor: string;
   if (module.color) {
     if (module.color.length === 1) {
@@ -156,6 +160,7 @@ const ModuleBox = ({
                     options={options}
                     isDragging={snapshot.isDragging}
                     isExemption={false}
+                    forceUpdate={forceUpdate}
                   />
                 ) : (
                   <Text color="black.900" fontSize={"xs"}>
@@ -164,7 +169,7 @@ const ModuleBox = ({
                 )}
                 <Spacer />
                 <Flex>
-                  <Wrap ml="-0.2rem" spacing="1" alignSelf='flex-end'>
+                  <Wrap ml="-0.2rem" spacing="1" alignSelf="flex-end">
                     {module.tags?.map((tag, idx) => (
                       <Badge
                         key={idx}
@@ -177,10 +182,17 @@ const ModuleBox = ({
                     ))}
                   </Wrap>
                   <Spacer />
-                  {module.credits != null && module.credits > 0 && (
+                  {module.credits != null && module.credits > 0 ? (
                     <Text fontSize={"x-small"} alignSelf="flex-end">
                       {module.credits}MCs
                     </Text>
+                  ) : (
+                    !!module.getUnderlyingModule &&
+                    !!module.getUnderlyingModule()?.credits && (
+                      <Text fontSize={"x-small"} alignSelf="flex-end">
+                        {module.getUnderlyingModule()?.credits}MCs
+                      </Text>
+                    )
                   )}
                 </Flex>
 

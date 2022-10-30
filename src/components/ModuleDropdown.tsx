@@ -84,11 +84,11 @@ const ModuleDropdown = ({
         mainViewModel.planner[0].addModule(newExemptionModule);
         await applyPrereqValidation(mainViewModel.planner).then((_) => {
           mainViewModel.validate();
-          if (forceUpdate !== undefined) {
-            forceUpdate();
-          }
         });
       }
+    }
+    if (forceUpdate !== undefined) {
+      forceUpdate();
     }
   };
 
@@ -186,8 +186,6 @@ const ModuleDropdown = ({
       </Text>
     );
   };
-
-
 
   return (
     <>
