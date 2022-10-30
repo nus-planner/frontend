@@ -3,7 +3,7 @@
     "and": [
       {
         "University Level Requirements": {
-          "expected_mcs": 20,
+          "expected_mcs": 16,
           "description": "You must take the ULRs!",
           "state": "overallDegreeState",
           "title": "University Level Requirements",
@@ -63,50 +63,6 @@
             "CS2106",
             "CS2109S",
             "CS3230"
-          ]
-        }
-      },
-      {
-        "Team Project Requirement": {
-          "description": "Complete at least 8 MCs of Computer Systems Team Project modules from the following pairs, or modules approved by the Department of Computer Science:\nCS3203 Software Engineering Project, or\nCS3216 Software Product Engineering for Digital Markets and CS3217 Software Engineering on Modern Application Platforms, or\nCS3281 Thematic Systems Project I and CS3282 Thematic Systems Project II.",
-          "expected_mcs": 8,
-          "state": "overallDegreeState",
-          "or": [
-            {
-              "CS3203": {
-                "module": {
-                  "code": "CS3203",
-                  "mc": 8
-                }
-              }
-            },
-            {
-              "CS3216/17 combo": {
-                "and": [
-                  {
-                    "cs3216": {
-                      "module": {
-                        "code": "CS3216",
-                        "mc": 5
-                      }
-                    }
-                  },
-                  {
-                    "cs3217": {
-                      "module": {
-                        "code": "CS3217",
-                        "mc": 5
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "CS3281/82 combo": {
-                "and": ["CS3281", "CS3282"]
-              }
-            }
           ]
         }
       },
@@ -175,10 +131,10 @@
       },
       {
         "CS Breadth and Depth": {
-          "expected_mcs": 24,
+          "expected_mcs": 28,
           "state": "overallDegreeState",
           "fulfillment_criteria": {
-            "at_least_n_mcs": 24
+            "at_least_n_mcs": 28
           },
           "or": [
             {
@@ -271,6 +227,75 @@
                               ]
                             }
                           }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "Remaining Breadth and Depth": {
+                      "state": "csBreadthAndDepthState",
+                      "title": "Any CS/CP/IFS module",
+                      "fulfillment_criteria": {
+                        "at_least_n_mcs": 12,
+                        "level": [4000, 5000, 6000]
+                      },
+                      "module": {
+                        "code_pattern": "^(CS|CP|IFS)",
+                        "level": [4000, 5000, 6000],
+                        "required_mcs": 20,
+                        "early_terminate": true
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Focus Areas NOT sharing primary with CFM": {
+                "and": [
+                  {
+                    "Focus Area": {
+                      "state": "csBreadthAndDepthState",
+                      "or": [
+                        {
+                          "security_focus_area_primaries": {
+                            "fulfillment_criteria": {
+                              "at_least_n_modules": 3
+                            },
+                            "tag": "Security Primary",
+                            "and": [
+                              {
+                                "Security FA at least 1 Level 4000": {
+                                  "state": "csSecurityFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 1,
+                                    "baskets": [
+                                      "CS4236",
+                                      "CS4230",
+                                      "CS4238",
+                                      "CS4239"
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "SWE FA at least 2 others": {
+                                  "state": "csSecurityFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      "CS2107",
+                                      "CS3235",
+                                      "CS4236",
+                                      "CS4230",
+                                      "CS4238",
+                                      "CS4239"
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
                         },
                         {
                           "networks_focus_area_primaries": {
@@ -327,75 +352,6 @@
                   }
                 ]
               }
-            },
-            {
-              "Focus Areas NOT sharing primary with CFM": {
-                "and": [
-                  {
-                    "Focus Area": {
-                      "state": "csBreadthAndDepthState",
-                      "or": [
-                        {
-                          "security_focus_area_primaries": {
-                            "fulfillment_criteria": {
-                              "at_least_n_modules": 3
-                            },
-                            "tag": "Security Primary",
-                            "and": [
-                              {
-                                "Security FA at least 1 Level 4000": {
-                                  "state": "csSecurityFABasketState",
-                                  "at_least_n_of": {
-                                    "n": 1,
-                                    "baskets": [
-                                      "CS4236",
-                                      "CS4230",
-                                      "CS4238",
-                                      "CS4239"
-                                    ]
-                                  }
-                                }
-                              },
-                              {
-                                "SWE FA at least 2 others": {
-                                  "state": "csSecurityFABasketState",
-                                  "at_least_n_of": {
-                                    "n": 2,
-                                    "baskets": [
-                                      "CS2107",
-                                      "CS3235",
-                                      "CS4236",
-                                      "CS4230",
-                                      "CS4238",
-                                      "CS4239"
-                                    ]
-                                  }
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "Remaining Breadth and Depth": {
-                      "state": "csBreadthAndDepthState",
-                      "title": "Any CS/CP/IFS module",
-                      "fulfillment_criteria": {
-                        "at_least_n_mcs": 12,
-                        "level": [4000, 5000, 6000]
-                      },
-                      "module": {
-                        "code_pattern": "^(CS|CP|IFS)",
-                        "level": [4000, 5000, 6000],
-                        "required_mcs": 20,
-                        "early_terminate": true
-                      }
-                    }
-                  }
-                ]
-              }
             }
           ]
         }
@@ -431,7 +387,7 @@
       },
       {
         "Unrestricted Electives": {
-          "expected_mcs": 32,
+          "expected_mcs": 40,
           "state": "overallDegreeState",
           "module": {
             "code_pattern": ".",

@@ -40,7 +40,7 @@
       {
         "CS Foundation": {
           "state": "overallDegreeState",
-          "expected_mcs": 36,
+          "expected_mcs": 32,
           "title": "CS foundation",
           "and": [
             {
@@ -168,7 +168,7 @@
       },
       {
         "CS Breadth and Depth": {
-          "expected_mcs": 24,
+          "expected_mcs": 28,
           "state": "overallDegreeState",
           "fulfillment_criteria": {
             "at_least_n_mcs": 24
@@ -264,40 +264,6 @@
                               ]
                             }
                           }
-                        },
-                        {
-                          "networks_focus_area_primaries": {
-                            "tag": "Networks Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csNetworksFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4222", "CS4226", "CS4231"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csNetworksFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        "CS2105",
-                                        "CS3103",
-                                        "CS4222",
-                                        "CS4226",
-                                        "CS4231"
-                                      ]
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
                         }
                       ]
                     }
@@ -313,7 +279,7 @@
                       "module": {
                         "code_pattern": "^(CS|CP|IFS)",
                         "level": [4000, 5000, 6000],
-                        "required_mcs": 16,
+                        "required_mcs": 20,
                         "early_terminate": true
                       }
                     }
@@ -367,6 +333,40 @@
                               }
                             ]
                           }
+                        },
+                        {
+                          "networks_focus_area_primaries": {
+                            "tag": "Networks Primary",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csNetworksFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": ["CS4222", "CS4226", "CS4231"]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csNetworksFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        "CS2105",
+                                        "CS3103",
+                                        "CS4222",
+                                        "CS4226",
+                                        "CS4231"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
                         }
                       ]
                     }
@@ -382,7 +382,7 @@
                       "module": {
                         "code_pattern": "^(CS|CP|IFS)",
                         "level": [4000, 5000, 6000],
-                        "required_mcs": 20,
+                        "required_mcs": 16,
                         "early_terminate": true
                       }
                     }
