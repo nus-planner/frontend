@@ -594,7 +594,7 @@ export class MultiModuleBasket extends Basket {
       for (
         let i = 0, mcs = 0;
         i < filteredModules.length && mcs < this.requiredMCs;
-        i++, mcs += filteredModules[i].credits
+        mcs += filteredModules[i].credits, i++
       ) {
         justEnoughModulesForMCs.push(filteredModules[i]);
       }
