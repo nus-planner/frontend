@@ -1,16 +1,11 @@
-import {
-  Box,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-} from "@chakra-ui/react";
+import { Box, Tag, TagLabel, TagCloseButton, Link } from "@chakra-ui/react";
 
 import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
 import ModuleDropdown from "./ModuleDropdown";
 import { useEffect, useState } from "react";
-import { getNonDuplicateUEs } from "../utils/moduleUtils";
+import { getNonDuplicateUEs, getNUSModsModulePage } from "../utils/moduleUtils";
 import { useAppContext } from "./AppContext";
 
 interface ExemptionContainerProps {
@@ -53,7 +48,11 @@ const ExemptionContainer = ({
         mt={"0.5rem"}
         size="lg"
       >
-        <TagLabel> {module.code} </TagLabel>
+        <TagLabel>
+          <Link href={getNUSModsModulePage(module.code)} isExternal>
+            {module.code}
+          </Link>
+        </TagLabel>
         <TagCloseButton
           onClick={() => {
             if (handleModuleClose !== undefined) {
