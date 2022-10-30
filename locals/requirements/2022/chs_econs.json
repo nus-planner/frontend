@@ -9,7 +9,11 @@
                 "and": [
                   {
                     "Common Core - AI": {
-                      "or": ["CS2109S", "HS1501", "IT1224"]
+                      "or": ["CS2109S", "HS1501", "IT1224"],
+                      "module": {
+                        "codes": ["CS2109S", "HS1501", "IT1224"],
+                        "early_terminate": true
+                      }
                     }
                   },
                   {
