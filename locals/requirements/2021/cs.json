@@ -1,0 +1,446 @@
+{
+  "CS-2020": {
+    "and": [
+      {
+        "University Level Requirements": {
+          "expected_mcs": 20,
+          "description": "You must take the ULRs!",
+          "state": "overallDegreeState",
+          "title": "University Level Requirements",
+          "and": [
+            {
+              "geh": {
+                "title": "Cultures and Connections",
+                "module": {
+                  "code_pattern": "^GEC"
+                }
+              }
+            },
+            {
+              "gei": {
+                "title": "Data Literacy",
+                "module": {
+                  "code_pattern": "^GEA"
+                }
+              }
+            },
+            {
+              "gei": {
+                "title": "Singapore Studies",
+                "module": {
+                  "code_pattern": "^GESS"
+                }
+              }
+            },
+            {
+              "gei": {
+                "title": "Communities and Engagement",
+                "module": {
+                  "code_pattern": "^GEN"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "CS Foundation": {
+          "state": "overallDegreeState",
+          "expected_mcs": 36,
+          "title": "CS foundation",
+          "and": [
+            {
+              "cs1010": {
+                "title": "Any CS1010 variant",
+                "or": ["CS1101S", "CS1010X"]
+              }
+            },
+            "CS1231S",
+            "CS2030S",
+            "CS2040S",
+            "CS2100",
+            "CS2103T",
+            "CS2106",
+            "CS2109S",
+            "CS3230"
+          ]
+        }
+      },
+      {
+        "Team Project Requirement": {
+          "description": "Complete at least 8 MCs of Computer Systems Team Project modules from the following pairs, or modules approved by the Department of Computer Science:\nCS3203 Software Engineering Project, or\nCS3216 Software Product Engineering for Digital Markets and CS3217 Software Engineering on Modern Application Platforms, or\nCS3281 Thematic Systems Project I and CS3282 Thematic Systems Project II.",
+          "expected_mcs": 8,
+          "state": "overallDegreeState",
+          "or": [
+            {
+              "CS3203": {
+                "module": {
+                  "code": "CS3203",
+                  "mc": 8
+                }
+              }
+            },
+            {
+              "CS3216/17 combo": {
+                "and": [
+                  {
+                    "cs3216": {
+                      "module": {
+                        "code": "CS3216",
+                        "mc": 5
+                      }
+                    }
+                  },
+                  {
+                    "cs3217": {
+                      "module": {
+                        "code": "CS3217",
+                        "mc": 5
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "CS3281/82 combo": {
+                "and": ["CS3281", "CS3282"]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "IT Professionalism": {
+          "expected_mcs": 12,
+          "state": "overallDegreeState",
+          "and": [
+            {
+              "": {
+                "or": ["IS1103", "IS1108"]
+              }
+            },
+            "CS2101",
+            "ES2660"
+          ]
+        }
+      },
+      {
+        "Industry Experience Requirement": {
+          "expected_mcs": 12,
+          "state": "overallDegreeState",
+          "or": [
+            {
+              "ATAP": {
+                "tag": "ATAP",
+                "module": {
+                  "code": "CP3880",
+                  "mc": 12
+                }
+              }
+            },
+            {
+              "SIP I/II": {
+                "tag": "SIP",
+                "and": [
+                  {
+                    "cp3200": {
+                      "module": {
+                        "code": "CP3200",
+                        "mc": 6
+                      }
+                    }
+                  },
+                  {
+                    "CP3202": {
+                      "module": {
+                        "code": "CP3202",
+                        "mc": 6
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "CVWO": {
+                "tag": "CVWO",
+                "and": ["CP3107", "CP3110"]
+              }
+            },
+            "IS4010",
+            "TR3203"
+          ]
+        }
+      },
+      {
+        "CS Breadth and Depth": {
+          "expected_mcs": 24,
+          "state": "overallDegreeState",
+          "fulfillment_criteria": {
+            "at_least_n_mcs": 24
+          },
+          "or": [
+            {
+              "Focus Areas sharing primary with CFM": {
+                "and": [
+                  {
+                    "Focus Area": {
+                      "state": "csBreadthAndDepthState",
+                      "or": [
+                        {
+                          "swe_focus_area_primaries": {
+                            "fulfillment_criteria": {
+                              "at_least_n_modules": 3
+                            },
+                            "tag": "SWE Primary",
+                            "and": [
+                              {
+                                "SWE FA at least 1 Level 4000": {
+                                  "state": "csSWEFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 1,
+                                    "baskets": ["CS4211", "CS4218", "CS4239"]
+                                  }
+                                }
+                              },
+                              {
+                                "SWE FA at least 2 others": {
+                                  "state": "csSWEFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "CS2103T": {
+                                          "module": {
+                                            "code": "CS2103T",
+                                            "double_count": true
+                                          }
+                                        }
+                                      },
+                                      "CS3213",
+                                      "CS3219",
+                                      "CS4211",
+                                      "CS4218",
+                                      "CS4239"
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "algo_focus_area_primaries": {
+                            "tag": "Algorithms Primary",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csAlgosFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": ["CS4231", "CS4232", "CS4234"]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csAlgosFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        {
+                                          "CS3230": {
+                                            "module": {
+                                              "code": "CS3230",
+                                              "double_count": true
+                                            }
+                                          }
+                                        },
+                                        "CS3231",
+                                        "CS3236",
+                                        "CS4231",
+                                        "CS4232",
+                                        "CS4234"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "networks_focus_area_primaries": {
+                            "tag": "Networks Primary",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csNetworksFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": ["CS4222", "CS4226", "CS4231"]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csNetworksFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        "CS2105",
+                                        "CS3103",
+                                        "CS4222",
+                                        "CS4226",
+                                        "CS4231"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "Remaining Breadth and Depth": {
+                      "state": "csBreadthAndDepthState",
+                      "title": "Any CS/CP/IFS module",
+                      "fulfillment_criteria": {
+                        "at_least_n_mcs": 12,
+                        "level": [4000, 5000, 6000]
+                      },
+                      "module": {
+                        "code_pattern": "^(CS|CP|IFS)",
+                        "level": [4000, 5000, 6000],
+                        "required_mcs": 16,
+                        "early_terminate": true
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Focus Areas NOT sharing primary with CFM": {
+                "and": [
+                  {
+                    "Focus Area": {
+                      "state": "csBreadthAndDepthState",
+                      "or": [
+                        {
+                          "security_focus_area_primaries": {
+                            "fulfillment_criteria": {
+                              "at_least_n_modules": 3
+                            },
+                            "tag": "Security Primary",
+                            "and": [
+                              {
+                                "Security FA at least 1 Level 4000": {
+                                  "state": "csSecurityFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 1,
+                                    "baskets": [
+                                      "CS4236",
+                                      "CS4230",
+                                      "CS4238",
+                                      "CS4239"
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "SWE FA at least 2 others": {
+                                  "state": "csSecurityFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      "CS2107",
+                                      "CS3235",
+                                      "CS4236",
+                                      "CS4230",
+                                      "CS4238",
+                                      "CS4239"
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "Remaining Breadth and Depth": {
+                      "state": "csBreadthAndDepthState",
+                      "title": "Any CS/CP/IFS module",
+                      "fulfillment_criteria": {
+                        "at_least_n_mcs": 12,
+                        "level": [4000, 5000, 6000]
+                      },
+                      "module": {
+                        "code_pattern": "^(CS|CP|IFS)",
+                        "level": [4000, 5000, 6000],
+                        "required_mcs": 20,
+                        "early_terminate": true
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Math and Science Requirement": {
+          "expected_mcs": 16,
+          "state": "overallDegreeState",
+          "and": [
+            {
+              "Statistics": {
+                "or": [
+                  {
+                    "": {
+                      "tag": "ST2131/2132 Pair",
+                      "and": ["ST2131", "ST2132"]
+                    }
+                  },
+                  "ST2334"
+                ]
+              }
+            },
+            "MA1101R",
+            "MA1521",
+            {
+              "physics": {
+                "tag": "1 sci mod",
+                "or": ["PC1221"]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Unrestricted Electives": {
+          "expected_mcs": 32,
+          "state": "overallDegreeState",
+          "module": {
+            "code_pattern": ".",
+            "required_mcs": 32,
+            "early_terminate": false,
+            "respawnable": true
+          }
+        }
+      }
+    ]
+  }
+}

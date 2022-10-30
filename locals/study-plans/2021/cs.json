@@ -22,7 +22,7 @@
     {
       "year": 2,
       "semester": 1,
-      "modules": ["CS2103T", "CS2101", "CS2106"],
+      "modules": ["CS2103T", "CS2101", "CS2109S", "CS2106"],
       "baskets": ["University Level Requirements"]
     },
     {
