@@ -155,6 +155,7 @@
               "3k Requirement": {
                 "module": {
                   "level": [3000],
+                  "code_pattern": "^EC",
                   "required_mcs": 4,
                   "early_terminate": true,
                   "respawnable": true
@@ -165,6 +166,7 @@
               "4k Requirement": {
                 "module": {
                   "level": [4000],
+                  "code_pattern": "^EC",
                   "required_mcs": 20,
                   "early_terminate": true,
                   "respawnable": true
