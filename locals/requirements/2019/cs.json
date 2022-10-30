@@ -414,7 +414,7 @@
             "MA1101R",
             "MA1521",
             {
-              "science": {
+              "Science": {
                 "tag": "1 sci mod",
                 "module": {
                   "code_prefix": ["CM", "LSM", "PC", "MA", "ST"]
