@@ -187,14 +187,7 @@ const ModuleDropdown = ({
     );
   };
 
-  const selectedModuleNameDisplay =
-    selectedModuleName === "" ? (
-      <></>
-    ) : (
-      <Text color="black.900" fontSize={"xs"}>
-        {selectedModuleName}
-      </Text>
-    );
+
 
   return (
     <>
@@ -222,7 +215,11 @@ const ModuleDropdown = ({
           components={{ MenuList: WindowedMenuList }}
         />
       </FormControl>
-      {!isExemption && selectedModuleNameDisplay}
+      {!!module.getUnderlyingModule && (
+        <Text color="black.900" fontSize={"xs"}>
+          {module.getUnderlyingModule()?.name}
+        </Text>
+      )}
     </>
   );
 };
