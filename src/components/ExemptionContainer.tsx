@@ -1,4 +1,12 @@
-import { Box, Tag, TagLabel, TagCloseButton, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Link,
+  Tooltip,
+  Text,
+} from "@chakra-ui/react";
 
 import { Module, Semester } from "../interfaces/planner";
 import ModuleBox from "./ModuleBox";
@@ -38,32 +46,6 @@ const ExemptionContainer = ({
     });
   }
 
-  const exemptionTag = (module: Module) => {
-    return (
-      <Tag
-        key={module.code}
-        variant="outline"
-        colorScheme="blue"
-        mr={"0.5rem"}
-        mt={"0.5rem"}
-        size="lg"
-      >
-        <TagLabel>
-          <Link href={getNUSModsModulePage(module.code)} isExternal>
-            {module.code}
-          </Link>
-        </TagLabel>
-        <TagCloseButton
-          onClick={() => {
-            if (handleModuleClose !== undefined) {
-              handleModuleClose(module);
-            }
-          }}
-        />
-      </Tag>
-    );
-  };
-
   return (
     <Box borderRadius="0.4rem" minH="22sem" color={"blackAlpha.50"}>
       <ModuleDropdown
@@ -73,7 +55,39 @@ const ExemptionContainer = ({
         module={{ code: ".", name: "exemptions", id: id, credits: -1 }}
         forceUpdate={forceUpdate}
       />
-      {exemptedModules.map((module) => exemptionTag(module))}
+      {exemptedModules.map((module) => (
+        <Tooltip
+          label={
+            <>
+              <span style={{ fontWeight: "bold" }}>{module.code}:</span>{" "}
+              {module.name}
+            </>
+          }
+          borderRadius="5px"
+          key={module.code}
+        >
+          <Tag
+            variant="outline"
+            colorScheme="blue"
+            mr={"0.5rem"}
+            mt={"0.5rem"}
+            size="lg"
+          >
+            <TagLabel>
+              <Link href={getNUSModsModulePage(module.code)} isExternal>
+                {module.code}
+              </Link>
+            </TagLabel>
+            <TagCloseButton
+              onClick={() => {
+                if (handleModuleClose !== undefined) {
+                  handleModuleClose(module);
+                }
+              }}
+            />
+          </Tag>
+        </Tooltip>
+      ))}
     </Box>
   );
 };
