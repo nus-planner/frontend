@@ -52,6 +52,7 @@ const ModuleBox = ({
       moduleColor = "linear(to-r,";
       for (let i = 0; i < module.color.length; i++) {
         moduleColor += module.color[i] + ",";
+        moduleColor += module.color[i] + ",";
       }
       moduleColor += ")";
     }
