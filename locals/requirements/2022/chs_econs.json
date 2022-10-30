@@ -27,7 +27,11 @@
                   },
                   {
                     "Common Core - Digital Literacy": {
-                      "or": ["GEI1001", "GEI1002", "NM2207"]
+                      "module": {
+                        "codes": ["GEI1001", "GEI1002", "NM2207"],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
                     }
                   },
                   "DTK1234",
