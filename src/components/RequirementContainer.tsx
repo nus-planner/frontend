@@ -16,6 +16,7 @@ import {
   Badge,
   Tag,
   Spacer,
+  Divider,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
@@ -131,8 +132,8 @@ const RequirementContainer = ({
           </Box>
           <AccordionIcon />
         </AccordionButton>
-        <AccordionPanel pb={2}>
-          <InputGroup padding="0 0 0.5rem">
+        <AccordionPanel pb={2} whiteSpace="initial">
+          {/* <InputGroup padding="0 0 0.5rem">
             <InputLeftElement zIndex="0">
               <SearchIcon />
             </InputLeftElement>
@@ -144,17 +145,18 @@ const RequirementContainer = ({
               borderWidth={1}
               onChange={(e) => setDisplayedModulesFilter(e.target.value)}
             />
-          </InputGroup>
+          </InputGroup> */}
           <Box overflow={"visible"}>
             {requirement.description && (
+              <>
               <Text
-                fontSize={"x-small"}
+                fontSize={"xs"}
                 color={"blackAlpha.700"}
-                minW={requirementWith}
-                w={requirementWith}
               >
                 {requirement.description}
               </Text>
+              <Divider flexDirection={"row"} margin="0.5rem 0rem"/>
+              </>
             )}
             <Droppable droppableId={id} direction="horizontal" isDropDisabled>
               {(provided) => (
