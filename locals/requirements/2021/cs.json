@@ -377,7 +377,7 @@
                         },
                         {
                           "computer_graphics_and_games_fa_primaries": {
-                            "tag": "CG Primaries",
+                            "tag": "CG Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
@@ -411,7 +411,7 @@
                         },
                         {
                           "database_systems_fa_primaries": {
-                            "tag": "DB Primaries",
+                            "tag": "DB Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
@@ -445,7 +445,7 @@
                         },
                         {
                           "programming_languages_fa_primaries": {
-                            "tag": "PL Primaries",
+                            "tag": "PL Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
@@ -478,7 +478,7 @@
                         },
                         {
                           "parallel_computing_fa_primaries": {
-                            "tag": "Parallel Computing Primaries",
+                            "tag": "Parallel Computing Primary",
                             "at_least_n_of": {
                               "n": 2,
                               "baskets": [
