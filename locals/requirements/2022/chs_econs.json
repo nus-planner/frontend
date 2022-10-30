@@ -37,18 +37,26 @@
                   "DTK1234",
                   {
                     "Common Core - Data Literacy": {
-                      "or": [
-                        "BT1101",
-                        "DSA1101",
-                        "DSE1101",
-                        "GRA1000",
-                        "ST1131"
-                      ]
+                      "module": {
+                        "codes": [
+                          "BT1101",
+                          "DSA1101",
+                          "DSE1101",
+                          "GRA1000",
+                          "ST1131"
+                        ],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
                     }
                   },
                   {
                     "Common Core - Writing": {
-                      "or": ["SP1541", "SP2271", "FAS1101"]
+                      "module": {
+                        "codes": ["SP1541", "SP2271", "FAS1101"],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
                     }
                   }
                 ]
@@ -61,28 +69,36 @@
                   "HSH1000",
                   {
                     "Scientific Inq I": {
-                      "or": ["HSI1000", "SP2274"]
+                      "module": {
+                        "codes": ["HSI1000", "SP2274"],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
                     }
                   },
                   {
                     "Scientific Inq I": {
-                      "or": [
-                        "HSI2001",
-                        "HSI2002",
-                        "HSI2003",
-                        "HSI2004",
-                        "HSI2005",
-                        "HSI2006",
-                        "HSI2007",
-                        "HSI2008",
-                        "HSI2009",
-                        "HSI2010",
-                        "HSI2011",
-                        "HSI2012",
-                        "HSI2013",
-                        "HSI2014",
-                        "HSI2014"
-                      ]
+                      "module": {
+                        "codes": [
+                          "HSI2001",
+                          "HSI2002",
+                          "HSI2003",
+                          "HSI2004",
+                          "HSI2005",
+                          "HSI2006",
+                          "HSI2007",
+                          "HSI2008",
+                          "HSI2009",
+                          "HSI2010",
+                          "HSI2011",
+                          "HSI2012",
+                          "HSI2013",
+                          "HSI2014",
+                          "HSI2014"
+                        ],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
                     }
                   },
                   "HSS1000"
@@ -90,17 +106,34 @@
               }
             },
             {
-              "Interdisciplinary": {
-                "at_least_n_of": {
-                  "n": 2,
-                  "baskets": [
+              "Interdisciplinary I": {
+                "module": {
+                  "codes": [
                     "HS2902",
                     "HS2903",
                     "HS2904",
                     "HS2905",
                     "HS2906",
                     "HS2907"
-                  ]
+                  ],
+                  "required_mcs": 4,
+                  "early_terminate": true
+                }
+              }
+            },
+            {
+              "Interdisciplinary II": {
+                "module": {
+                  "codes": [
+                    "HS2902",
+                    "HS2903",
+                    "HS2904",
+                    "HS2905",
+                    "HS2906",
+                    "HS2907"
+                  ],
+                  "required_mcs": 4,
+                  "early_terminate": true
                 }
               }
             }
@@ -123,7 +156,8 @@
                 "module": {
                   "level": [3000],
                   "required_mcs": 4,
-                  "early_terminate": true
+                  "early_terminate": true,
+                  "respawnable": true
                 }
               }
             },
@@ -132,7 +166,8 @@
                 "module": {
                   "level": [4000],
                   "required_mcs": 20,
-                  "early_terminate": true
+                  "early_terminate": true,
+                  "respawnable": true
                 }
               }
             }
@@ -144,7 +179,8 @@
           "module": {
             "code_pattern": ".",
             "required_mcs": 32,
-            "early_terminate": true
+            "early_terminate": true,
+            "respawnable": true
           }
         }
       }
