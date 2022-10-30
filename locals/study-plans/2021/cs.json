@@ -1,7 +1,7 @@
 {
-  "starting_year": 2020,
+  "starting_year": 2021,
   "years": 4,
-  "exemptions": ["MA1301"],
+  "exemptions": ["MA1301", "ES1103", "ES1000"],
   "semesters": [
     {
       "year": 1,
