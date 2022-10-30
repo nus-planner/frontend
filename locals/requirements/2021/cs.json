@@ -331,6 +331,183 @@
                               ]
                             }
                           }
+                        },
+                        {
+                          "ai_focus_area_primaries": {
+                            "tag": "AI Primary",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csAIFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": [
+                                        "CS4243",
+                                        "CS4244",
+                                        "CS4246",
+                                        "CS4248"
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csAIFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        "CS2109S",
+                                        "CS3243",
+                                        "CS3244",
+                                        "CS3263",
+                                        "CS3264",
+                                        "CS4243",
+                                        "CS4244",
+                                        "CS4246",
+                                        "CS4248"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "computer_graphics_and_games_fa_primaries": {
+                            "tag": "CG Primaries",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csCGFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": ["CS4247", "CS4350"]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csCGFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        "CS3241",
+                                        "CS3242",
+                                        "CS3247",
+                                        "CS4247",
+                                        "CS4350"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "database_systems_fa_primaries": {
+                            "tag": "DB Primaries",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csDBFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": ["CS4221", "CS4224", "CS4225"]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csDBFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        "CS2102",
+                                        "CS3223",
+                                        "CS4221",
+                                        "CS4224",
+                                        "CS4225"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "programming_languages_fa_primaries": {
+                            "tag": "PL Primaries",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csPLFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": ["CS4212", "CS4215"]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csPLFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        "CS2104",
+                                        "CS3211",
+                                        "CS4212",
+                                        "CS4215"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "parallel_computing_fa_primaries": {
+                            "tag": "Parallel Computing Primaries",
+                            "at_least_n_of": {
+                              "n": 2,
+                              "baskets": [
+                                {
+                                  "Level 4000": {
+                                    "state": "csParallelComputingFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 1,
+                                      "baskets": ["CS4231", "CS4223"]
+                                    }
+                                  }
+                                },
+                                {
+                                  "": {
+                                    "state": "csParallelComputingFABasketState",
+                                    "at_least_n_of": {
+                                      "n": 2,
+                                      "baskets": [
+                                        "CS3210",
+                                        "CS3211",
+                                        "CS4231",
+                                        "CS4223"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
                         }
                       ]
                     }
