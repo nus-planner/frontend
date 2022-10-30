@@ -84,11 +84,11 @@ const ModuleDropdown = ({
         mainViewModel.planner[0].addModule(newExemptionModule);
         await applyPrereqValidation(mainViewModel.planner).then((_) => {
           mainViewModel.validate();
-          if (forceUpdate !== undefined) {
-            forceUpdate();
-          }
         });
       }
+    }
+    if (forceUpdate !== undefined) {
+      forceUpdate();
     }
   };
 
@@ -187,15 +187,6 @@ const ModuleDropdown = ({
     );
   };
 
-  const selectedModuleNameDisplay =
-    selectedModuleName === "" ? (
-      <></>
-    ) : (
-      <Text color="black.900" fontSize={"xs"}>
-        {selectedModuleName}
-      </Text>
-    );
-
   return (
     <>
       <FormControl>
@@ -222,7 +213,11 @@ const ModuleDropdown = ({
           components={{ MenuList: WindowedMenuList }}
         />
       </FormControl>
-      {!isExemption && selectedModuleNameDisplay}
+      {!!module.getUnderlyingModule && (
+        <Text color="black.900" fontSize={"xs"}>
+          {module.getUnderlyingModule()?.name}
+        </Text>
+      )}
     </>
   );
 };
