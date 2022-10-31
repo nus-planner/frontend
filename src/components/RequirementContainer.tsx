@@ -133,30 +133,31 @@ const RequirementContainer = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={2} whiteSpace="initial">
-          {/* <InputGroup padding="0 0 0.5rem">
+          <InputGroup padding="0 0 0.5rem" size="sm">
             <InputLeftElement zIndex="0">
-              <SearchIcon />
+              <SearchIcon/>
             </InputLeftElement>
             <Input
               width="12rem"
+              borderRadius={"0.4rem"}
               borderColor="blackAlpha.700"
               focusBorderColor="blackAlpha.700"
               _hover={{ borderColor: "blackAlpha.700" }}
               borderWidth={1}
               onChange={(e) => setDisplayedModulesFilter(e.target.value)}
             />
-          </InputGroup> */}
+          </InputGroup>
           <Box overflow={"visible"}>
             {requirement.description && (
               <>
-              <Text
-                fontSize={"xs"}
-                color={"blackAlpha.700"}
-                whiteSpace="pre-wrap"
-              >
-                {requirement.description}
-              </Text>
-              <Divider flexDirection={"row"} margin="0.5rem 0rem"/>
+                <Text
+                  fontSize={"xs"}
+                  color={"blackAlpha.700"}
+                  whiteSpace="pre-wrap"
+                >
+                  {requirement.description}
+                </Text>
+                <Divider flexDirection={"row"} margin="0.5rem 0rem" />
               </>
             )}
             <Droppable droppableId={id} direction="horizontal" isDropDisabled>
