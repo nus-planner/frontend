@@ -12,7 +12,8 @@
               "geh": {
                 "title": "Cultures and Connections",
                 "module": {
-                  "code_pattern": "^GEC"
+                  "code_pattern": "^GEC",
+                  "required_mcs": 4
                 }
               }
             },
@@ -20,7 +21,8 @@
               "gei": {
                 "title": "Data Literacy",
                 "module": {
-                  "code_pattern": "^GEA"
+                  "code_pattern": "^GEA",
+                  "required_mcs": 4
                 }
               }
             },
@@ -28,7 +30,8 @@
               "gei": {
                 "title": "Singapore Studies",
                 "module": {
-                  "code_pattern": "^GESS"
+                  "code_pattern": "^GESS",
+                  "required_mcs": 4
                 }
               }
             },
@@ -36,7 +39,8 @@
               "gei": {
                 "title": "Communities and Engagement",
                 "module": {
-                  "code_pattern": "^GEN"
+                  "code_pattern": "^GEN",
+                  "required_mcs": 4
                 }
               }
             }
