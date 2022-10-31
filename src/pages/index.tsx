@@ -20,7 +20,6 @@ const Home = () => {
   return (
     <Stack padding="1rem">
       <BasicInfo />
-      <div />
       <Divider />
       <PlannerComponent />
     </Stack>

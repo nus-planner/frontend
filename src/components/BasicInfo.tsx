@@ -9,6 +9,8 @@ import {
   IconButton,
   useDisclosure,
   Tooltip,
+  Image,
+  Box,
 } from "@chakra-ui/react";
 import { plainToInstance, Type } from "class-transformer";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
@@ -144,9 +146,12 @@ const BasicInfo = () => {
   return (
     <Flex w="full" h="full" align="center" justify="space-between">
       <HStack spacing={"1rem"}>
-        <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
+        {/* <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
           NUS Planner
-        </Heading>
+        </Heading> */}
+        <Box w="13rem">
+        <Image src="/logos/colorful_label_out.jpg" alt="NUS Planner"/>
+        </Box>
         <FormControl w="-moz-fit-content">
           <Select
             placeholder="Choose your enrollment year"
