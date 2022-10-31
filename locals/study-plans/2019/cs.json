@@ -16,7 +16,7 @@
     {
       "year": 1,
       "semester": 2,
-      "modules": ["CS2030S", "CS2040S", "CS2100", "IS1103"],
+      "modules": ["CS2030", "CS2040S", "CS2100", "IS1103"],
       "baskets": ["University Level Requirements"]
     },
     {
