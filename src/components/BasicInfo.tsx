@@ -9,9 +9,6 @@ import {
   IconButton,
   useDisclosure,
   Tooltip,
-  Image,
-  Box,
-  Link,
 } from "@chakra-ui/react";
 import { plainToInstance, Type } from "class-transformer";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
@@ -19,7 +16,6 @@ import { useAppContext } from "./AppContext";
 import { labelModules, storeViewModel } from "../utils/plannerUtils";
 import { MainViewModel } from "../models";
 import { EmailIcon } from "@chakra-ui/icons";
-import { BsTelegram } from "react-icons/bs";
 import FeedbackModal from "./FeedbackModal";
 import {
   COURSE_MAJOR,
@@ -148,12 +144,9 @@ const BasicInfo = () => {
   return (
     <Flex w="full" h="full" align="center" justify="space-between">
       <HStack spacing={"1rem"}>
-        {/* <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
+        <Heading fontSize={"2xl"} fontWeight={"bold"} fontFamily={"body"}>
           NUS Planner
-        </Heading> */}
-        <Box w="13rem">
-          <Image src="/logos/colorful_label_out.jpg" alt="NUS Planner" />
-        </Box>
+        </Heading>
         <FormControl w="-moz-fit-content">
           <Select
             placeholder="Choose your enrollment year"
@@ -207,17 +200,6 @@ const BasicInfo = () => {
         />
       </HStack>
       <HStack spacing={"1rem"} px="1rem">
-        <Tooltip label="Join our Telegram group!">
-          <Link href='https://t.me/+-lAnVtDL8z4xYmJl' isExternal>
-            <IconButton
-              aria-label="Open menu"
-              fontSize="1.5rem"
-              color="gray.600"
-              variant="ghost"
-              icon={<BsTelegram />}
-            />
-          </Link>
-        </Tooltip>
         <Tooltip label="Submit Feedback">
           <IconButton
             aria-label="Open menu"

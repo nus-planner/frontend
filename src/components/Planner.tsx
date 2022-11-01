@@ -13,8 +13,6 @@ import {
   Icon,
   Flex,
   Spacer,
-  Alert,
-  AlertIcon,
 } from "@chakra-ui/react";
 import {
   useState,
@@ -229,12 +227,6 @@ const Planner = () => {
             >
               Required Modules
             </Heading>
-            { !mainViewModel.requirements.length && (
-              <Alert status='warning' w="fit-content" whiteSpace={"initial"}>
-              <AlertIcon />
-              Please enter your enrollment year and major to load your requirements
-            </Alert>
-            )}
             <Box bgColor="blackAlpha.50">
               {mainViewModel.requirements.map((requirement, id) => (
                 <RequirementContainer

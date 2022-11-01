@@ -371,9 +371,6 @@ export class FulfillmentResultBasket extends Basket {
         for (const mod of matchedModules) {
           matchedMCs += mod.credits;
         }
-
-        // TODO: terrible hack pls refactor and change
-        matchedMCs = Math.min(matchedMCs, result.matchedMCs);
         matchedModuleCount = matchedModules.length;
       } else {
         matchedMCs = result.matchedMCs;
