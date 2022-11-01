@@ -119,7 +119,7 @@ const ModuleDropdown = ({
     placeholder: (provided: any) => {
       return {
         ...provided,
-        fontSize: isExemption? "1rem" : "0.8rem",
+        fontSize: isExemption ? "1rem" : "0.8rem",
         color: "black",
       };
     },

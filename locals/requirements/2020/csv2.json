@@ -3,44 +3,34 @@
     "and": [
       {
         "University Level Requirements": {
-          "expected_mcs": 16,
+          "expected_mcs": 20,
           "description": "You must take the ULRs!",
           "state": "overallDegreeState",
           "title": "University Level Requirements",
           "and": [
             {
               "geh": {
-                "title": "Cultures and Connections",
+                "title": "Any GEH",
                 "module": {
-                  "code_pattern": "^GEC",
-                  "required_mcs": 4
+                  "code_pattern": "^GEH"
+                }
+              }
+            },
+            "GEQ1000",
+            "GER1000",
+            {
+              "ges": {
+                "title": "Any GES",
+                "module": {
+                  "code_pattern": "^GES"
                 }
               }
             },
             {
-              "gei": {
-                "title": "Data Literacy",
+              "get": {
+                "title": "Any GET",
                 "module": {
-                  "code_pattern": "^GEA",
-                  "required_mcs": 4
-                }
-              }
-            },
-            {
-              "gei": {
-                "title": "Singapore Studies",
-                "module": {
-                  "code_pattern": "^GESS",
-                  "required_mcs": 4
-                }
-              }
-            },
-            {
-              "gei": {
-                "title": "Communities and Engagement",
-                "module": {
-                  "code_pattern": "^GEN",
-                  "required_mcs": 4
+                  "code_pattern": "^GET"
                 }
               }
             }
@@ -50,7 +40,7 @@
       {
         "CS Foundation": {
           "state": "overallDegreeState",
-          "expected_mcs": 36,
+          "expected_mcs": 32,
           "title": "CS foundation",
           "and": [
             {
@@ -65,8 +55,51 @@
             "CS2100",
             "CS2103T",
             "CS2106",
-            "CS2109S",
             "CS3230"
+          ]
+        }
+      },
+      {
+        "Team Project Requirement": {
+          "description": "Complete at least 8 MCs of Computer Systems Team Project modules from the following pairs, or modules approved by the Department of Computer Science:\nCS3203 Software Engineering Project, or\nCS3216 Software Product Engineering for Digital Markets and CS3217 Software Engineering on Modern Application Platforms, or\nCS3281 Thematic Systems Project I and CS3282 Thematic Systems Project II.",
+          "expected_mcs": 8,
+          "state": "overallDegreeState",
+          "or": [
+            {
+              "CS3203": {
+                "module": {
+                  "code": "CS3203",
+                  "mc": 8
+                }
+              }
+            },
+            {
+              "CS3216/17 combo": {
+                "and": [
+                  {
+                    "cs3216": {
+                      "module": {
+                        "code": "CS3216",
+                        "mc": 5
+                      }
+                    }
+                  },
+                  {
+                    "cs3217": {
+                      "module": {
+                        "code": "CS3217",
+                        "mc": 5
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "CS3281/82 combo": {
+                "and": ["CS3281", "CS3282"]
+              }
+            }
           ]
         }
       },
@@ -138,7 +171,7 @@
           "expected_mcs": 28,
           "state": "overallDegreeState",
           "fulfillment_criteria": {
-            "at_least_n_mcs": 28
+            "at_least_n_mcs": 24
           },
           "or": [
             {
@@ -233,23 +266,6 @@
                           }
                         }
                       ]
-                    }
-                  },
-                  {
-                    "Remaining Breadth and Depth": {
-                      "state": "csBreadthAndDepthState",
-                      "title": "Any CS/CP/IFS module",
-                      "fulfillment_criteria": {
-                        "at_least_n_mcs": 12,
-                        "level": [4000, 5000, 6000]
-                      },
-                      "module": {
-                        "code_pattern": "^(CS|CP|IFS)",
-                        "level": [4000, 5000, 6000],
-                        "required_mcs": 20,
-                        "early_terminate": true,
-                        "respawnable": true
-                      }
                     }
                   }
                 ]
@@ -515,25 +531,21 @@
                         }
                       ]
                     }
-                  },
-                  {
-                    "Remaining Breadth and Depth": {
-                      "state": "csBreadthAndDepthState",
-                      "title": "Any CS/CP/IFS module",
-                      "fulfillment_criteria": {
-                        "at_least_n_mcs": 12,
-                        "level": [4000, 5000, 6000]
-                      },
-                      "module": {
-                        "code_pattern": "^(CS|CP|IFS)",
-                        "level": [4000, 5000, 6000],
-                        "required_mcs": 16,
-                        "early_terminate": true,
-                        "respawnable": true
-                      }
-                    }
                   }
                 ]
+              }
+            },
+            {
+              "Remaining Breadth and Depth": {
+                "state": "csBreadthAndDepthState",
+                "title": "Any CS/CP/IFS module",
+                "module": {
+                  "code_pattern": "^(CS|CP|IFS)",
+                  "level": [4000, 5000, 6000],
+                  "required_mcs": 16,
+                  "early_terminate": true,
+                  "respawnable": true
+                }
               }
             }
           ]
@@ -560,12 +572,9 @@
             "MA1101R",
             "MA1521",
             {
-              "Science": {
+              "physics": {
                 "tag": "1 sci mod",
-                "module": {
-                  "code_prefix": ["CM", "LSM", "PC", "MA", "ST"],
-                  "required_mcs": 4
-                }
+                "or": ["PC1221"]
               }
             }
           ]
@@ -573,7 +582,7 @@
       },
       {
         "Unrestricted Electives": {
-          "expected_mcs": 40,
+          "expected_mcs": 32,
           "state": "overallDegreeState",
           "module": {
             "code_pattern": ".",

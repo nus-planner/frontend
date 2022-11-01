@@ -12,7 +12,8 @@
               "geh": {
                 "title": "Any GEH",
                 "module": {
-                  "code_pattern": "^GEH"
+                  "code_pattern": "^GEH",
+                  "required_mcs": 4
                 }
               }
             },
@@ -22,7 +23,8 @@
               "ges": {
                 "title": "Any GES",
                 "module": {
-                  "code_pattern": "^GES"
+                  "code_pattern": "^GES",
+                  "required_mcs": 4
                 }
               }
             },
@@ -30,7 +32,8 @@
               "get": {
                 "title": "Any GET",
                 "module": {
-                  "code_pattern": "^GET"
+                  "code_pattern": "^GET",
+                  "required_mcs": 4
                 }
               }
             }
@@ -581,7 +584,8 @@
               "Science": {
                 "tag": "1 sci mod",
                 "module": {
-                  "code_prefix": ["CM", "LSM", "PC", "MA", "ST"]
+                  "code_prefix": ["CM", "LSM", "PC", "MA", "ST"],
+                  "required_mcs": 4
                 }
               }
             }
