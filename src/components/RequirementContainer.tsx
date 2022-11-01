@@ -152,7 +152,6 @@ const RequirementContainer = ({
               <Text
                 fontSize={"xs"}
                 color={"blackAlpha.700"}
-                whiteSpace="pre-wrap"
               >
                 {requirement.description}
               </Text>
