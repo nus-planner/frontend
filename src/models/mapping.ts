@@ -641,7 +641,7 @@ class AcademicPlanViewModel
   }
 
   public get startYear(): string {
-    return this.academicPlan.startYear.toString();
+    return `${this.academicPlan.startYear}-${this.academicPlan.startYear + 1}`;
   }
 
   clearSemesters() {
