@@ -15,17 +15,19 @@ interface BasicModuleInfo {
 
 const NUSMODS_API_URL = "https://api.nusmods.com/v2";
 
+// Temporary assignment
+const acadYear = "2022-2023";
+
 // If module has prereqs -> return PrereqTree
 // If module has no prereqs -> return null
 // If error in querying -> return undefined
 export const fetchModulePrereqs = async (
-  academicYear: string,
   moduleCode: string,
 ): Promise<ModuleRequisites> => {
   if (!isValidModuleCode(moduleCode)) return {};
 
   const res = await fetch(
-    NUSMODS_API_URL + `/${academicYear}/modules/${moduleCode}.json`,
+    NUSMODS_API_URL + `/${acadYear}/modules/${moduleCode}.json`,
   ).then((resp) => {
     if (resp.status != 200) {
       return undefined;
@@ -54,13 +56,12 @@ export const fetchModulePrereqs = async (
 };
 
 export const fetchBasicModuleInfo = async (
-  academicYear: string,
   moduleCode: string,
 ): Promise<BasicModuleInfo | undefined> => {
   if (!isValidModuleCode(moduleCode)) return undefined;
 
   const res = await fetch(
-    NUSMODS_API_URL + `/${academicYear}/modules/${moduleCode}.json`,
+    NUSMODS_API_URL + `/${acadYear}/modules/${moduleCode}.json`,
   ).then((resp) => {
     if (resp.status != 200) {
       return undefined;
@@ -83,11 +84,9 @@ export const fetchBasicModuleInfo = async (
   };
 };
 
-export const fetchModuleList = async (
-  academicYear: string,
-): Promise<Module[]> => {
+export const fetchModuleList = async (): Promise<Module[]> => {
   const res = await fetch(
-    NUSMODS_API_URL + `/${academicYear}/moduleList.json`,
+    NUSMODS_API_URL + `/${acadYear}/moduleList.json`,
   ).then((resp) => {
     if (resp.status != 200) {
       return undefined;
