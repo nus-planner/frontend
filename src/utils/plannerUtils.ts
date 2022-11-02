@@ -1,7 +1,11 @@
 import { MainViewModel } from "../models";
 import moduleList from "../../locals/data";
 import * as models from "../models";
-import { VIEWMODEL_STORAGE } from "../constants/planner";
+import {
+  PLANNER_SEMESTERS,
+  PLANNER_YEARS,
+  VIEWMODEL_STORAGE,
+} from "../constants/planner";
 
 export interface moduleListInterface {
   moduleCode: string;
@@ -69,13 +73,31 @@ export const loadViewModel = (viewModel: MainViewModel): void => {
   viewModel.requirements.map((x) =>
     x.filtered((mod) => !plannerModulesSet.has(mod.code)),
   );
-  
+
   sortRequirementModules(viewModel);
   viewModel.validate();
 };
 
 export const storeViewModel = (viewModel: MainViewModel): void => {
   localStorage.setItem(VIEWMODEL_STORAGE, viewModel.toStorageString());
+};
+
+export const storePlannerYears = (plannerYears: number[]): void => {
+  localStorage.setItem(PLANNER_YEARS, JSON.stringify(plannerYears));
+};
+
+export const loadPlannerYears = (): number[] => {
+  return JSON.parse(localStorage.getItem(PLANNER_YEARS) ?? "[1, 2, 3, 4]");
+};
+
+export const storePlannerSemesters = (plannerSemesters: number[][]): void => {
+  localStorage.setItem(PLANNER_SEMESTERS, JSON.stringify(plannerSemesters));
+};
+
+export const loadPlannerSemesters = (): number[][] => {
+  return JSON.parse(
+    localStorage.getItem(PLANNER_SEMESTERS) ?? "[[1, 2],[1, 2],[1, 2],[1, 2]]",
+  );
 };
 
 export function convertYearAndSemToIndex(year: number, sem: number) {
