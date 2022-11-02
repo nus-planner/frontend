@@ -1,3 +1,5 @@
+/// <reference path="array.d.ts" />
+
 Array.prototype.unique = function () {
   const set = new Set();
   for (const item of this) {

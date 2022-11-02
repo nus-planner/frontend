@@ -1,3 +1,4 @@
+import "../global_imports";
 import * as runner from "./runner";
 const pathToRequirements = process.argv[2];
 const pathToAcadPlan = process.argv[3];
