@@ -20,7 +20,9 @@ export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
   }
   for (let i = 0; i < moduleRequirements.length; i++) {
     for (let j = 0; j < moduleRequirements[i].modules.length; j++) {
-      moduleRequirements[i].modules[j].color?.push(moduleColor[i % moduleColor.length]);
+      moduleRequirements[i].modules[j].color?.push(
+        moduleColor[i % moduleColor.length],
+      );
     }
   }
 };
@@ -30,6 +32,7 @@ export const isValidModuleCode = (code: string) => {
 };
 
 export const applyPrereqValidation = async (
+  academicYear: string,
   semesters: Semester[],
 ): Promise<Semester[]> => {
   const takenModuleSet = new Set<string>();
@@ -48,7 +51,10 @@ export const applyPrereqValidation = async (
         mod.preclusions = [];
         mod.coreqs = [];
         if (underlyingMod !== undefined) {
-          const reqs = await fetchModulePrereqs(underlyingMod.code);
+          const reqs = await fetchModulePrereqs(
+            academicYear,
+            underlyingMod.code,
+          );
           mod.prereqs = reqs.prereqs;
           mod.preclusions = reqs.preclusions;
           mod.coreqs = reqs.coreqs;
@@ -56,7 +62,7 @@ export const applyPrereqValidation = async (
       } else {
         // Fetch prereqs from NUSMods if property not found
         if (mod.prereqs === undefined) {
-          const reqs = await fetchModulePrereqs(mod.code);
+          const reqs = await fetchModulePrereqs(academicYear, mod.code);
           mod.prereqs = reqs.prereqs;
           mod.preclusions = reqs.preclusions;
           mod.coreqs = reqs.coreqs;
@@ -146,9 +152,13 @@ export const convertPrereqTreeToString = (prereqTree: PrereqTree): string => {
     return prereqTree;
   }
   if ("and" in prereqTree) {
-    return "(" + (prereqTree.and as PrereqTree[])
-      .map(convertPrereqTreeToString)
-      .join(" and ") + ")";
+    return (
+      "(" +
+      (prereqTree.and as PrereqTree[])
+        .map(convertPrereqTreeToString)
+        .join(" and ") +
+      ")"
+    );
   }
   if ("or" in prereqTree) {
     return (prereqTree.or as PrereqTree[])
@@ -208,7 +218,7 @@ export const applyCoreqValidation = (semesters: Semester[]): Semester[] => {
 };
 
 export const testPrereqTree = async () => {
-  const prereqTree = await fetchModulePrereqs("CS3243");
+  const prereqTree = await fetchModulePrereqs("2022-2023", "CS3243");
   const modSet = new Set<string>(["CS2040", "CS1231"]);
   if (!!prereqTree.prereqs) {
     const res = evaluatePrereqTree(prereqTree.prereqs, modSet);
@@ -221,7 +231,7 @@ export const testPrereqTree = async () => {
 // Odd test cases:
 // ACC3706: 'one of' has a 'one of'
 export const testPrereqTreeMods = async () => {
-  const prereqTree = await fetchModulePrereqs("CS3263");
+  const prereqTree = await fetchModulePrereqs("2022-2023", "CS3263");
   const modSet = new Set<string>(["CS2030", "CS1232", "ST2334"]);
   if (!!prereqTree.prereqs) {
     const res = evaluatePrereqTreeMods(prereqTree.prereqs, modSet);
@@ -233,17 +243,21 @@ export const testPrereqTreeMods = async () => {
 export const getNUSModsModulePage = (moduleCode: string): string =>
   "https://nusmods.com/modules/" + moduleCode;
 
-export const getGEsFromModuleList = async (GE: string) => {
-  const allModules = await fetchModuleList();
-  const filteredModules = allModules.filter((mod) => mod.code.startsWith(GE));
-  return filteredModules;
-};
-
-export const fetchedModuleListPromise = fetchModuleList();
+export const fetchedModuleLists = new Map<
+  string,
+  Awaited<ReturnType<typeof fetchModuleList>>
+>();
 
 // TODO: cater for cases where there are duplicates from multi-select mods
-export const getNonDuplicateUEs = async (existingModules: string[]) => {
-  const allModules = await fetchedModuleListPromise;
+export const getNonDuplicateUEs = async (
+  academicYear: string,
+  existingModules: string[],
+) => {
+  if (!fetchedModuleLists.has(academicYear)) {
+    const result = await fetchModuleList(academicYear);
+    fetchedModuleLists.set(academicYear, result);
+  }
+  const allModules = fetchedModuleLists.get(academicYear)!;
   const filteredModules = allModules.filter(
     (mod) => !existingModules.includes(mod.code),
   );

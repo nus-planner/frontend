@@ -45,7 +45,10 @@ const ModuleDropdown = ({
   ) => {
     if (selectedModule === null || selectedModule.value === undefined) return;
 
-    const basicModuleInfo = await fetchBasicModuleInfo(selectedModule.value);
+    const basicModuleInfo = await fetchBasicModuleInfo(
+      mainViewModel.startYear,
+      selectedModule.value,
+    );
     let newUnderlyingModule: models.Module;
     if (basicModuleInfo === undefined) {
       newUnderlyingModule = new models.Module(selectedModule.value, "", 4);
@@ -82,7 +85,10 @@ const ModuleDropdown = ({
             basicModuleInfo.moduleCredit,
           );
         mainViewModel.planner[0].addModule(newExemptionModule);
-        await applyPrereqValidation(mainViewModel.planner).then((_) => {
+        await applyPrereqValidation(
+          mainViewModel.startYear,
+          mainViewModel.planner,
+        ).then((_) => {
           mainViewModel.validate();
         });
       }

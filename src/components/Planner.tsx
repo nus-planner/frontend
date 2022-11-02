@@ -125,15 +125,17 @@ const Planner = () => {
 
     console.log("state");
     console.log(state);
-    await applyPrereqValidation(state.planner).then((semesters) => {
-      const isPrereqsViolated =
-        semesters
-          .map((semester) => semester.modules)
-          .flat(1)
-          .filter((module) => module.prereqsViolated?.length).length > 0;
-      setIsValidateButtonDisabled(isPrereqsViolated);
-      return isPrereqsViolated;
-    });
+    await applyPrereqValidation(mainViewModel.startYear, state.planner).then(
+      (semesters) => {
+        const isPrereqsViolated =
+          semesters
+            .map((semester) => semester.modules)
+            .flat(1)
+            .filter((module) => module.prereqsViolated?.length).length > 0;
+        setIsValidateButtonDisabled(isPrereqsViolated);
+        return isPrereqsViolated;
+      },
+    );
 
     sortRequirementModules(mainViewModel);
     mainViewModel.validate();
@@ -150,15 +152,17 @@ const Planner = () => {
       semester.filtered((mod) => mod.code !== module.code);
     }
     state.requirements[0].modules.push(module);
-    await applyPrereqValidation(state.planner).then((semesters) => {
-      const isPrereqsViolated =
-        semesters
-          .map((semester) => semester.modules)
-          .flat(1)
-          .filter((module) => module.prereqsViolated?.length).length > 0;
-      setIsValidateButtonDisabled(isPrereqsViolated);
-      return isPrereqsViolated;
-    });
+    await applyPrereqValidation(mainViewModel.startYear, state.planner).then(
+      (semesters) => {
+        const isPrereqsViolated =
+          semesters
+            .map((semester) => semester.modules)
+            .flat(1)
+            .filter((module) => module.prereqsViolated?.length).length > 0;
+        setIsValidateButtonDisabled(isPrereqsViolated);
+        return isPrereqsViolated;
+      },
+    );
 
     console.log(state);
 
@@ -229,11 +233,12 @@ const Planner = () => {
             >
               Required Modules
             </Heading>
-            { !mainViewModel.requirements.length && (
-              <Alert status='warning' w="fit-content" whiteSpace={"initial"}>
-              <AlertIcon />
-              Please enter your enrollment year and major to load your requirements
-            </Alert>
+            {!mainViewModel.requirements.length && (
+              <Alert status="warning" w="fit-content" whiteSpace={"initial"}>
+                <AlertIcon />
+                Please enter your enrollment year and major to load your
+                requirements
+              </Alert>
             )}
             <Box bgColor="blackAlpha.50">
               {mainViewModel.requirements.map((requirement, id) => (
@@ -287,7 +292,12 @@ const Planner = () => {
                   mainViewModel
                     .loadAcademicPlanFromURL()
                     .then(() => storeViewModel(mainViewModel))
-                    .then(() => applyPrereqValidation(mainViewModel.planner))
+                    .then(() =>
+                      applyPrereqValidation(
+                        mainViewModel.startYear,
+                        mainViewModel.planner,
+                      ),
+                    )
                     .then(() => mainViewModel.validate())
                     .then(forceUpdate);
                 }}
