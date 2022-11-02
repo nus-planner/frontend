@@ -35,7 +35,7 @@ const ExemptionContainer = ({
   const options = [];
 
   useEffect(() => {
-    getNonDuplicateUEs(mainViewModel.startYear, []).then((mods) => {
+    getNonDuplicateUEs([]).then((mods) => {
       setMods(mods);
     });
   }, []);
@@ -56,10 +56,7 @@ const ExemptionContainer = ({
 
     // state.requirements[0].modules.push(module);
     mainViewModel.removeModuleViewModelFromGlobalState(module.code);
-    await applyPrereqValidation(
-      mainViewModel.startYear,
-      mainViewModel.planner,
-    ).then((semesters) => {
+    await applyPrereqValidation(mainViewModel.planner).then((semesters) => {
       const isPrereqsViolated =
         semesters
           .map((semester) => semester.modules)

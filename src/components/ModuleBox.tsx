@@ -75,14 +75,12 @@ const ModuleBox = ({
     if (!module.isMultiModule) {
       return;
     }
-    getNonDuplicateUEs(mainViewModel.startYear, existingModules).then(
-      (mods) => {
-        console.log(module);
-        const regexp = new RegExp(module.code);
-        const filterResult = mods.filter((mod) => regexp.test(mod.code));
-        setMods(filterResult);
-      },
-    );
+    getNonDuplicateUEs(existingModules).then((mods) => {
+      console.log(module);
+      const regexp = new RegExp(module.code);
+      const filterResult = mods.filter((mod) => regexp.test(mod.code));
+      setMods(filterResult);
+    });
   }, []);
 
   function getStyle(style: any, snapshot: any) {
@@ -130,13 +128,9 @@ const ModuleBox = ({
                 padding="0.2rem 0.5rem"
                 whiteSpace={"initial"}
                 flexDirection="column"
-                shadow="md"
-                filter={
-                  !!module.prereqsViolated?.length ||
-                  !!module.coreqsViolated?.length
-                    ? "drop-shadow(0 0 0.15rem red)"
-                    : "none"
-                }
+                  shadow="md"
+                  filter={(!!module.prereqsViolated?.length || !!module.coreqsViolated?.length) ? "drop-shadow(0 0 0.15rem red)" : "none"}
+                  
               >
                 <Flex>
                   <Text fontSize={"medium"} color="black.900" fontWeight="bold">
@@ -207,17 +201,12 @@ const ModuleBox = ({
                   )}
                 </Flex>
 
-                {(!!module.prereqsViolated?.length ||
-                  !!module.coreqsViolated?.length) && (
-                  <Divider
-                    orientation="horizontal"
-                    borderColor={"blackAlpha.900"}
-                    borderStyle={"dotted"}
-                    mt="0.5rem"
-                  />
-                )}
+                {(!!module.prereqsViolated?.length || !!module.coreqsViolated?.length)
+                && (
+                <Divider orientation='horizontal' borderColor={"blackAlpha.900"} borderStyle={"dotted"} mt="0.5rem" />)}
                 {!!module.prereqsViolated?.length && (
                   <div>
+                    
                     <HStack>
                       <Icon as={WarningTwoIcon} color="blackAlpha.900" />
                       <Text
@@ -245,7 +234,7 @@ const ModuleBox = ({
                 {!!module.coreqsViolated?.length && (
                   <div>
                     <HStack>
-                      <Icon as={WarningTwoIcon} color="blackAlpha.900" />
+                      <Icon as={WarningTwoIcon} color="blackAlpha.900"/>
                       <Text
                         fontSize={"xs"}
                         //fontWeight="bold"
