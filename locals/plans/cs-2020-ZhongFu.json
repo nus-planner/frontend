@@ -1,0 +1,57 @@
+{
+  "exemptions": [],
+  "starting_year": 2020,
+  "years": 4,
+  "semesters": [
+    {
+      "year": 1,
+      "semester": 1,
+      "modules": ["CS1101S", "CS1231S", "MA1101R", "MA1521", "GEH1016"]
+    },
+    {
+      "year": 1,
+      "semester": 2,
+      "modules": ["CS2030S", "CS2040S", "IS1103", "CP3108B", "CFG1002"]
+    },
+    {
+      "year": 2,
+      "semester": 1,
+      "modules": ["CS2100", "ST2334", "GEQ1000", "CS2105", "CS2107"]
+    },
+    {
+      "year": 2,
+      "semester": 2,
+      "modules": ["CS3230", "CS2101", "CS2103T", "CS2106", "GET1036"]
+    },
+    {
+      "year": 2,
+      "semester": "ST1",
+      "modules": ["CP3200"]
+    },
+    {
+      "year": 3,
+      "semester": 1,
+      "modules": ["CS2102", "CS3103", "CS3243", "CS3237", "GE2215"]
+    },
+    {
+      "year": 3,
+      "semester": 2,
+      "modules": ["ES2660", "CS3281", "CS3235", "CS4222", "CS3241"]
+    },
+    {
+      "year": 3,
+      "semester": "ST1",
+      "modules": ["CP3202"]
+    },
+    {
+      "year": 4,
+      "semester": 1,
+      "modules": ["PC1221"]
+    },
+    {
+      "year": 4,
+      "semester": 2,
+      "modules": ["CS3282", "CS4226", "CS4225"]
+    }
+  ]
+}
