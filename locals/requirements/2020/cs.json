@@ -168,7 +168,7 @@
       },
       {
         "CS Breadth and Depth": {
-          "expected_mcs": 28,
+          "expected_mcs": 24,
           "state": "overallDegreeState",
           "fulfillment_criteria": {
             "at_least_n_mcs": 24
@@ -264,77 +264,8 @@
                               ]
                             }
                           }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "Remaining Breadth and Depth": {
-                      "state": "csBreadthAndDepthState",
-                      "title": "Any CS/CP/IFS module",
-                      "fulfillment_criteria": {
-                        "at_least_n_mcs": 12,
-                        "level": [4000, 5000, 6000]
-                      },
-                      "module": {
-                        "code_pattern": "^(CS|CP|IFS)",
-                        "level": [4000, 5000, 6000],
-                        "required_mcs": 20,
-                        "early_terminate": true,
-                        "respawnable": true
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "Focus Areas NOT sharing primary with CFM": {
-                "and": [
-                  {
-                    "Focus Area": {
-                      "state": "csBreadthAndDepthState",
-                      "or": [
-                        {
-                          "security_focus_area_primaries": {
-                            "fulfillment_criteria": {
-                              "at_least_n_modules": 3
-                            },
-                            "tag": "Security Primary",
-                            "and": [
-                              {
-                                "Security FA at least 1 Level 4000": {
-                                  "state": "csSecurityFABasketState",
-                                  "at_least_n_of": {
-                                    "n": 1,
-                                    "baskets": [
-                                      "CS4236",
-                                      "CS4230",
-                                      "CS4238",
-                                      "CS4239"
-                                    ]
-                                  }
-                                }
-                              },
-                              {
-                                "SWE FA at least 2 others": {
-                                  "state": "csSecurityFABasketState",
-                                  "at_least_n_of": {
-                                    "n": 2,
-                                    "baskets": [
-                                      "CS2107",
-                                      "CS3235",
-                                      "CS4236",
-                                      "CS4230",
-                                      "CS4238",
-                                      "CS4239"
-                                    ]
-                                  }
-                                }
-                              }
-                            ]
-                          }
                         },
+
                         {
                           "networks_focus_area_primaries": {
                             "tag": "Networks Primary",
@@ -356,7 +287,14 @@
                                     "at_least_n_of": {
                                       "n": 2,
                                       "baskets": [
-                                        "CS2105",
+                                        {
+                                          "CS2105": {
+                                            "module": {
+                                              "code": "CS2105",
+                                              "double_count": true
+                                            }
+                                          }
+                                        },
                                         "CS3103",
                                         "CS4222",
                                         "CS4226",
@@ -370,180 +308,231 @@
                           }
                         },
                         {
-                          "ai_focus_area_primaries": {
-                            "tag": "AI Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csAIFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": [
-                                        "CS4243",
-                                        "CS4244",
-                                        "CS4246",
-                                        "CS4248"
-                                      ]
+                          "Focus Area": {
+                            "state": "csBreadthAndDepthState",
+                            "or": [
+                              {
+                                "security_focus_area_primaries": {
+                                  "fulfillment_criteria": {
+                                    "at_least_n_modules": 3
+                                  },
+                                  "tag": "Security Primary",
+                                  "and": [
+                                    {
+                                      "Security FA at least 1 Level 4000": {
+                                        "state": "csSecurityFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 1,
+                                          "baskets": [
+                                            "CS4236",
+                                            "CS4230",
+                                            "CS4238",
+                                            "CS4239"
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "SWE FA at least 2 others": {
+                                        "state": "csSecurityFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 2,
+                                          "baskets": [
+                                            "CS2107",
+                                            "CS3235",
+                                            "CS4236",
+                                            "CS4230",
+                                            "CS4238",
+                                            "CS4239"
+                                          ]
+                                        }
+                                      }
                                     }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csAIFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        "CS2109S",
-                                        "CS3243",
-                                        "CS3244",
-                                        "CS3263",
-                                        "CS3264",
-                                        "CS4243",
-                                        "CS4244",
-                                        "CS4246",
-                                        "CS4248"
-                                      ]
-                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "ai_focus_area_primaries": {
+                                  "tag": "AI Primary",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "Level 4000": {
+                                          "state": "csAIFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 1,
+                                            "baskets": [
+                                              "CS4243",
+                                              "CS4244",
+                                              "CS4246",
+                                              "CS4248"
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "": {
+                                          "state": "csAIFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 2,
+                                            "baskets": [
+                                              "CS2109S",
+                                              "CS3243",
+                                              "CS3244",
+                                              "CS3263",
+                                              "CS3264",
+                                              "CS4243",
+                                              "CS4244",
+                                              "CS4246",
+                                              "CS4248"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
                                   }
                                 }
-                              ]
-                            }
-                          }
-                        },
-                        {
-                          "computer_graphics_and_games_fa_primaries": {
-                            "tag": "CG Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csCGFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4247", "CS4350"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csCGFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        "CS3241",
-                                        "CS3242",
-                                        "CS3247",
-                                        "CS4247",
-                                        "CS4350"
-                                      ]
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        },
-                        {
-                          "database_systems_fa_primaries": {
-                            "tag": "DB Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csDBFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4221", "CS4224", "CS4225"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csDBFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        "CS2102",
-                                        "CS3223",
-                                        "CS4221",
-                                        "CS4224",
-                                        "CS4225"
-                                      ]
-                                    }
+                              },
+                              {
+                                "computer_graphics_and_games_fa_primaries": {
+                                  "tag": "CG Primary",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "Level 4000": {
+                                          "state": "csCGFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 1,
+                                            "baskets": ["CS4247", "CS4350"]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "": {
+                                          "state": "csCGFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 2,
+                                            "baskets": [
+                                              "CS3241",
+                                              "CS3242",
+                                              "CS3247",
+                                              "CS4247",
+                                              "CS4350"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
                                   }
                                 }
-                              ]
-                            }
-                          }
-                        },
-                        {
-                          "programming_languages_fa_primaries": {
-                            "tag": "PL Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csPLFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4212", "CS4215"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csPLFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        "CS2104",
-                                        "CS3211",
-                                        "CS4212",
-                                        "CS4215"
-                                      ]
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        },
-                        {
-                          "parallel_computing_fa_primaries": {
-                            "tag": "Parallel Computing Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csParallelComputingFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4231", "CS4223"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csParallelComputingFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        "CS3210",
-                                        "CS3211",
-                                        "CS4231",
-                                        "CS4223"
-                                      ]
-                                    }
+                              },
+                              {
+                                "database_systems_fa_primaries": {
+                                  "tag": "DB Primary",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "Level 4000": {
+                                          "state": "csDBFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 1,
+                                            "baskets": [
+                                              "CS4221",
+                                              "CS4224",
+                                              "CS4225"
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "": {
+                                          "state": "csDBFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 2,
+                                            "baskets": [
+                                              "CS2102",
+                                              "CS3223",
+                                              "CS4221",
+                                              "CS4224",
+                                              "CS4225"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
                                   }
                                 }
-                              ]
-                            }
+                              },
+                              {
+                                "programming_languages_fa_primaries": {
+                                  "tag": "PL Primary",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "Level 4000": {
+                                          "state": "csPLFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 1,
+                                            "baskets": ["CS4212", "CS4215"]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "": {
+                                          "state": "csPLFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 2,
+                                            "baskets": [
+                                              "CS2104",
+                                              "CS3211",
+                                              "CS4212",
+                                              "CS4215"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "parallel_computing_fa_primaries": {
+                                  "tag": "Parallel Computing Primary",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "Level 4000": {
+                                          "state": "csParallelComputingFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 1,
+                                            "baskets": ["CS4231", "CS4223"]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "": {
+                                          "state": "csParallelComputingFABasketState",
+                                          "at_least_n_of": {
+                                            "n": 2,
+                                            "baskets": [
+                                              "CS3210",
+                                              "CS3211",
+                                              "CS4231",
+                                              "CS4223"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
                           }
                         }
                       ]
@@ -552,16 +541,11 @@
                   {
                     "Remaining Breadth and Depth": {
                       "state": "csBreadthAndDepthState",
-                      "title": "Any CS/CP/IFS module",
-                      "fulfillment_criteria": {
-                        "at_least_n_mcs": 12,
-                        "level": [4000, 5000, 6000]
-                      },
+                      "title": "Any CS module",
                       "module": {
-                        "code_pattern": "^(CS|CP|IFS)",
-                        "level": [4000, 5000, 6000],
-                        "required_mcs": 16,
-                        "early_terminate": true,
+                        "code_prefix": "CS",
+                        "required_mcs": 12,
+                        "early_terminate": false,
                         "respawnable": true
                       }
                     }

@@ -56,5 +56,5 @@ export function verify(
   );
 
   acadPlan.checkAgainstConfig(validatorState);
-  log.log(validatorState.basket.getPrintableClone(5));
+  log.log(validatorState.basket.getPrintableClone(10));
 }
