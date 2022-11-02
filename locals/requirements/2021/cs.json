@@ -12,8 +12,7 @@
               "geh": {
                 "title": "Cultures and Connections",
                 "module": {
-                  "code_pattern": "^GEC",
-                  "required_mcs": 4
+                  "code_pattern": "^GEC"
                 }
               }
             },
@@ -21,8 +20,7 @@
               "gei": {
                 "title": "Data Literacy",
                 "module": {
-                  "code_pattern": "^GEA",
-                  "required_mcs": 4
+                  "code_pattern": "^GEA"
                 }
               }
             },
@@ -30,8 +28,7 @@
               "gei": {
                 "title": "Singapore Studies",
                 "module": {
-                  "code_pattern": "^GESS",
-                  "required_mcs": 4
+                  "code_pattern": "^GESS"
                 }
               }
             },
@@ -39,8 +36,7 @@
               "gei": {
                 "title": "Communities and Engagement",
                 "module": {
-                  "code_pattern": "^GEN",
-                  "required_mcs": 4
+                  "code_pattern": "^GEN"
                 }
               }
             }
@@ -563,8 +559,7 @@
               "Science": {
                 "tag": "1 sci mod",
                 "module": {
-                  "code_prefix": ["CM", "LSM", "PC", "MA", "ST"],
-                  "required_mcs": 4
+                  "code_prefix": ["CM", "LSM", "PC", "MA", "ST"]
                 }
               }
             }

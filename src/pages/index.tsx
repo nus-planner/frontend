@@ -26,6 +26,7 @@ const Home = () => {
     <Stack padding="1rem">
       <MobileDeviceAlert isOpen={isOpen} onClose={onClose} />
       <BasicInfo />
+      <div />
       <Divider />
       <PlannerComponent />
     </Stack>

@@ -13,8 +13,6 @@ import {
   Icon,
   Flex,
   Spacer,
-  Alert,
-  AlertIcon,
 } from "@chakra-ui/react";
 import {
   useState,

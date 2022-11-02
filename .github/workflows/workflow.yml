@@ -11,6 +11,7 @@ on:
   push:
     branches:
       - main
+      - develop
   workflow_dispatch:
 
 jobs:
@@ -60,3 +61,4 @@ jobs:
           action: "upload"
           app_location: ${{ env.APP_LOCATION }}
           app_artifact_location: "."
+          production_branch: "main"
