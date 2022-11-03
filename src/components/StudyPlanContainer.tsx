@@ -1,29 +1,24 @@
 import {
   Spacer,
   Flex,
-  IconButton,
   Text,
   Box,
-  VStack,
   HStack,
   Button,
   Tooltip,
 } from "@chakra-ui/react";
 
-import DeleteIcon from "@chakra-ui/icons";
-
 import { Module, Semester } from "../interfaces/planner";
-import ModuleBox from "./ModuleBox";
-import { Droppable } from "react-beautiful-dnd";
 import React, { useCallback, useState } from "react";
 import SemesterPlanner from "./SemesterPlanner";
-import { convertYearAndSemToIndex } from "../utils/plannerUtils";
+import { convertYearAndSemToIndex, storePlannerSemesters } from "../utils/plannerUtils";
 
 // Fix starting with 4 years (since we are not doing double degree for now)
 // Ay is retrieved from the enrollment year from basic info
 interface PlannerContainerProps {
   year: number;
-  semesters: number[];
+  semesters: number[][];
+  setSemesters: (semester: number[][]) => void;
   id: string;
   plannerSemesters: Semester[];
   handleModuleClose: (module: Module) => void;
@@ -32,24 +27,29 @@ interface PlannerContainerProps {
 const StudyPlanContainer = ({
   year,
   semesters,
+  setSemesters,
   id,
   plannerSemesters,
   handleModuleClose,
 }: PlannerContainerProps) => {
-  const [sems, setSems] = useState<number[]>(semesters);
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
+  const semIdx = year-1;
+
 
   const addSpecialTerm = () => {
-    semesters.push(sems.length + 1);
-    setSems(semesters);
+    semesters[semIdx].push(semesters[semIdx].length + 1)
+    setSemesters(semesters);
+    storePlannerSemesters(semesters);
     forceUpdate();
   };
 
   const removeSpecialTerm = (year: number) => {
-    semesters.pop();
-    semesters.pop();
-    setSems(semesters);
+    semesters[semIdx].pop();
+    semesters[semIdx].pop();
+    setSemesters(semesters);
+    storePlannerSemesters(semesters);
+
     for (let i = year*4 - 1; i <= year*4; i++) {
       for (let mod of plannerSemesters[i].modules) {
         handleModuleClose(mod)
@@ -59,7 +59,7 @@ const StudyPlanContainer = ({
   };
   
 const SpecialTermButton = (year: Number) => {
-    if (sems.length === 4) {
+    if (semesters[semIdx].length === 4) {
       return (
         <Tooltip label="All modules in special terms will be cleared">
         <Button
@@ -103,8 +103,7 @@ const SpecialTermButton = (year: Number) => {
         
       </Flex>
       <HStack scrollBehavior={"auto"} w="100%" align="">
-        {sems.map((semester) => {
-          // const index = 2 * (Number(id) - 1) + Number(semester);
+        {semesters[semIdx].map((semester) => {
           const index = convertYearAndSemToIndex(Number(id), Number(semester));
           return (
             <SemesterPlanner

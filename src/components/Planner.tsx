@@ -33,7 +33,12 @@ import { applyPrereqValidation } from "../utils/moduleUtils";
 import { MainViewModel } from "../models";
 import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
 import { useAppContext } from "./AppContext";
-import { sortRequirementModules, storeViewModel } from "../utils/plannerUtils";
+import {
+  loadPlannerSemesters,
+  sortRequirementModules,
+  storePlannerSemesters,
+  storeViewModel,
+} from "../utils/plannerUtils";
 import { motion } from "framer-motion";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 
@@ -56,6 +61,19 @@ const Planner = () => {
   const forceUpdate = useCallback(() => updateState({}), []);
 
   const { mainViewModel, setMainViewModel } = useAppContext();
+
+  // Assume standard max 4 years since no double degree
+  const [plannerYears, setPlannerYears] = useState<number[]>([1, 2, 3, 4]);
+  const [plannerSemesters, setPlannerSemesters] = useState<number[][]>([
+    [1, 2],
+    [1, 2],
+    [1, 2],
+    [1, 2],
+  ]);
+
+  useEffect(() => {
+    setPlannerSemesters(loadPlannerSemesters());
+  }, []);
 
   const handleDragEnd = (event: any) => {
     const { source, destination, draggableId } = event;
@@ -171,15 +189,6 @@ const Planner = () => {
     forceUpdate();
   };
 
-  // Assume standard max 4 years since no double degree
-  const plannerYears = [1, 2, 3, 4];
-  const [plannerSemesters, setPlannerSemesters] = useState<number[][]>([
-    [1, 2],
-    [1, 2],
-    [1, 2],
-    [1, 2],
-  ]);
-
   const showRequirementToggleButton = mainViewModel.requirements.length > 1;
 
   const [isValidateButtonDisabled, setIsValidateButtonDisabled] =
@@ -195,7 +204,8 @@ const Planner = () => {
       {years.map((year) => (
         <StudyPlanContainer
           year={year}
-          semesters={plannerSemesters[year - 1]}
+          semesters={plannerSemesters}
+          setSemesters={setPlannerSemesters}
           plannerSemesters={mainViewModel.planner}
           handleModuleClose={handleModuleClose}
           id={year.toString()}
