@@ -545,22 +545,30 @@
           "state": "overallDegreeState",
           "and": [
             {
-              "Statistics": {
-                "or": [
+              "": {
+                "state": "mathAndScienceState",
+                "and": [
                   {
-                    "": {
-                      "tag": "ST2131/2132 Pair",
-                      "and": ["ST2131", "ST2132"]
+                    "Statistics": {
+                      "or": [
+                        {
+                          "": {
+                            "tag": "ST2131/2132 Pair",
+                            "and": ["ST2131", "ST2132"]
+                          }
+                        },
+                        "ST2334"
+                      ]
                     }
                   },
-                  "ST2334"
+                  "MA1101R",
+                  "MA1521"
                 ]
               }
             },
-            "MA1101R",
-            "MA1521",
             {
               "Science": {
+                "state": "mathAndScienceState",
                 "tag": "1 sci mod",
                 "module": {
                   "code_prefix": ["CM", "LSM", "PC", "MA", "ST"],

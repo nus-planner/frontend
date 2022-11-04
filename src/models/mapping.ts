@@ -744,7 +744,9 @@ export class MainViewModel
     if (!addIfExists && this._trickle.containsKey(moduleViewModel.id)) {
       return this._trickle.getByKey(moduleViewModel.id)!;
     }
-
+    if (moduleViewModel.code === "MA1521") {
+      //debugger;
+    }
     this._trickle.setKeyValue(moduleViewModel.id, moduleViewModel);
     return moduleViewModel;
   }
@@ -757,7 +759,12 @@ export class MainViewModel
       return this.validatorState.allModules.get(module.code)!;
     }
 
+    if (module.code === "MA1521") {
+      console.log("AHHHHHHHHH");
+      debugger;
+    }
     this.validatorState.allModules.set(module.code, module);
+
     return module;
   }
 

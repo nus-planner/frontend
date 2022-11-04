@@ -120,7 +120,6 @@ export class ValidatorState implements Hydratable {
     if (!this.allModules.has(moduleCode)) {
       this.allModules.set(moduleCode, new plan.Module(moduleCode, "", mc)); // TODO
     }
-
     return this.allModules.get(moduleCode)!;
   }
 
