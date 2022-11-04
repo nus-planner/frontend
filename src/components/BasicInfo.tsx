@@ -36,10 +36,9 @@ class DirectoryList {
 }
 
 class DirectoryListing {
-  static requirementsBaseUrl =
-    "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/";
-  static studyPlanBaseUrl =
-    "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/study-plans/";
+  static branch = process.env.NODE_ENV === "development" ? "develop" : "main";
+  static requirementsBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/requirements/`;
+  static studyPlanBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/study-plans/`;
   cohort!: number;
   faculty!: string;
   course!: string;
@@ -208,7 +207,7 @@ const BasicInfo = () => {
       </HStack>
       <HStack spacing={"1rem"} px="1rem">
         <Tooltip label="Join our Telegram group!">
-          <Link href='https://t.me/+-lAnVtDL8z4xYmJl' isExternal>
+          <Link href="https://t.me/+-lAnVtDL8z4xYmJl" isExternal>
             <IconButton
               aria-label="Open menu"
               fontSize="1.5rem"
