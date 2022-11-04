@@ -16,6 +16,7 @@ export interface Module {
   tags?: string[];
   isMultiModule?: boolean;
   respawnable?: boolean;
+  semester?: models.SemesterViewModel;
   getUnderlyingModule?(): models.Module | undefined;
   getMatchedRequirements?(): models.RequirementViewModel[];
   selectModule?(module: models.Module): void; // specific to MultiModule

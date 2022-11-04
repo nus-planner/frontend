@@ -43,6 +43,7 @@ export class ModuleViewModel implements frontend.Module {
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: frontend.PrereqTree[];
+  semester?: SemesterViewModel;
 
   public get id(): string {
     return this.code;
@@ -118,6 +119,7 @@ export class MultiModuleViewModel implements frontend.Module {
   editable?: boolean;
   prereqs?: frontend.PrereqTree;
   prereqsViolated?: frontend.PrereqTree[];
+  semester?: SemesterViewModel;
   @Expose()
   @Type(() => plan.Module)
   selectedModule?: plan.Module;
@@ -143,6 +145,7 @@ export class MultiModuleViewModel implements frontend.Module {
 
   selectModule(module: plan.Module): void {
     this.selectedModule = module;
+    this.semester?.updateModule(this);
   }
 }
 
@@ -322,7 +325,9 @@ type JSONPlan = {
 };
 
 @Exclude()
-class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
+export class SemesterViewModel
+  implements frontend.Semester, frontend.Hydratable
+{
   private academicPlanDelegate: AcademicPlanDelegate;
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
   private requirementDelegate: RequirementDelegate;
@@ -359,7 +364,7 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
       this._modules,
       semPlan.modules,
       (modViewModel) =>
-        modViewModel.getUnderlyingModule!() || plan.Module.emptyModule, // TODO: Deal with !
+        modViewModel.getUnderlyingModule!() || plan.Module.emptyModule,
       (mod) => new ModuleViewModel(this.requirementDelegate, mod),
     );
   }
@@ -405,11 +410,17 @@ class SemesterViewModel implements frontend.Semester, frontend.Hydratable {
     if (this.academicPlanDelegate.moduleExists(module.code)) {
       return;
     }
+    module.semester = this;
     this._trickle.push(module);
   }
 
   addModuleAtIndex(module: frontend.Module, index: number) {
+    module.semester = this;
     this._trickle.insertAtIndex(module, index);
+  }
+
+  updateModule(module: frontend.Module) {
+    this._trickle.update(module);
   }
 
   removeAtIndex(index: number) {
@@ -518,6 +529,18 @@ class TrickleDownArray<T1, T2> {
     this.arr2.splice(index, 0, this.convertDown(t1));
   }
 
+  update(t1: T1) {
+    let index: number;
+    if ((index = this.arr1.findIndex((ele) => ele === t1)) !== -1) {
+      this.arr2[index] = this.convertDown(t1);
+    }
+  }
+
+  updateAtIndex(t1: T1, index: number) {
+    this.arr1[index] = t1;
+    this.arr2[index] = this.convertDown(t1);
+  }
+
   removeAtIndex(index: number) {
     this.arr1.splice(index, 1);
     this.arr2.splice(index, 1);
@@ -556,7 +579,7 @@ class AcademicPlanViewModel
 
   @Expose()
   @Type(() => plan.AcademicPlan)
-  private academicPlan: plan.AcademicPlan;
+  academicPlan: plan.AcademicPlan;
 
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
@@ -705,6 +728,15 @@ export class MainViewModel
   @Type(() => input.ValidatorState)
   private validatorState: input.ValidatorState;
 
+  get allModulesInTheWorld(): Array<plan.Module> {
+    const selectedModules = (
+      Array.from(this.moduleViewModelsMap.values())
+        .map((mod) => mod.getUnderlyingModule?.())
+        .filter((mod) => mod !== undefined) as Array<plan.Module>
+    ).unique();
+    return selectedModules;
+  }
+
   constructor(startYear: number, numYears = 4, sampleStudyPlanUrl?: string) {
     this.academicPlanViewModel = new AcademicPlanViewModel(
       this,
@@ -744,9 +776,7 @@ export class MainViewModel
     if (!addIfExists && this._trickle.containsKey(moduleViewModel.id)) {
       return this._trickle.getByKey(moduleViewModel.id)!;
     }
-    if (moduleViewModel.code === "MA1521") {
-      //debugger;
-    }
+
     this._trickle.setKeyValue(moduleViewModel.id, moduleViewModel);
     return moduleViewModel;
   }
@@ -759,10 +789,6 @@ export class MainViewModel
       return this.validatorState.allModules.get(module.code)!;
     }
 
-    if (module.code === "MA1521") {
-      console.log("AHHHHHHHHH");
-      debugger;
-    }
     this.validatorState.allModules.set(module.code, module);
 
     return module;
