@@ -36,16 +36,17 @@ export const fetchModulePrereqs = async (
 
   let prereqs: PrereqTree | null = null;
   if (res.prereqTree !== undefined) {
-    prereqs = res.prereqTree
-  } else {
-    if (res.prerequisite !== undefined) {
-      const match: string[] | null = res.prerequisite.match(/[A-Z]+\d{4}[A-Z]*/g);
-      if (!!match) {
-        prereqs = {or: match}
-      }
+    prereqs = res.prereqTree;
+  } else if (res.prerequisite !== undefined) {
+    // Workaround for some modules from NUSMods API not having PrereqTrees
+    const match: string[] | null = res.prerequisite
+      .match(/[A-Z]+\d{4}[A-Z]*/g)
+      .filter((x: string) => !x.startsWith("AY") && x !== moduleCode);
+    if (!!match) {
+      prereqs = { or: match };
     }
   }
-  
+
   const preclusions: string[] | null =
     res.preclusion === undefined
       ? null
