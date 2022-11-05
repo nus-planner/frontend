@@ -67,6 +67,7 @@ const ModuleBox = ({
   const existingModules: string[] = mainViewModel.allModulesInTheWorld.map(
     (mod) => mod.code,
   );
+  // debugger;
 
   useEffect(() => {
     if (!module.isMultiModule) {
