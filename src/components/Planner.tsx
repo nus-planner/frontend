@@ -161,16 +161,15 @@ const Planner = () => {
   };
 
   const handleModuleClose = async (module: Module) => {
-    console.log("handle module close", module.code);
-
     module.prereqsViolated = [];
     module.coreqsViolated = [];
-    const state = mainViewModel;
-    for (const semester of state.planner) {
-      semester.filtered((mod) => mod.code !== module.code);
+
+    for (const semester of mainViewModel.planner) {
+      semester.filtered((mod) => mod.id !== module.id);
     }
-    state.requirements[0].modules.push(module);
-    await applyPrereqValidation(mainViewModel.startYear, state.planner).then(
+    mainViewModel.requirements[0].modules.push(module);
+
+    await applyPrereqValidation(mainViewModel.startYear, mainViewModel.planner).then(
       (semesters) => {
         const isPrereqsViolated =
           semesters
@@ -181,8 +180,6 @@ const Planner = () => {
         return isPrereqsViolated;
       },
     );
-
-    console.log(state);
 
     sortRequirementModules(mainViewModel);
     mainViewModel.validate();

@@ -27,7 +27,7 @@ export const sortRequirementModules = (viewModel: MainViewModel): void => {
   const modReqMap = new Map();
   for (let requirement of viewModel.requirements) {
     for (let mod of requirement.modules) {
-      modReqMap.set(mod.code, mod);
+      modReqMap.set(mod.id, mod);
     }
   }
 
@@ -35,9 +35,9 @@ export const sortRequirementModules = (viewModel: MainViewModel): void => {
   for (let i = 0; i < viewModel.requirements.length; i++) {
     viewModel.requirements[i].modules = [];
     for (let mod of viewModel.requirements[i].allModules) {
-      if (modReqMap.has(mod.code)) {
-        viewModel.requirements[i].modules.push(modReqMap.get(mod.code));
-        addedSet.add(mod.code);
+      if (modReqMap.has(mod.id)) {
+        viewModel.requirements[i].modules.push(modReqMap.get(mod.id));
+        addedSet.add(mod.id);
       }
     }
   }
@@ -49,7 +49,7 @@ export const sortRequirementModules = (viewModel: MainViewModel): void => {
 
   for (let requirement of viewModel.requirements) {
     requirement.modules = [...new Set(requirement.modules)].sort((a, b) =>
-      a.code.localeCompare(b.code),
+      a.id.localeCompare(b.id),
     );
   }
 
@@ -68,10 +68,10 @@ export const loadViewModel = (viewModel: MainViewModel): void => {
     viewModel.planner
       .map((x) => x.modules)
       .flat(1)
-      .map((x) => x.code),
+      .map((x) => x.id),
   );
   viewModel.requirements.map((x) =>
-    x.filtered((mod) => !plannerModulesSet.has(mod.code)),
+    x.filtered((mod) => !plannerModulesSet.has(mod.id)),
   );
 
   sortRequirementModules(viewModel);
