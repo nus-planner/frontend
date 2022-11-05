@@ -34,13 +34,18 @@ export const fetchModulePrereqs = async (
   });
   if (!res) return {};
 
-  // TODO: Remove
-  console.log(res);
-  console.log(res?.prereqTree);
-  console.log(JSON.stringify(res?.prereqTree));
-
-  const prereqs: PrereqTree | null =
-    res.prereqTree === undefined ? null : res.prereqTree;
+  let prereqs: PrereqTree | null = null;
+  if (res.prereqTree !== undefined) {
+    prereqs = res.prereqTree
+  } else {
+    if (res.prerequisite !== undefined) {
+      const match: string[] | null = res.prerequisite.match(/[A-Z]+\d{4}[A-Z]*/g);
+      if (!!match) {
+        prereqs = {or: match}
+      }
+    }
+  }
+  
   const preclusions: string[] | null =
     res.preclusion === undefined
       ? null

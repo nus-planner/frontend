@@ -1,10 +1,10 @@
 import { Stack, Divider } from "@chakra-ui/react";
 import { useState, useCallback, useEffect, SetStateAction } from "react";
 import PlannerComponent from "../components/Planner";
-import { labelModules, loadViewModel } from "../utils/plannerUtils";
+import { loadViewModel } from "../utils/plannerUtils";
 import BasicInfo from "../components/BasicInfo";
 import { useAppContext } from "../components/AppContext";
-import { VIEWMODEL_STORAGE } from "../constants/planner";
+import MobileDeviceAlert from "../components/MobileDeviceAlert";
 
 const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes
@@ -19,6 +19,7 @@ const Home = () => {
 
   return (
     <Stack padding="1rem">
+      <MobileDeviceAlert />
       <BasicInfo />
       <Divider />
       <PlannerComponent />
