@@ -64,12 +64,9 @@ const ModuleBox = ({
   let options: any[] = [];
 
   const [mods, setMods] = useState<Module[]>([]);
-  const existingModules: string[] = [];
-  for (let i = 0; i < mainViewModel.requirements.length; i++) {
-    for (let j = 0; j < mainViewModel.requirements[i].modules.length; j++) {
-      existingModules.push(mainViewModel.requirements[i].modules[j].code);
-    }
-  }
+  const existingModules: string[] = mainViewModel.allModulesInTheWorld.map(
+    (mod) => mod.code,
+  );
 
   useEffect(() => {
     if (!module.isMultiModule) {
