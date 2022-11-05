@@ -6,7 +6,7 @@ import { Module } from "../interfaces/planner";
 import * as models from "../models";
 import { useAppContext } from "./AppContext";
 import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormatOptionLabelMeta } from "react-select/dist/declarations/src/Select";
 import { applyPrereqValidation } from "../utils/moduleUtils";
 
@@ -27,7 +27,7 @@ const ModuleDropdown = ({
 }: ModuleDropdownProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const [showOptions, setShowOptions] = useState<boolean>(false);
   useEffect(onClose, [isDragging]);
 
   let underlyingModule: models.Module | null = null;
@@ -193,11 +193,27 @@ const ModuleDropdown = ({
     );
   };
 
+  const selectProps =
+    options.length > 500
+      ? {
+          options: showOptions ? options : [],
+          onInputChange: (typedOption: string) => {
+            if (typedOption.length > 2) {
+              setShowOptions(true);
+            } else {
+              setShowOptions(false);
+            }
+          },
+        }
+      : {
+          options,
+        };
+
   return (
     <>
       <FormControl>
         <Select
-          options={[{ options: options }]}
+          {...selectProps}
           placeholder={"Select a module"}
           value={
             !!underlyingModule
