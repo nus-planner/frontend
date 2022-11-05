@@ -109,6 +109,15 @@ const RequirementContainer = ({
       }
     }
 
+    // Always display multimodule if dropdown module is not yet selected
+    if (
+      !!mod.isMultiModule &&
+      !!mod.getUnderlyingModule &&
+      !mod.getUnderlyingModule()
+    ) {
+      return true;
+    }
+
     return false;
   };
 
