@@ -22,6 +22,8 @@ export interface Module {
   selectModule?(module: models.Module): void; // specific to MultiModule
 }
 
+export interface Module extends Partial<Hydratable> {}
+
 export interface Requirement {
   title: string;
   description: string;

@@ -106,6 +106,13 @@ export class ModuleViewModel implements frontend.Module {
 
     return matches;
   }
+
+  hydrate(stored: this): void {
+    this.color = stored.color;
+    this.editable = stored.editable;
+    this.prereqs = stored.prereqs;
+    this.prereqsViolated = stored.prereqsViolated;
+  }
 }
 
 export class MultiModuleViewModel implements frontend.Module {
@@ -113,6 +120,7 @@ export class MultiModuleViewModel implements frontend.Module {
   id: string;
   type = "multi-module";
   color?: string[];
+  @Expose()
   code: string;
   name: string;
   credits: number;
@@ -129,6 +137,9 @@ export class MultiModuleViewModel implements frontend.Module {
   }
   constructor(code: string, name: string, credits: number) {
     this.id = (MultiModuleViewModel.count++).toString();
+    if (code === undefined) {
+      return;
+    }
     this.code = code;
     this.name = name;
     this.credits = credits;
@@ -146,6 +157,13 @@ export class MultiModuleViewModel implements frontend.Module {
   selectModule(module: plan.Module): void {
     this.selectedModule = module;
     this.semester?.updateModule(this);
+  }
+
+  hydrate(storedMod: MultiModuleViewModel) {
+    this.color = storedMod.color;
+    this.editable = storedMod.editable;
+    this.prereqs = storedMod.prereqs;
+    this.prereqsViolated = storedMod.prereqsViolated;
   }
 }
 
@@ -377,14 +395,32 @@ export class SemesterViewModel
       if (!storedMod.getUnderlyingModule) {
         continue;
       }
-      const mod = storedMod.getUnderlyingModule();
+      let mod = storedMod.getUnderlyingModule();
       if (mod === undefined) {
         continue;
       }
-      this.moduleStateDelegate.addModuleToGlobalState(mod);
+      mod = this.moduleStateDelegate.addModuleToGlobalState(mod);
+      let moduleViewModel: frontend.Module;
+      if (storedMod instanceof ModuleViewModel) {
+        const vm = new ModuleViewModel(this.requirementDelegate, mod);
+        vm.hydrate(storedMod);
+        moduleViewModel = vm;
+      } else if (storedMod instanceof MultiModuleViewModel) {
+        const vm = new MultiModuleViewModel(
+          storedMod.code,
+          storedMod.name,
+          storedMod.credits,
+        );
+        vm.hydrate(storedMod);
+        vm.selectModule(mod);
+        moduleViewModel = vm;
+      } else {
+        throw "Unexpected type";
+      }
+      moduleViewModel.semester = this;
       this.addModule(
         this.moduleStateDelegate.addModuleViewModelToGlobalState(
-          storedMod,
+          moduleViewModel,
           false,
         ),
       );
