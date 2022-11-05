@@ -126,6 +126,10 @@ const RequirementContainer = ({
                 >
                   {requirement.matchedMCs} / {requirement.expectedMcs || 0} MCs
                   Fulfilled
+                  {!requirement.isFulfilled &&
+                    requirement.matchedMCs >= requirement.expectedMcs && (
+                      <span>, Underlying Requirements Unfulfilled</span>
+                    )}
                 </Tag>
               )}
             </HStack>
@@ -135,7 +139,7 @@ const RequirementContainer = ({
         <AccordionPanel pb={2} whiteSpace="initial">
           <InputGroup padding="0 0 0.5rem" size="sm">
             <InputLeftElement zIndex="0">
-              <SearchIcon/>
+              <SearchIcon />
             </InputLeftElement>
             <Input
               width="12rem"
