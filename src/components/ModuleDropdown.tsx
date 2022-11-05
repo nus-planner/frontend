@@ -198,7 +198,7 @@ const ModuleDropdown = ({
       ? {
           options: showOptions ? options : [],
           onInputChange: (typedOption: string) => {
-            if (typedOption.length > 2) {
+            if (typedOption.length >= 2) {
               setShowOptions(true);
             } else {
               setShowOptions(false);
