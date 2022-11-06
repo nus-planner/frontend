@@ -17,6 +17,7 @@ interface ModuleDropdownProps {
   isExemption: boolean;
   isAPC: boolean;
   forceUpdate?: () => void;
+  setIsValidateButtonDisabled?: (isDisabled: boolean) => void;
 }
 
 const ModuleDropdown = ({
@@ -26,6 +27,7 @@ const ModuleDropdown = ({
   isExemption,
   isAPC,
   forceUpdate,
+  setIsValidateButtonDisabled,
 }: ModuleDropdownProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,12 +89,6 @@ const ModuleDropdown = ({
             basicModuleInfo.moduleCredit,
           );
         mainViewModel.exemptions.addModule(newExemptionModule);
-        await applyPrereqValidation(
-          mainViewModel.startYear,
-          mainViewModel.planner,
-        ).then((_) => {
-          mainViewModel.validate();
-        });
       }
     } else if (isAPC) {
       if (basicModuleInfo !== undefined) {
@@ -103,14 +99,26 @@ const ModuleDropdown = ({
             basicModuleInfo.moduleCredit,
           );
         mainViewModel.apcs.addModule(newExemptionModule);
-        await applyPrereqValidation(
-          mainViewModel.startYear,
-          mainViewModel.planner,
-        ).then((_) => {
-          mainViewModel.validate();
-        });
       }
     }
+
+    await applyPrereqValidation(
+      mainViewModel.startYear,
+      mainViewModel.planner,
+    ).then((semesters) => {
+      mainViewModel.validate();
+      const isPrereqsViolated =
+        semesters
+          .slice(2)
+          .map((semester) => semester.modules)
+          .flat(1)
+          .filter((module) => module.prereqsViolated?.length).length > 0;
+      console.log('isPrereqViolated');
+      console.log(isPrereqsViolated);
+      if (setIsValidateButtonDisabled !== undefined) {
+        setIsValidateButtonDisabled(isPrereqsViolated);
+      }
+    });
 
     if (forceUpdate !== undefined) {
       forceUpdate();

@@ -23,12 +23,14 @@ interface APCContainerProps {
   exemptedModules: Module[];
   id: string;
   forceUpdate: () => void;
+  setIsValidateButtonDisabled: (isDisabled: boolean) => void;
 }
 
 const APCContainer = ({
   exemptedModules,
   id,
   forceUpdate,
+  setIsValidateButtonDisabled,
 }: APCContainerProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   const [mods, setMods] = useState<Module[]>([]);
@@ -82,6 +84,7 @@ const APCContainer = ({
         isAPC
         module={{ code: ".", name: "exemptions", id: id, credits: -1 }}
         forceUpdate={forceUpdate}
+        setIsValidateButtonDisabled={setIsValidateButtonDisabled}
       />
       {exemptedModules.map((module) => (
         <Tooltip

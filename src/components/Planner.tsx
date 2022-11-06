@@ -148,6 +148,7 @@ const Planner = () => {
       (semesters) => {
         const isPrereqsViolated =
           semesters
+            .slice(2)
             .map((semester) => semester.modules)
             .flat(1)
             .filter((module) => module.prereqsViolated?.length).length > 0;
@@ -176,6 +177,7 @@ const Planner = () => {
     ).then((semesters) => {
       const isPrereqsViolated =
         semesters
+          .slice(2)
           .map((semester) => semester.modules)
           .flat(1)
           .filter((module) => module.prereqsViolated?.length).length > 0;
@@ -338,6 +340,7 @@ const Planner = () => {
                   exemptedModules={mainViewModel.exemptions.modules}
                   id={"planner:0"}
                   forceUpdate={forceUpdate}
+                  setIsValidateButtonDisabled={setIsValidateButtonDisabled}
                 />
               </Box>
             </div>
@@ -355,6 +358,7 @@ const Planner = () => {
                   exemptedModules={mainViewModel.apcs.modules}
                   id={"planner:1"}
                   forceUpdate={forceUpdate}
+                  setIsValidateButtonDisabled={setIsValidateButtonDisabled}
                 />
               </Box>
             </div>

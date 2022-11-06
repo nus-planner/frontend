@@ -23,12 +23,14 @@ interface ExemptionContainerProps {
   exemptedModules: Module[];
   id: string;
   forceUpdate: () => void;
+  setIsValidateButtonDisabled: (isDisabled: boolean) => void;
 }
 
 const ExemptionContainer = ({
   exemptedModules,
   id,
   forceUpdate,
+  setIsValidateButtonDisabled,
 }: ExemptionContainerProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   const [mods, setMods] = useState<Module[]>([]);
@@ -62,9 +64,11 @@ const ExemptionContainer = ({
     ).then((semesters) => {
       const isPrereqsViolated =
         semesters
+          .slice(2)
           .map((semester) => semester.modules)
           .flat(1)
           .filter((module) => module.prereqsViolated?.length).length > 0;
+      setIsValidateButtonDisabled(isPrereqsViolated);
       return isPrereqsViolated;
     });
 
@@ -82,6 +86,7 @@ const ExemptionContainer = ({
         isAPC={false}
         module={{ code: ".", name: "exemptions", id: id, credits: -1 }}
         forceUpdate={forceUpdate}
+        setIsValidateButtonDisabled={setIsValidateButtonDisabled}
       />
       {exemptedModules.map((module) => (
         <Tooltip
