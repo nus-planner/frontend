@@ -169,6 +169,7 @@ const ModuleBox = ({
                     options={options}
                     isDragging={snapshot.isDragging}
                     isExemption={false}
+                    isAPC={false}
                     forceUpdate={forceUpdate}
                   />
                 ) : (

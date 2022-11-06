@@ -1,6 +1,6 @@
 import * as input from "./input";
+import { convertYearAndSemToIndex } from "../utils/plannerUtils";
 import { Basket } from "./basket";
-import { Hydratable, Semester } from "../interfaces/planner";
 import { Exclude, Type } from "class-transformer";
 export const moduleRegex =
   /(?<prefix>[A-Z]+)(?<codeNumber>\d)\d+(?<suffix>[A-Z]*)/;
@@ -49,7 +49,7 @@ export class AcademicPlan {
   constructor(startYear: number, numYears: number = 4) {
     this.startYear = startYear;
     this.plans = new Array(numYears * 4);
-    for (let i = 0; i < numYears * 4 + 1; i++) {
+    for (let i = 0; i < numYears * 4 + 2; i++) {
       this.plans[i] = new SemPlan(Math.floor(i / 4) + 1, (i % 4) + 1, []);
     }
   }
@@ -78,7 +78,7 @@ export class AcademicPlan {
   }
 
   getSemPlan(year: number, semester: SemesterNumber) {
-    return this.plans[(year - 1) * 4 + semester];
+    return this.plans[convertYearAndSemToIndex(year, semester)];
   }
 
   preprocess() {}

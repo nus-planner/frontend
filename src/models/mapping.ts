@@ -10,6 +10,7 @@ import {
 import yaml from "js-yaml";
 import * as frontend from "../interfaces/planner";
 import { addColorToModulesv2 } from "../utils/moduleUtils";
+import { convertYearAndSemToIndex } from "../utils/plannerUtils";
 import * as basket from "./basket";
 import * as input from "./input";
 import * as plan from "./plan";
@@ -680,7 +681,10 @@ class AcademicPlanViewModel
     for (const jsonSemester of jsonPlan.semesters) {
       const semesterViewModel =
         this.semesterViewModels[
-          (jsonSemester.year - 1) * 4 + map[jsonSemester.semester]
+          convertYearAndSemToIndex(
+            jsonSemester.year,
+            map[jsonSemester.semester],
+          )
         ];
 
       for (const mod of jsonSemester.modules) {
@@ -701,6 +705,15 @@ class AcademicPlanViewModel
 
   public get startYear(): string {
     return `${this.academicPlan.startYear}-${this.academicPlan.startYear + 1}`;
+  }
+
+  // MCs are not counted, but modules are
+  public get exemptions() {
+    return this.semesterViewModels[0];
+  }
+
+  public get apcs() {
+    return this.semesterViewModels[1];
   }
 
   clearSemesters() {
@@ -730,7 +743,22 @@ class AcademicPlanViewModel
   }
 
   validate(config: input.ValidatorState) {
-    return this.academicPlan.checkAgainstConfig(config);
+    const exemptionMods = this.exemptions.modules
+      .map((mod) => mod.getUnderlyingModule?.())
+      .filter((mod) => mod !== undefined) as plan.Module[];
+    const storeMCs = new Map<plan.Module, number>();
+    for (const exemptionMod of exemptionMods) {
+      storeMCs.set(exemptionMod, exemptionMod.credits);
+      exemptionMod.credits = 0;
+    }
+
+    const result = this.academicPlan.checkAgainstConfig(config);
+
+    for (const [exemptionMod, mcs] of storeMCs.entries()) {
+      exemptionMod.credits = mcs;
+    }
+
+    return result;
   }
 }
 
@@ -803,8 +831,6 @@ export class MainViewModel
     return [mod, modViewModel];
   }
 
-  exemptions!: frontend.Module[];
-
   addModuleViewModelToGlobalState(
     moduleViewModel: frontend.Module,
     addIfExists: boolean = false,
@@ -840,6 +866,14 @@ export class MainViewModel
 
   public get planner() {
     return this.academicPlanViewModel.semesterViewModels;
+  }
+
+  public get exemptions() {
+    return this.academicPlanViewModel.exemptions;
+  }
+
+  public get apcs() {
+    return this.academicPlanViewModel.apcs;
   }
 
   public get requirements(): Array<RequirementViewModel> {

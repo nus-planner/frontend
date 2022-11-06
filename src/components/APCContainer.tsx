@@ -19,17 +19,17 @@ import {
 import { useAppContext } from "./AppContext";
 import { sortRequirementModules } from "../utils/plannerUtils";
 
-interface ExemptionContainerProps {
+interface APCContainerProps {
   exemptedModules: Module[];
   id: string;
   forceUpdate: () => void;
 }
 
-const ExemptionContainer = ({
+const APCContainer = ({
   exemptedModules,
   id,
   forceUpdate,
-}: ExemptionContainerProps) => {
+}: APCContainerProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   const [mods, setMods] = useState<Module[]>([]);
   const options = [];
@@ -52,7 +52,7 @@ const ExemptionContainer = ({
 
     module.prereqsViolated = [];
     module.coreqsViolated = [];
-    mainViewModel.exemptions.filtered((mod) => mod.code !== module.code);
+    mainViewModel.apcs.filtered((mod) => mod.code !== module.code);
 
     // state.requirements[0].modules.push(module);
     mainViewModel.removeModuleViewModelFromGlobalState(module.code);
@@ -78,8 +78,8 @@ const ExemptionContainer = ({
       <ModuleDropdown
         options={options}
         isDragging={false}
-        isExemption
-        isAPC={false}
+        isExemption={false}
+        isAPC
         module={{ code: ".", name: "exemptions", id: id, credits: -1 }}
         forceUpdate={forceUpdate}
       />
@@ -118,4 +118,4 @@ const ExemptionContainer = ({
   );
 };
 
-export default ExemptionContainer;
+export default APCContainer;

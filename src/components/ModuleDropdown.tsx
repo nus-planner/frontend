@@ -15,6 +15,7 @@ interface ModuleDropdownProps {
   options: any;
   isDragging: boolean;
   isExemption: boolean;
+  isAPC: boolean;
   forceUpdate?: () => void;
 }
 
@@ -23,6 +24,7 @@ const ModuleDropdown = ({
   options,
   isDragging,
   isExemption,
+  isAPC,
   forceUpdate,
 }: ModuleDropdownProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
@@ -84,7 +86,23 @@ const ModuleDropdown = ({
             basicModuleInfo.title,
             basicModuleInfo.moduleCredit,
           );
-        mainViewModel.planner[0].addModule(newExemptionModule);
+        mainViewModel.exemptions.addModule(newExemptionModule);
+        await applyPrereqValidation(
+          mainViewModel.startYear,
+          mainViewModel.planner,
+        ).then((_) => {
+          mainViewModel.validate();
+        });
+      }
+    } else if (isAPC) {
+      if (basicModuleInfo !== undefined) {
+        const [_, newExemptionModule] =
+          mainViewModel.addModuleAndViewModelToGlobalState(
+            basicModuleInfo.moduleCode,
+            basicModuleInfo.title,
+            basicModuleInfo.moduleCredit,
+          );
+        mainViewModel.apcs.addModule(newExemptionModule);
         await applyPrereqValidation(
           mainViewModel.startYear,
           mainViewModel.planner,
@@ -93,6 +111,7 @@ const ModuleDropdown = ({
         });
       }
     }
+
     if (forceUpdate !== undefined) {
       forceUpdate();
     }

@@ -101,5 +101,5 @@ export const loadPlannerSemesters = (): number[][] => {
 };
 
 export function convertYearAndSemToIndex(year: number, sem: number) {
-  return 4 * (year - 1) + sem;
+  return 4 * (year - 1) + sem + 1;
 }

@@ -41,6 +41,7 @@ import {
 } from "../utils/plannerUtils";
 import { motion } from "framer-motion";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
+import APCContainer from "./APCContainer";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -169,17 +170,18 @@ const Planner = () => {
     }
     mainViewModel.requirements[0].modules.push(module);
 
-    await applyPrereqValidation(mainViewModel.startYear, mainViewModel.planner).then(
-      (semesters) => {
-        const isPrereqsViolated =
-          semesters
-            .map((semester) => semester.modules)
-            .flat(1)
-            .filter((module) => module.prereqsViolated?.length).length > 0;
-        setIsValidateButtonDisabled(isPrereqsViolated);
-        return isPrereqsViolated;
-      },
-    );
+    await applyPrereqValidation(
+      mainViewModel.startYear,
+      mainViewModel.planner,
+    ).then((semesters) => {
+      const isPrereqsViolated =
+        semesters
+          .map((semester) => semester.modules)
+          .flat(1)
+          .filter((module) => module.prereqsViolated?.length).length > 0;
+      setIsValidateButtonDisabled(isPrereqsViolated);
+      return isPrereqsViolated;
+    });
 
     sortRequirementModules(mainViewModel);
     mainViewModel.validate();
@@ -333,8 +335,25 @@ const Planner = () => {
               </Heading>
               <Box borderColor="black" mb={"3rem"}>
                 <ExemptionContainer
-                  exemptedModules={mainViewModel.planner[0].modules}
+                  exemptedModules={mainViewModel.exemptions.modules}
                   id={"planner:0"}
+                  forceUpdate={forceUpdate}
+                />
+              </Box>
+            </div>
+            <div>
+              <Heading
+                fontSize={"xl"}
+                fontWeight={"bold"}
+                fontFamily={"body"}
+                padding="1.5em 0em 1rem"
+              >
+                APCs
+              </Heading>
+              <Box borderColor="black" mb={"3rem"}>
+                <APCContainer
+                  exemptedModules={mainViewModel.apcs.modules}
+                  id={"planner:1"}
                   forceUpdate={forceUpdate}
                 />
               </Box>
