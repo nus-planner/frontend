@@ -219,7 +219,7 @@ const Planner = () => {
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
         <HStack align="">
-          <motion.div
+          {/* <motion.div
             className="verscroll"
             {...getDisclosureProps()}
             hidden={hidden}
@@ -234,7 +234,7 @@ const Planner = () => {
               height: "90vh",
               top: "0",
             }}
-          >
+          > */}
             <Heading
               padding="1em 0em 1.5em"
               fontSize={"xl"}
@@ -260,9 +260,9 @@ const Planner = () => {
                 />
               ))}
             </Box>
-          </motion.div>
+          {/* </motion.div> */}
 
-          <HStack>
+          {/* <HStack>
             <Button
               _hover={{ bg: "white" }}
               _active={{ bg: "white" }}
@@ -276,13 +276,13 @@ const Planner = () => {
                 _hover={{ bg: "blackAlpha.700" }}
               >
                 {isOpen ? (
-                  <GoTriangleLeft></GoTriangleLeft>
+                  <GoTriangleLeft />
                 ) : (
-                  <GoTriangleRight></GoTriangleRight>
+                  <GoTriangleRight />
                 )}
               </Circle>
             </Button>
-          </HStack>
+          </HStack> */}
           <Box minW="50%" h={"90vh"} overflowY={"auto"} className="verscroll">
             <HStack align={"center"} spacing="1rem">
               <Heading
