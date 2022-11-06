@@ -1017,9 +1017,8 @@ export class MainViewModel
           this.basketToRequirementViewModelMap.set(basket, requirement);
         }
       }
-      addColorToModulesv2(this._requirements);
     }
-
+    addColorToModulesv2(this._requirements);
     return this._requirements;
   }
 
