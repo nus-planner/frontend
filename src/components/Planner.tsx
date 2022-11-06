@@ -42,6 +42,7 @@ import {
 import { motion } from "framer-motion";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import APCContainer from "./APCContainer";
+import { Resizable } from "re-resizable";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -215,10 +216,17 @@ const Planner = () => {
       ))}
     </HStack>
   );
+
+  const style = {
+    overflow: "hidden clip",
+  }
+
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
         <HStack align="">
+          <Stack>
+          <Resizable style={style}>
           {/* <motion.div
             className="verscroll"
             {...getDisclosureProps()}
@@ -236,11 +244,13 @@ const Planner = () => {
             }}
           > */}
             <Heading
-              padding="1em 0em 1.5em"
+              padding="1em 0em 1em 1rem"
               fontSize={"xl"}
               fontWeight={"bold"}
               fontFamily={"body"}
               paddingRight="1em"
+              overflow={"hidden"}
+              minW="13rem"
             >
               Required Modules
             </Heading>
@@ -251,7 +261,8 @@ const Planner = () => {
                 requirements
               </Alert>
             )}
-            <Box bgColor="blackAlpha.50">
+            <Box bgColor="blackAlpha.50" overflowY="auto"
+              h={"82vh"}>
               {mainViewModel.requirements.map((requirement, id) => (
                 <RequirementContainer
                   requirement={requirement}
@@ -260,6 +271,8 @@ const Planner = () => {
                 />
               ))}
             </Box>
+            </Resizable>
+            </Stack>
           {/* </motion.div> */}
 
           {/* <HStack>
@@ -283,10 +296,10 @@ const Planner = () => {
               </Circle>
             </Button>
           </HStack> */}
-          <Box minW="50%" h={"90vh"} overflowY={"auto"} className="verscroll">
+          <Box minW="50%">
             <HStack align={"center"} spacing="1rem">
               <Heading
-                padding="1em 0em 1.5em"
+                padding="1em 0em 1em"
                 fontSize={"xl"}
                 fontWeight={"bold"}
                 fontFamily={"body"}
@@ -320,6 +333,7 @@ const Planner = () => {
                 isDisabled={isValidateButtonDisabled}
               />
             </HStack>
+            <Stack h={"82vh"} overflowY={"auto"}>
             <Box className="verscroll" borderColor="black">
               <Stack>
                 {studyPlanRow(plannerYears.slice(0, 2))}
@@ -362,6 +376,7 @@ const Planner = () => {
                 />
               </Box>
             </div>
+            </Stack>
           </Box>
         </HStack>
       </DragDropContext>
