@@ -86,6 +86,17 @@ const RequirementContainer = ({
     });
 
   const moduleFilter = (mod: Module): boolean => {
+
+    // Module doesn't show up in requirements if added to exemptions or apcs
+    for (let exemptionModule of mainViewModel.exemptions.modules) {
+      console.log(mod.code, exemptionModule.code);
+      if (mod.code === exemptionModule.code) return false;
+    }
+
+    for (let apcModule of mainViewModel.apcs.modules) {
+      if (mod.code === apcModule.code) return false;
+    }
+
     if (mod.code.toLowerCase().includes(displayedModulesFilter.toLowerCase()))
       return true;
     if (mod.name.toLowerCase().includes(displayedModulesFilter.toLowerCase()))
