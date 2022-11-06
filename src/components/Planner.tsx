@@ -226,7 +226,9 @@ const Planner = () => {
       <DragDropContext onDragEnd={handleDragEnd}>
         <HStack align="">
           <Stack>
-          <Resizable style={style}>
+          <Resizable style={style} size={{width: "48vw", height: "82hv"}} maxWidth={"48vw"} defaultSize={{width: "48vw", height: ""}}
+          // maxWidth="500"
+          >
           {/* <motion.div
             className="verscroll"
             {...getDisclosureProps()}
@@ -262,7 +264,7 @@ const Planner = () => {
               </Alert>
             )}
             <Box bgColor="blackAlpha.50" overflowY="auto"
-              h={"82vh"}>
+              maxH={"82vh"}>
               {mainViewModel.requirements.map((requirement, id) => (
                 <RequirementContainer
                   requirement={requirement}
