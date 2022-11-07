@@ -36,7 +36,7 @@ class DirectoryList {
 }
 
 class DirectoryListing {
-  static branch = process.env.NODE_ENV === "development" ? "develop" : "main";
+  static branch = process.env.NEXT_PUBLIC_APP_ENV === "development" ? "develop" : "main";
   static requirementsBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/requirements/`;
   static studyPlanBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/study-plans/`;
   cohort!: number;

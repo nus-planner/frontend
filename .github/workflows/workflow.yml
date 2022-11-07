@@ -6,7 +6,7 @@ name: Build and deploy NUSPlanner FE
 env:
   APP_LOCATION: "/" # location of your client code
   APP_ARTIFACT_LOCATION: "out" # location of client code build output
-  NODE_ENV: "production"
+  NEXT_PUBLIC_APP_ENV: "production"
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
       - name: Set up environemnt
         if: github.ref == 'refs/heads/develop'
         run: |
-          echo "NODE_ENV=development" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_APP_ENV=development" >> $GITHUB_ENV
 
       - uses: actions/checkout@v3
 
