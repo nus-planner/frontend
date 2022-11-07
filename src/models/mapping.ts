@@ -1092,7 +1092,6 @@ export class MainViewModel
     this.academicPlanViewModel.hydrate(stored.academicPlanViewModel);
     this._requirements = undefined;
     this.sampleStudyPlanUrl = stored.sampleStudyPlanUrl;
-    debugger;
     this.requirements.forEach((req) => req.hydrate());
   }
 
