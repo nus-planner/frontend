@@ -89,7 +89,6 @@ const RequirementContainer = ({
 
     // Module doesn't show up in requirements if added to exemptions or apcs
     for (let exemptionModule of mainViewModel.exemptions.modules) {
-      console.log(mod.code, exemptionModule.code);
       if (mod.code === exemptionModule.code) return false;
     }
 

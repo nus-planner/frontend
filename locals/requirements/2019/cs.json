@@ -125,7 +125,7 @@
       {
         "Industry Experience Requirement": {
           "expected_mcs": 12,
-          "description": "Students will be required to satisfy 12 MCs of Industrial Experience Requirement by doing:\n\nA 6-month internship through CP3880 Advanced Technology Attachment Programme (12 MCs);\nTwo 3-month internships through two of the followings:\nCP3200 Internship (6 MCs);\nCP3202 Internship II (6 MCs);\nCP3107 Computing for Voluntary Welfare Organisations (6 MCs);\nCP3110 Computing for Voluntary Welfare Organisations II (6 MCs).\nIS4010 Industry Internship Programme (12 MCs) from the Department of Information Systems and Analytics;\nTR3202 Start-up Internship Programme (12 MCs) from NUS Overseas Colleges;\nOther forms of industry experience approved by the Department of Computer Science.",
+          "description": "Students will be required to satisfy 12 MCs of Industrial Experience Requirement by doing:\n\n• A 6-month internship through CP3880 Advanced Technology Attachment Programme (12 MCs);\n• Two 3-month internships through two of the followings:\n\t• CP3200 Internship (6 MCs);\n\t• CP3202 Internship II (6 MCs);\n\t• CP3107 Computing for Voluntary Welfare Organisations (6 MCs);\n\t• CP3110 Computing for Voluntary Welfare Organisations II (6 MCs).\n• IS4010 Industry Internship Programme (12 MCs) from the Department of Information Systems and Analytics;\n• TR3202 Start-up Internship Programme (12 MCs) from NUS Overseas Colleges;\n• Other forms of industry experience approved by the Department of Computer Science.",
           "state": "overallDegreeState",
           "or": [
             {
@@ -191,7 +191,7 @@
       {
         "CS Breadth and Depth": {
           "expected_mcs": 24,
-          "description": "Complete 24 MCs of CS modules by satisfying the following conditions: 3\n\nSatisfy at least one CS Focus Area for BComp(CS) by completing 3 modules in the Area Primaries, with at least one module at level-4000 or above. Computer Science Foundation modules that appear in Area Primaries can be counted as one of the 3 modules towards satisfying a Focus Area.\nAt least 12 MCs are at level-4000 or above.",
+          "description": "Complete 24 MCs of CS modules by satisfying the following conditions:\n\n• Satisfy at least one CS Focus Area for BComp(CS) by completing 3 modules in the Area Primaries, with at least one module at level-4000 or above. Computer Science Foundation modules that appear in Area Primaries can be counted as one of the 3 modules towards satisfying a Focus Area.\n• At least 12 MCs are at level-4000 or above.",
           "state": "overallDegreeState",
           "fulfillment_criteria": {
             "at_least_n_mcs": 24
@@ -582,7 +582,7 @@
       {
         "Math and Science Requirement": {
           "expected_mcs": 16,
-          "description": "• MA1521 Calculus for Computing4\n• MA1101R Linear Algebra I or MA2001 Linear Algebra I\n• ST2334 Probability and Statistics 5 \n• One Science Module 6",
+          "description": "• MA1521 Calculus for Computing4\n• MA1101R Linear Algebra I or MA2001 Linear Algebra I\n• ST2334 Probability and Statistics 5 \n• One Science Module",
           "state": "overallDegreeState",
           "and": [
             {

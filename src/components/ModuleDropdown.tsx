@@ -78,7 +78,6 @@ const ModuleDropdown = ({
 
     const name = selectedModule.label.replace(selectedModule.value, "");
     setSelectedModuleName(name);
-    console.log(mainViewModel.planner);
 
     if (isExemption) {
       if (basicModuleInfo !== undefined) {
@@ -113,8 +112,6 @@ const ModuleDropdown = ({
           .map((semester) => semester.modules)
           .flat(1)
           .filter((module) => module.prereqsViolated?.length).length > 0;
-      console.log('isPrereqViolated');
-      console.log(isPrereqsViolated);
       if (setIsValidateButtonDisabled !== undefined) {
         setIsValidateButtonDisabled(isPrereqsViolated);
       }

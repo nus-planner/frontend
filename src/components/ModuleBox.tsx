@@ -73,9 +73,8 @@ const ModuleBox = ({
     if (!module.isMultiModule) {
       return;
     }
-    getNonDuplicateUEs(mainViewModel.startYear, existingModules).then(
+    getNonDuplicateUEs(mainViewModel.moduleYears, existingModules).then(
       (mods) => {
-        console.log(module);
         const regexp = new RegExp(module.code);
         const filterResult = mods.filter((mod) => regexp.test(mod.code));
         setMods(filterResult);

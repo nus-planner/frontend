@@ -37,7 +37,7 @@ const ExemptionContainer = ({
   const options = [];
 
   useEffect(() => {
-    getNonDuplicateUEs(mainViewModel.startYear, []).then((mods) => {
+    getNonDuplicateUEs(mainViewModel.moduleYears, []).then((mods) => {
       setMods(mods);
     });
   }, []);
@@ -50,8 +50,6 @@ const ExemptionContainer = ({
   }
 
   const handleExemptionClose = async (module: Module) => {
-    console.log("handle module close", module.code);
-
     module.prereqsViolated = [];
     module.coreqsViolated = [];
     mainViewModel.exemptions.filtered((mod) => mod.code !== module.code);

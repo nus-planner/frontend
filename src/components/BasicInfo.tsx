@@ -36,7 +36,7 @@ class DirectoryList {
 }
 
 class DirectoryListing {
-  static branch = process.env.NODE_ENV === "development" ? "develop" : "main";
+  static branch = process.env.NEXT_PUBLIC_APP_ENV === "development" ? "develop" : "main";
   static requirementsBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/requirements/`;
   static studyPlanBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/study-plans/`;
   cohort!: number;
@@ -102,9 +102,6 @@ const BasicInfo = () => {
     majorMap.get(requirementInfo.cohort)?.push(requirementInfo);
   }
 
-  console.log("Majormap");
-  console.log(majorMap);
-
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
 
@@ -140,7 +137,6 @@ const BasicInfo = () => {
       forceUpdate();
       setLoadingSpinner(false);
       storeViewModel(newModel);
-      console.log(newModel.toStorageString());
     });
   };
 

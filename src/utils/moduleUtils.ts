@@ -100,9 +100,6 @@ export const applyPrereqValidation = async (
 
   semesters = applyCoreqValidation(semesters);
 
-  console.log("Apply prereq validation");
-  console.log(semesters);
-
   return semesters;
 };
 
@@ -222,7 +219,6 @@ export const testPrereqTree = async () => {
   const modSet = new Set<string>(["CS2040", "CS1231"]);
   if (!!prereqTree.prereqs) {
     const res = evaluatePrereqTree(prereqTree.prereqs, modSet);
-    console.log(res);
   }
 
   return;
@@ -235,7 +231,6 @@ export const testPrereqTreeMods = async () => {
   const modSet = new Set<string>(["CS2030", "CS1232", "ST2334"]);
   if (!!prereqTree.prereqs) {
     const res = evaluatePrereqTreeMods(prereqTree.prereqs, modSet);
-    console.log(res);
   }
   return;
 };
@@ -248,18 +243,35 @@ export const fetchedModuleLists = new Map<
   Awaited<ReturnType<typeof fetchModuleList>>
 >();
 
+export const combinedModuleLists = new Map<
+  string,
+  Awaited<ReturnType<typeof fetchModuleList>>
+>();
+
 // TODO: cater for cases where there are duplicates from multi-select mods
 export const getNonDuplicateUEs = async (
-  academicYear: string,
+  academicYears: string[],
   existingModules: string[],
 ) => {
-  if (!fetchedModuleLists.has(academicYear)) {
-    const result = await fetchModuleList(academicYear);
-    fetchedModuleLists.set(academicYear, result);
+  let result = [];
+  const joined = academicYears.join(",");
+  if (combinedModuleLists.has(joined)) {
+    return combinedModuleLists.get(joined)!;
   }
-  const allModules = fetchedModuleLists.get(academicYear)!;
-  const filteredModules = allModules.filter(
-    (mod) => !existingModules.includes(mod.code),
-  );
-  return filteredModules;
+  for (const academicYear of academicYears) {
+    if (!fetchedModuleLists.has(academicYear)) {
+      const result = await fetchModuleList(academicYear);
+      fetchedModuleLists.set(academicYear, result);
+    }
+    const allModules = fetchedModuleLists.get(academicYear)!;
+    const filteredModules = allModules.filter(
+      (mod) => !existingModules.includes(mod.code),
+    );
+    result.push(...filteredModules);
+  }
+  result = result.uniqueByKey("code").sort((a, b) => {
+    return a.code.localeCompare(b.code);
+  });
+  combinedModuleLists.set(joined, result);
+  return result;
 };

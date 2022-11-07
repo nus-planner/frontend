@@ -427,6 +427,7 @@ type JSONPlanSemester = {
 type JSONPlan = {
   years: number;
   exemptions: Array<string>;
+  apcs: Array<string>;
   semesters: Array<JSONPlanSemester>;
 };
 
@@ -771,7 +772,9 @@ class AcademicPlanViewModel
   loadAcademicPlan(text: string): string[] {
     const jsonPlan = yaml.load(text) as JSONPlan;
     const mods = [];
-    const exemptionsViewModel = this.semesterViewModels[0];
+    const exemptionsViewModel = this.exemptions;
+    const apcsViewModel = this.apcs;
+
     for (const mod of jsonPlan.exemptions) {
       mods.push(mod);
       const newMod = this.moduleStateDelegate.addModuleToGlobalState(
@@ -783,6 +786,19 @@ class AcademicPlanViewModel
         ),
       );
     }
+
+    for (const mod of jsonPlan.apcs) {
+      mods.push(mod);
+      const newMod = this.moduleStateDelegate.addModuleToGlobalState(
+        new plan.Module(mod, "", 4),
+      );
+      apcsViewModel.addModule(
+        this.moduleStateDelegate.addModuleViewModelToGlobalState(
+          new ModuleViewModel(this.requirementDelegate, newMod),
+        ),
+      );
+    }
+
     for (const jsonSemester of jsonPlan.semesters) {
       const semesterViewModel =
         this.semesterViewModels[
@@ -810,6 +826,14 @@ class AcademicPlanViewModel
 
   public get startYear(): string {
     return `${this.academicPlan.startYear}-${this.academicPlan.startYear + 1}`;
+  }
+
+  public get moduleYears(): string[] {
+    const strings = [];
+    for (let i = 0, y = this.academicPlan.startYear; i < 5; i++, y++) {
+      strings.push(`${y}-${y + 1}`);
+    }
+    return strings;
   }
 
   // MCs are not counted, but modules are
@@ -1030,6 +1054,10 @@ export class MainViewModel
     return this.academicPlanViewModel.startYear;
   }
 
+  public get moduleYears(): string[] {
+    return this.academicPlanViewModel.moduleYears;
+  }
+
   async initializeFromURL(url: string) {
     return this.validatorState.initializeFromURL(url);
   }
@@ -1071,13 +1099,11 @@ export class MainViewModel
   hydrateWithStorageString(storedString: string) {
     const obj = JSON.parse(storedString) as object;
     const instance = plainToInstance(MainViewModel, obj);
-    console.log(instance);
     this.hydrate(instance);
   }
 
   toStorageObject() {
     const obj = instanceToPlain(this, { enableCircularCheck: true });
-    console.log(obj);
     return obj;
   }
 
