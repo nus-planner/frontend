@@ -100,9 +100,6 @@ export const applyPrereqValidation = async (
 
   semesters = applyCoreqValidation(semesters);
 
-  console.log("Apply prereq validation");
-  console.log(semesters);
-
   return semesters;
 };
 
@@ -222,7 +219,6 @@ export const testPrereqTree = async () => {
   const modSet = new Set<string>(["CS2040", "CS1231"]);
   if (!!prereqTree.prereqs) {
     const res = evaluatePrereqTree(prereqTree.prereqs, modSet);
-    console.log(res);
   }
 
   return;
@@ -235,7 +231,6 @@ export const testPrereqTreeMods = async () => {
   const modSet = new Set<string>(["CS2030", "CS1232", "ST2334"]);
   if (!!prereqTree.prereqs) {
     const res = evaluatePrereqTreeMods(prereqTree.prereqs, modSet);
-    console.log(res);
   }
   return;
 };

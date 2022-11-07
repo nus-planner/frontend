@@ -77,13 +77,6 @@ export const fetchBasicModuleInfo = async (
   });
   if (!res) return undefined;
 
-  console.log("Fetched basic module info");
-  console.log({
-    moduleCode: res.moduleCode,
-    title: res.title,
-    moduleCredit: Number.parseInt(res.moduleCredit),
-  });
-
   return {
     moduleCode: res.moduleCode,
     title: res.title,

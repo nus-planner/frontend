@@ -50,8 +50,6 @@ const APCContainer = ({
   }
 
   const handleExemptionClose = async (module: Module) => {
-    console.log("handle module close", module.code);
-
     module.prereqsViolated = [];
     module.coreqsViolated = [];
     mainViewModel.apcs.filtered((mod) => mod.code !== module.code);
