@@ -19,8 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AppContext.Provider value={{ mainViewModel, setMainViewModel }}>
       <Head>
-        <title>NUS Planner</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <title>NUSPlanner</title>
       </Head>
       <ChakraProvider>
         <Component {...pageProps} />

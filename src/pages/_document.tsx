@@ -30,7 +30,6 @@ class MyDocument extends Document<Props> {
     return (
       <Html lang="en">
         <Head>
-          <title>NUS Planner</title>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <meta name="description" content="One-stop portal for you to plan out your academic journey at NUS. View requirements, plan your semesters and verify if you've met your degree requirements." />
           <meta name="robots" content="index, follow" />
