@@ -15,14 +15,20 @@ import * as basket from "./basket";
 import * as input from "./input";
 import * as plan from "./plan";
 
+type ModuleOptions = { name: string } | { code: string };
 interface AcademicPlanDelegate {
   moduleExists(moduleCode: string): boolean;
+  moduleViewModelExists(options: ModuleOptions): boolean;
+  getModule(options: ModuleOptions): frontend.Module | undefined;
 }
 interface RequirementDelegate {
   getRequirement(forBasket: basket.Basket): RequirementViewModel | undefined;
 }
 
 interface GlobalModuleViewModelStateDelegate {
+  getModuleAndViewModel(
+    id: string,
+  ): [plan.Module | undefined, frontend.Module | undefined];
   addModuleAndViewModelToGlobalState(
     ...x: ConstructorParameters<typeof plan.Module>
   ): [plan.Module, frontend.Module];
@@ -251,6 +257,8 @@ class BasketGatherer extends basket.BasketVisitor<Array<basket.Basket>> {
 @Exclude()
 export class RequirementViewModel implements frontend.Requirement {
   private moduleStateDelegate: GlobalModuleViewModelStateDelegate;
+  private requirementDelegate: RequirementDelegate;
+  private academicPlanDelegate: AcademicPlanDelegate;
   allTags: string[];
   allModules: frontend.Module[];
   modules: frontend.Module[];
@@ -259,9 +267,12 @@ export class RequirementViewModel implements frontend.Requirement {
   constructor(
     moduleStateDelegate: GlobalModuleViewModelStateDelegate,
     requirementDelegate: RequirementDelegate,
+    academicPlanDelegate: AcademicPlanDelegate,
     basket: basket.Basket,
   ) {
     this.moduleStateDelegate = moduleStateDelegate;
+    this.requirementDelegate = requirementDelegate;
+    this.academicPlanDelegate = academicPlanDelegate;
     this.basket = basket;
 
     const tagSet = new TagGatherer().visit(basket);
@@ -270,23 +281,99 @@ export class RequirementViewModel implements frontend.Requirement {
     this.allModules = new ModuleGatherer()
       .visit(basket)
       .unique()
-      .map((basket): frontend.Module => {
-        if ("module" in basket) {
+      .flatMap((moduleSpecifier) => {
+        if ("module" in moduleSpecifier) {
+          if (academicPlanDelegate.moduleExists(moduleSpecifier.module.code)) {
+            return (
+              academicPlanDelegate.getModule({
+                code: moduleSpecifier.module.code,
+              }) || []
+            );
+          }
           return moduleStateDelegate.addModuleViewModelToGlobalState(
-            new ModuleViewModel(requirementDelegate, basket.module),
+            new ModuleViewModel(requirementDelegate, moduleSpecifier.module),
           );
         } else {
+          if (
+            academicPlanDelegate.moduleViewModelExists({
+              name: moduleSpecifier.title,
+            })
+          ) {
+            return (
+              academicPlanDelegate.getModule({
+                name: moduleSpecifier.title,
+              }) || []
+            );
+          }
+
           const model = new MultiModuleViewModel(
-            basket.getEffectivePattern(),
-            basket.title,
+            moduleSpecifier.getEffectivePattern(),
+            moduleSpecifier.title,
             -1,
           );
-          model.respawnable = basket.respawnable;
+          model.respawnable = moduleSpecifier.respawnable;
           return moduleStateDelegate.addModuleViewModelToGlobalState(model);
         }
       });
 
     this.modules = this.allModules;
+  }
+
+  hydrate(): void {
+    this.allModules = new ModuleGatherer()
+      .visit(this.basket)
+      .unique()
+      .flatMap((moduleSpecifier) => {
+        if ("module" in moduleSpecifier) {
+          if (
+            this.academicPlanDelegate.moduleExists(moduleSpecifier.module.code)
+          ) {
+            return (
+              this.academicPlanDelegate.getModule({
+                code: moduleSpecifier.module.code,
+              }) || []
+            );
+          }
+          return this.moduleStateDelegate.addModuleViewModelToGlobalState(
+            new ModuleViewModel(
+              this.requirementDelegate,
+              moduleSpecifier.module,
+            ),
+          );
+        } else {
+          if (
+            this.academicPlanDelegate.moduleViewModelExists({
+              name: moduleSpecifier.title,
+            })
+          ) {
+            return (
+              this.academicPlanDelegate.getModule({
+                name: moduleSpecifier.title,
+              }) || []
+            );
+          }
+
+          const model = new MultiModuleViewModel(
+            moduleSpecifier.getEffectivePattern(),
+            moduleSpecifier.title,
+            -1,
+          );
+          model.respawnable = moduleSpecifier.respawnable;
+          return this.moduleStateDelegate.addModuleViewModelToGlobalState(
+            model,
+          );
+        }
+      });
+    this.modules = this.allModules.filter(
+      (mod) =>
+        !this.academicPlanDelegate.moduleViewModelExists(
+          mod instanceof ModuleViewModel
+            ? {
+                code: mod.code,
+              }
+            : { name: mod.name },
+        ),
+    );
   }
 
   public get title(): string {
@@ -509,8 +596,8 @@ class TrickleDownMap<K, V1, V2> {
     return this.map1.has(key);
   }
 
-  getByKey(key: K) {
-    return this.map1.get(key);
+  getByKey(key: K): [V1 | undefined, V2 | undefined] {
+    return [this.map1.get(key), this.map2.get(key)];
   }
 
   setKeyValue(key: K, value: V1) {
@@ -649,6 +736,24 @@ class AcademicPlanViewModel
     return this.academicPlan.modules.some((mod) => mod.code === moduleCode);
   }
 
+  moduleViewModelExists(options: { name: string } | { code: string }): boolean {
+    if ("name" in options) {
+      return this.moduleViewModels.some((mod) => mod.name === options.name);
+    } else if ("code" in options) {
+      return this.moduleExists(options.code);
+    }
+
+    return false;
+  }
+
+  getModule(options: ModuleOptions): frontend.Module | undefined {
+    if ("name" in options) {
+      return this.moduleViewModels.find((mod) => mod.name === options.name);
+    } else if ("code" in options) {
+      return this.moduleViewModels.find((mod) => mod.code === options.code);
+    }
+  }
+
   hydrate(stored: this): void {
     this.clearSemesters();
     for (const semesterViewModel of stored.semesterViewModels) {
@@ -714,6 +819,12 @@ class AcademicPlanViewModel
 
   public get apcs() {
     return this.semesterViewModels[1];
+  }
+
+  get moduleViewModels(): frontend.Module[] {
+    return this.semesterViewModels.flatMap(
+      (semesterViewModel) => semesterViewModel.modules,
+    );
   }
 
   clearSemesters() {
@@ -819,6 +930,13 @@ export class MainViewModel
     this.basketToRequirementViewModelMap = new Map();
   }
 
+  getModuleAndViewModel(
+    id: string,
+  ): [plan.Module | undefined, frontend.Module | undefined] {
+    const result = this._trickle.getByKey(id);
+    return [result[1], result[0]];
+  }
+
   addModuleAndViewModelToGlobalState(
     code: string,
     name: string,
@@ -836,7 +954,7 @@ export class MainViewModel
     addIfExists: boolean = false,
   ): frontend.Module {
     if (!addIfExists && this._trickle.containsKey(moduleViewModel.id)) {
-      return this._trickle.getByKey(moduleViewModel.id)!;
+      return this._trickle.getByKey(moduleViewModel.id)[0]!;
     }
 
     this._trickle.setKeyValue(moduleViewModel.id, moduleViewModel);
@@ -884,15 +1002,23 @@ export class MainViewModel
     if (this._requirements === undefined) {
       this._requirements = this.validatorState.basket
         .childBaskets()
-        .map((basket) => new RequirementViewModel(this, this, basket));
+        .map(
+          (basket) =>
+            new RequirementViewModel(
+              this,
+              this,
+              this.academicPlanViewModel,
+              basket,
+            ),
+        );
+
       for (const requirement of this._requirements) {
         for (const basket of requirement.allBaskets) {
           this.basketToRequirementViewModelMap.set(basket, requirement);
         }
       }
-      addColorToModulesv2(this._requirements);
     }
-
+    addColorToModulesv2(this._requirements);
     return this._requirements;
   }
 
@@ -938,6 +1064,8 @@ export class MainViewModel
     this.academicPlanViewModel.hydrate(stored.academicPlanViewModel);
     this._requirements = undefined;
     this.sampleStudyPlanUrl = stored.sampleStudyPlanUrl;
+    debugger;
+    this.requirements.forEach((req) => req.hydrate());
   }
 
   hydrateWithStorageString(storedString: string) {
