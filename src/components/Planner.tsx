@@ -219,17 +219,39 @@ const Planner = () => {
 
   const style = {
     overflow: "hidden clip",
-  }
+  };
 
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <HStack align="">
+        <HStack align="" spacing={"1rem"}>
           <Stack>
-          <Resizable style={style} size={{width: "48vw", height: "82hv"}} maxWidth={"48vw"} defaultSize={{width: "48vw", height: ""}}
-          // maxWidth="500"
-          >
-          {/* <motion.div
+            <Resizable
+              style={style}
+              //size={{ width: "48vw", height: "82hv" }}
+              minHeight="fit-content"
+              maxWidth={"48vw"}
+              defaultSize={{ width: "48vw", height: "82hv" }}
+              handleStyles={{
+                right: {
+                  marginLeft: -20,
+                  top: "50%",
+                  left: "100%",
+                  cursor: "ew-resize",
+                  border: "5px solid #FED7D7",
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderBottom: "none",
+                  borderWidth: 10,
+                  borderColor: "#FED7D7",
+                  width: 15,
+                  height: "4rem",
+                  boxSizing: "border-box",
+                  zIndex: 1,
+                },
+              }}
+            >
+              {/* <motion.div
             className="verscroll"
             {...getDisclosureProps()}
             hidden={hidden}
@@ -245,36 +267,35 @@ const Planner = () => {
               top: "0",
             }}
           > */}
-            <Heading
-              padding="1em 0em 1em 1rem"
-              fontSize={"xl"}
-              fontWeight={"bold"}
-              fontFamily={"body"}
-              paddingRight="1em"
-              overflow={"hidden"}
-              minW="13rem"
-            >
-              Required Modules
-            </Heading>
-            {!mainViewModel.requirements.length && (
-              <Alert status="warning" w="fit-content" whiteSpace={"initial"}>
-                <AlertIcon />
-                Please enter your enrollment year and major to load your
-                requirements
-              </Alert>
-            )}
-            <Box bgColor="blackAlpha.50" overflowY="auto"
-              maxH={"82vh"}>
-              {mainViewModel.requirements.map((requirement, id) => (
-                <RequirementContainer
-                  requirement={requirement}
-                  id={"requirement:" + id.toString()}
-                  key={id}
-                />
-              ))}
-            </Box>
+              <Heading
+                padding="1em 0em 1em 1rem"
+                fontSize={"xl"}
+                fontWeight={"bold"}
+                fontFamily={"body"}
+                paddingRight="1em"
+                overflow={"hidden"}
+                minW="13rem"
+              >
+                Required Modules
+              </Heading>
+              {!mainViewModel.requirements.length && (
+                <Alert status="warning" w="fit-content" whiteSpace={"initial"}>
+                  <AlertIcon />
+                  Please enter your enrollment year and major to load your
+                  requirements
+                </Alert>
+              )}
+              <Box bgColor="blackAlpha.50" overflowY="auto" maxH={"82vh"}>
+                {mainViewModel.requirements.map((requirement, id) => (
+                  <RequirementContainer
+                    requirement={requirement}
+                    id={"requirement:" + id.toString()}
+                    key={id}
+                  />
+                ))}
+              </Box>
             </Resizable>
-            </Stack>
+          </Stack>
           {/* </motion.div> */}
 
           {/* <HStack>
@@ -336,48 +357,48 @@ const Planner = () => {
               />
             </HStack>
             <Stack h={"82vh"} overflowY={"auto"}>
-            <Box className="verscroll" borderColor="black">
-              <Stack>
-                {studyPlanRow(plannerYears.slice(0, 2))}
-                {studyPlanRow(plannerYears.slice(2, 4))}
-              </Stack>
-            </Box>
-            <div>
-              <Heading
-                fontSize={"xl"}
-                fontWeight={"bold"}
-                fontFamily={"body"}
-                padding="1.5em 0em 1rem"
-              >
-                Exemptions
-              </Heading>
-              <Box borderColor="black" mb={"3rem"}>
-                <ExemptionContainer
-                  exemptedModules={mainViewModel.exemptions.modules}
-                  id={"planner:0"}
-                  forceUpdate={forceUpdate}
-                  setIsValidateButtonDisabled={setIsValidateButtonDisabled}
-                />
+              <Box className="verscroll" borderColor="black">
+                <Stack>
+                  {studyPlanRow(plannerYears.slice(0, 2))}
+                  {studyPlanRow(plannerYears.slice(2, 4))}
+                </Stack>
               </Box>
-            </div>
-            <div>
-              <Heading
-                fontSize={"xl"}
-                fontWeight={"bold"}
-                fontFamily={"body"}
-                padding="1.5em 0em 1rem"
-              >
-                APCs
-              </Heading>
-              <Box borderColor="black" mb={"3rem"}>
-                <APCContainer
-                  exemptedModules={mainViewModel.apcs.modules}
-                  id={"planner:1"}
-                  forceUpdate={forceUpdate}
-                  setIsValidateButtonDisabled={setIsValidateButtonDisabled}
-                />
-              </Box>
-            </div>
+              <div>
+                <Heading
+                  fontSize={"xl"}
+                  fontWeight={"bold"}
+                  fontFamily={"body"}
+                  padding="1.5em 0em 1rem"
+                >
+                  Exemptions
+                </Heading>
+                <Box borderColor="black" mb={"3rem"}>
+                  <ExemptionContainer
+                    exemptedModules={mainViewModel.exemptions.modules}
+                    id={"planner:0"}
+                    forceUpdate={forceUpdate}
+                    setIsValidateButtonDisabled={setIsValidateButtonDisabled}
+                  />
+                </Box>
+              </div>
+              <div>
+                <Heading
+                  fontSize={"xl"}
+                  fontWeight={"bold"}
+                  fontFamily={"body"}
+                  padding="1.5em 0em 1rem"
+                >
+                  APCs
+                </Heading>
+                <Box borderColor="black" mb={"3rem"}>
+                  <APCContainer
+                    exemptedModules={mainViewModel.apcs.modules}
+                    id={"planner:1"}
+                    forceUpdate={forceUpdate}
+                    setIsValidateButtonDisabled={setIsValidateButtonDisabled}
+                  />
+                </Box>
+              </div>
             </Stack>
           </Box>
         </HStack>
