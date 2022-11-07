@@ -346,8 +346,8 @@ const Planner = () => {
                   />
                 ))}
               </Wrap>
-              <HStack h="20vh">
-                <Box w="50%">
+              <Flex h="20vh">
+                <Box w="50%" padding="0 0.5rem 0 0">
                   <Heading
                     fontSize={"xl"}
                     fontWeight={"bold"}
@@ -365,7 +365,7 @@ const Planner = () => {
                     />
                   </Box>
                 </Box>
-                <Box w="50%">
+                <Box w="50%" padding="0 0.5rem 0 0">
                   <Heading
                     fontSize={"xl"}
                     fontWeight={"bold"}
@@ -383,7 +383,7 @@ const Planner = () => {
                     />
                   </Box>
                 </Box>
-              </HStack>
+              </Flex>
             </Stack>
           </Box>
         </HStack>
