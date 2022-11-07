@@ -274,7 +274,7 @@ export const getNonDuplicateUEs = async (
     );
     result.push(...filteredModules);
   }
-  result = result.unique().sort((a, b) => {
+  result = result.uniqueByKey("code").sort((a, b) => {
     return a.code.localeCompare(b.code);
   });
   combinedModuleLists.set(joined, result);
