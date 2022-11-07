@@ -15,6 +15,14 @@
         "pattern": "(?<prefix>[A-Z]+)(?<codeNumber>\\d)\\d+(?<suffix>[A-Z]*)"
       }
     },
+    "apcs": {
+      "type": "array",
+      "description": "An array of module codes",
+      "items": {
+        "type": "string",
+        "pattern": "(?<prefix>[A-Z]+)(?<codeNumber>\\d)\\d+(?<suffix>[A-Z]*)"
+      }
+    },
     "semesters": {
       "type": "array",
       "items": {
