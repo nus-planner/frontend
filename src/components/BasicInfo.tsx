@@ -102,9 +102,6 @@ const BasicInfo = () => {
     majorMap.get(requirementInfo.cohort)?.push(requirementInfo);
   }
 
-  console.log("Majormap");
-  console.log(majorMap);
-
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
 
@@ -140,7 +137,6 @@ const BasicInfo = () => {
       forceUpdate();
       setLoadingSpinner(false);
       storeViewModel(newModel);
-      console.log(newModel.toStorageString());
     });
   };
 

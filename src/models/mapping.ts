@@ -1083,13 +1083,11 @@ export class MainViewModel
   hydrateWithStorageString(storedString: string) {
     const obj = JSON.parse(storedString) as object;
     const instance = plainToInstance(MainViewModel, obj);
-    console.log(instance);
     this.hydrate(instance);
   }
 
   toStorageObject() {
     const obj = instanceToPlain(this, { enableCircularCheck: true });
-    console.log(obj);
     return obj;
   }
 

@@ -50,8 +50,6 @@ const ExemptionContainer = ({
   }
 
   const handleExemptionClose = async (module: Module) => {
-    console.log("handle module close", module.code);
-
     module.prereqsViolated = [];
     module.coreqsViolated = [];
     mainViewModel.exemptions.filtered((mod) => mod.code !== module.code);

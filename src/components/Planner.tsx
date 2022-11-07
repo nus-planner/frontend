@@ -136,15 +136,12 @@ const Planner = () => {
     if (destinationType == "requirement") {
       state.requirements[0].modules.push(modViewModel);
     } else if (destinationType == "planner") {
-      console.log(destinationId, destinationIndex);
       state.planner[destinationId].addModuleAtIndex(
         modViewModel,
         destinationIndex,
       );
     }
 
-    console.log("state");
-    console.log(state);
     await applyPrereqValidation(mainViewModel.startYear, state.planner).then(
       (semesters) => {
         const isPrereqsViolated =
