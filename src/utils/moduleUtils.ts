@@ -248,18 +248,35 @@ export const fetchedModuleLists = new Map<
   Awaited<ReturnType<typeof fetchModuleList>>
 >();
 
+export const combinedModuleLists = new Map<
+  string,
+  Awaited<ReturnType<typeof fetchModuleList>>
+>();
+
 // TODO: cater for cases where there are duplicates from multi-select mods
 export const getNonDuplicateUEs = async (
-  academicYear: string,
+  academicYears: string[],
   existingModules: string[],
 ) => {
-  if (!fetchedModuleLists.has(academicYear)) {
-    const result = await fetchModuleList(academicYear);
-    fetchedModuleLists.set(academicYear, result);
+  let result = [];
+  const joined = academicYears.join(",");
+  if (combinedModuleLists.has(joined)) {
+    return combinedModuleLists.get(joined)!;
   }
-  const allModules = fetchedModuleLists.get(academicYear)!;
-  const filteredModules = allModules.filter(
-    (mod) => !existingModules.includes(mod.code),
-  );
-  return filteredModules;
+  for (const academicYear of academicYears) {
+    if (!fetchedModuleLists.has(academicYear)) {
+      const result = await fetchModuleList(academicYear);
+      fetchedModuleLists.set(academicYear, result);
+    }
+    const allModules = fetchedModuleLists.get(academicYear)!;
+    const filteredModules = allModules.filter(
+      (mod) => !existingModules.includes(mod.code),
+    );
+    result.push(...filteredModules);
+  }
+  result = result.unique().sort((a, b) => {
+    return a.code.localeCompare(b.code);
+  });
+  combinedModuleLists.set(joined, result);
+  return result;
 };

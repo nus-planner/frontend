@@ -812,6 +812,14 @@ class AcademicPlanViewModel
     return `${this.academicPlan.startYear}-${this.academicPlan.startYear + 1}`;
   }
 
+  public get moduleYears(): string[] {
+    const strings = [];
+    for (let i = 0, y = this.academicPlan.startYear; i < 5; i++, y++) {
+      strings.push(`${y}-${y + 1}`);
+    }
+    return strings;
+  }
+
   // MCs are not counted, but modules are
   public get exemptions() {
     return this.semesterViewModels[0];
@@ -1028,6 +1036,10 @@ export class MainViewModel
 
   public get startYear(): string {
     return this.academicPlanViewModel.startYear;
+  }
+
+  public get moduleYears(): string[] {
+    return this.academicPlanViewModel.moduleYears;
   }
 
   async initializeFromURL(url: string) {

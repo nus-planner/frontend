@@ -37,7 +37,7 @@ const APCContainer = ({
   const options = [];
 
   useEffect(() => {
-    getNonDuplicateUEs(mainViewModel.startYear, []).then((mods) => {
+    getNonDuplicateUEs(mainViewModel.moduleYears, []).then((mods) => {
       setMods(mods);
     });
   }, []);
