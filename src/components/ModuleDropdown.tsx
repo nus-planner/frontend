@@ -152,7 +152,7 @@ const ModuleDropdown = ({
     placeholder: (provided: any) => {
       return {
         ...provided,
-        fontSize: isExemption ? "1rem" : "0.8rem",
+        fontSize: "0.8rem",
         color: "black",
       };
     },
@@ -260,6 +260,7 @@ const ModuleDropdown = ({
           onMenuOpen={onOpen}
           onMenuClose={onClose}
           components={{ MenuList: WindowedMenuList }}
+          noOptionsMessage={() => "Start typing to search"}
         />
       </FormControl>
       {!!module.getUnderlyingModule && (
