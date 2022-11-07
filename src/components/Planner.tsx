@@ -43,6 +43,7 @@ import { motion } from "framer-motion";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import APCContainer from "./APCContainer";
 import { Resizable } from "re-resizable";
+import { SP } from "next/dist/shared/lib/utils";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -358,8 +359,8 @@ const Planner = () => {
                 {studyPlanRow(plannerYears.slice(0, 2))}
                 {studyPlanRow(plannerYears.slice(2, 4))}
               </Stack>
-              <Stack h="20vh">
-                <div>
+              <HStack h="20vh">
+                <Box w="50%">
                   <Heading
                     fontSize={"xl"}
                     fontWeight={"bold"}
@@ -376,17 +377,17 @@ const Planner = () => {
                       setIsValidateButtonDisabled={setIsValidateButtonDisabled}
                     />
                   </Box>
-                </div>
-                <div>
+                </Box>
+                <Box w="50%">
                   <Heading
                     fontSize={"xl"}
                     fontWeight={"bold"}
                     fontFamily={"body"}
-                    padding="0.6em 0em 0.4rem"
+                    padding="0.5em 0em 0.4rem"
                   >
                     APCs
                   </Heading>
-                  <Box borderColor="black" mb={"1rem"}>
+                  <Box borderColor="black">
                     <APCContainer
                       exemptedModules={mainViewModel.apcs.modules}
                       id={"planner:1"}
@@ -394,8 +395,8 @@ const Planner = () => {
                       setIsValidateButtonDisabled={setIsValidateButtonDisabled}
                     />
                   </Box>
-                </div>
-              </Stack>
+                </Box>
+              </HStack>
             </Stack>
           </Box>
         </HStack>
