@@ -356,49 +356,49 @@ const Planner = () => {
                 isDisabled={isValidateButtonDisabled}
               />
             </HStack>
-            <Stack h={"82vh"} overflowY={"auto"}>
-              <Box className="verscroll" borderColor="black">
-                <Stack>
-                  {studyPlanRow(plannerYears.slice(0, 2))}
-                  {studyPlanRow(plannerYears.slice(2, 4))}
-                </Stack>
-              </Box>
-              <div>
-                <Heading
-                  fontSize={"xl"}
-                  fontWeight={"bold"}
-                  fontFamily={"body"}
-                  padding="1.5em 0em 1rem"
-                >
-                  Exemptions
-                </Heading>
-                <Box borderColor="black" mb={"3rem"}>
-                  <ExemptionContainer
-                    exemptedModules={mainViewModel.exemptions.modules}
-                    id={"planner:0"}
-                    forceUpdate={forceUpdate}
-                    setIsValidateButtonDisabled={setIsValidateButtonDisabled}
-                  />
-                </Box>
-              </div>
-              <div>
-                <Heading
-                  fontSize={"xl"}
-                  fontWeight={"bold"}
-                  fontFamily={"body"}
-                  padding="1.5em 0em 1rem"
-                >
-                  APCs
-                </Heading>
-                <Box borderColor="black" mb={"3rem"}>
-                  <APCContainer
-                    exemptedModules={mainViewModel.apcs.modules}
-                    id={"planner:1"}
-                    forceUpdate={forceUpdate}
-                    setIsValidateButtonDisabled={setIsValidateButtonDisabled}
-                  />
-                </Box>
-              </div>
+            <Stack>
+              <Stack h="60vh" overflowY={"auto"}>
+                {studyPlanRow(plannerYears.slice(0, 2))}
+                {studyPlanRow(plannerYears.slice(2, 4))}
+              </Stack>
+              <Stack h="20vh">
+                <div>
+                  <Heading
+                    fontSize={"xl"}
+                    fontWeight={"bold"}
+                    fontFamily={"body"}
+                    padding="0.5em 0em 0.4rem"
+                  >
+                    Exemptions
+                  </Heading>
+                  <Box borderColor="black">
+                    <ExemptionContainer
+                      exemptedModules={mainViewModel.exemptions.modules}
+                      id={"planner:0"}
+                      forceUpdate={forceUpdate}
+                      setIsValidateButtonDisabled={setIsValidateButtonDisabled}
+                    />
+                  </Box>
+                </div>
+                <div>
+                  <Heading
+                    fontSize={"xl"}
+                    fontWeight={"bold"}
+                    fontFamily={"body"}
+                    padding="0.6em 0em 0.4rem"
+                  >
+                    APCs
+                  </Heading>
+                  <Box borderColor="black" mb={"1rem"}>
+                    <APCContainer
+                      exemptedModules={mainViewModel.apcs.modules}
+                      id={"planner:1"}
+                      forceUpdate={forceUpdate}
+                      setIsValidateButtonDisabled={setIsValidateButtonDisabled}
+                    />
+                  </Box>
+                </div>
+              </Stack>
             </Stack>
           </Box>
         </HStack>
