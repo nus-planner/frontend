@@ -143,6 +143,7 @@ export class MultiModuleViewModel implements frontend.Module {
     return true;
   }
   constructor(code: string, name: string, credits: number) {
+    debugger;
     this.id = (MultiModuleViewModel.count++).toString();
     if (code === undefined) {
       return;
@@ -346,11 +347,13 @@ export class RequirementViewModel implements frontend.Requirement {
               name: moduleSpecifier.title,
             })
           ) {
-            return (
-              this.academicPlanDelegate.getModule({
-                name: moduleSpecifier.title,
-              }) || []
-            );
+            const mod = this.academicPlanDelegate.getModule({
+              name: moduleSpecifier.title,
+            });
+            if (mod) {
+              mod.respawnable = moduleSpecifier.respawnable;
+            }
+            return mod || [];
           }
 
           const model = new MultiModuleViewModel(
