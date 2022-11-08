@@ -44,6 +44,7 @@ import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import APCContainer from "./APCContainer";
 import { Resizable } from "re-resizable";
 import { SP } from "next/dist/shared/lib/utils";
+import { GoArrowBoth } from "react-icons/go";
 
 interface PlannerProps {
   mainViewModel: MainViewModel;
@@ -219,6 +220,28 @@ const Planner = () => {
     overflow: "hidden clip",
   };
 
+  const CustomHandle = (props: any) => (
+    <div
+      style={{
+        marginLeft: -12,
+        top: "50%",
+        borderRadius: "3px 30px 30px 3px",
+        border: "1px solid #ddd",
+        borderTop: "none",
+        height: "4rem",
+        width: "1.4rem",
+        padding: "1.5rem 0.1rem",
+      }}
+      {...props}
+    />
+  );
+
+  const resizableHandle = () => (
+    <CustomHandle>
+      <GoArrowBoth />
+    </CustomHandle>
+  );
+
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -236,17 +259,30 @@ const Planner = () => {
                   top: "50%",
                   left: "100%",
                   cursor: "ew-resize",
-                  border: "5px solid #FED7D7",
+                  border: "0px solid #FED7D7",
                   borderTop: "none",
                   borderLeft: "none",
                   borderBottom: "none",
-                  borderWidth: 10,
+                  borderWidth: 0,
                   borderColor: "#FED7D7",
-                  width: 15,
-                  height: "4rem",
+                  width: 0,
+                  height: 0,
                   boxSizing: "border-box",
                   zIndex: 1,
                 },
+              }}
+              handleComponent={{
+                right: resizableHandle(),
+              }}
+              enable={{
+                top: false,
+                right: true,
+                bottom: false,
+                left: false,
+                topRight: false,
+                bottomRight: false,
+                bottomLeft: false,
+                topLeft: false,
               }}
             >
               {/* <motion.div
@@ -265,6 +301,7 @@ const Planner = () => {
               top: "0",
             }}
           > */}
+          <Box mr={"2rem"}>
               <Heading
                 padding="1em 0em 1em 1rem"
                 fontSize={"xl"}
@@ -291,6 +328,7 @@ const Planner = () => {
                     key={id}
                   />
                 ))}
+              </Box>
               </Box>
             </Resizable>
           </Stack>
@@ -359,7 +397,7 @@ const Planner = () => {
                 {studyPlanRow(plannerYears.slice(0, 2))}
                 {studyPlanRow(plannerYears.slice(2, 4))}
               </Stack>
-              <HStack h="20vh">
+              <HStack h="20vh" align={""}>
                 <Box w="50%">
                   <Heading
                     fontSize={"xl"}
