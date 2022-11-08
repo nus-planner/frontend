@@ -2,6 +2,13 @@
   "files": [
     {
       "faculty": "Computing",
+      "cohort": 2018,
+      "course": "Computer Science",
+      "resource": "https://www.comp.nus.edu.sg/cugresource/per-cohort/cs/cs-18-19/",
+      "filename": "2018/cs.json"
+    },
+    {
+      "faculty": "Computing",
       "cohort": 2019,
       "course": "Computer Science",
       "resource": "https://www.comp.nus.edu.sg/cugresource/per-cohort/cs/cs-19-20/",

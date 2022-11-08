@@ -75,7 +75,7 @@ const BasicInfo = () => {
 
   useEffect(() => {
     fetch(
-      "https://raw.githubusercontent.com/nus-planner/frontend/main/locals/requirements/dir.json",
+      `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/requirements/dir.json`,
     )
       .then((res) => res.json())
       .then((plain) => plainToInstance(DirectoryList, plain))
