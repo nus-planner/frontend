@@ -15,6 +15,7 @@ import {
   Spacer,
   Alert,
   AlertIcon,
+  Wrap,
 } from "@chakra-ui/react";
 import {
   useState,
@@ -190,31 +191,8 @@ const Planner = () => {
     forceUpdate();
   };
 
-  const showRequirementToggleButton = mainViewModel.requirements.length > 1;
-
   const [isValidateButtonDisabled, setIsValidateButtonDisabled] =
     useState(false);
-
-  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure({
-    defaultIsOpen: true,
-  });
-  const [hidden, setHidden] = useState(!isOpen);
-
-  const studyPlanRow = (years: number[]) => (
-    <HStack align="top">
-      {years.map((year) => (
-        <StudyPlanContainer
-          year={year}
-          semesters={plannerSemesters}
-          setSemesters={setPlannerSemesters}
-          plannerSemesters={mainViewModel.planner}
-          handleModuleClose={handleModuleClose}
-          id={year.toString()}
-          key={year}
-        />
-      ))}
-    </HStack>
-  );
 
   const style = {
     overflow: "hidden clip",
@@ -393,12 +371,21 @@ const Planner = () => {
               />
             </HStack>
             <Stack>
-              <Stack h="60vh" overflowY={"auto"}>
-                {studyPlanRow(plannerYears.slice(0, 2))}
-                {studyPlanRow(plannerYears.slice(2, 4))}
-              </Stack>
-              <HStack h="20vh" align={""}>
-                <Box w="50%">
+              <Wrap h="60vh" overflowY={"auto"}>
+                {plannerYears.map((year) => (
+                  <StudyPlanContainer
+                    year={year}
+                    semesters={plannerSemesters}
+                    setSemesters={setPlannerSemesters}
+                    plannerSemesters={mainViewModel.planner}
+                    handleModuleClose={handleModuleClose}
+                    id={year.toString()}
+                    key={year}
+                  />
+                ))}
+              </Wrap>
+              <Flex h="20vh">
+                <Box w="50%" padding="0 0.5rem 0 0">
                   <Heading
                     fontSize={"xl"}
                     fontWeight={"bold"}
@@ -416,7 +403,7 @@ const Planner = () => {
                     />
                   </Box>
                 </Box>
-                <Box w="50%">
+                <Box w="50%" padding="0 0.5rem 0 0">
                   <Heading
                     fontSize={"xl"}
                     fontWeight={"bold"}
@@ -434,7 +421,7 @@ const Planner = () => {
                     />
                   </Box>
                 </Box>
-              </HStack>
+              </Flex>
             </Stack>
           </Box>
         </HStack>
