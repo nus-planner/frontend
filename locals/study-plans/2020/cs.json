@@ -2,6 +2,7 @@
   "starting_year": 2020,
   "years": 4,
   "exemptions": ["MA1301", "ES1103", "ES1000"],
+  "apcs": [],
   "semesters": [
     {
       "year": 1,
