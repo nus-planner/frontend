@@ -32,6 +32,7 @@ const ModuleDropdown = ({
   const { mainViewModel, setMainViewModel } = useAppContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [onNoOptionsMessage, setOnNoOptionsMessage] = useState<string>("Start typing to search");
   useEffect(onClose, [isDragging]);
 
   let underlyingModule: models.Module | null = null;
@@ -223,8 +224,10 @@ const ModuleDropdown = ({
           options: showOptions ? options : [],
           onInputChange: (typedOption: string) => {
             if (typedOption.length >= 2) {
+              setOnNoOptionsMessage("No modules found");
               setShowOptions(true);
             } else {
+              setOnNoOptionsMessage("Start typing to search");
               setShowOptions(false);
             }
           },
@@ -249,7 +252,6 @@ const ModuleDropdown = ({
           }
           closeMenuOnSelect={true}
           styles={customStyles}
-          //menuPortalTarget={document.querySelector("body")}
           menuPosition="fixed"
           onChange={handleChange}
           formatOptionLabel={formatOptionLabel}
@@ -257,7 +259,9 @@ const ModuleDropdown = ({
           onMenuOpen={onOpen}
           onMenuClose={onClose}
           components={{ MenuList: WindowedMenuList }}
-          noOptionsMessage={() => "Start typing to search"}
+          noOptionsMessage={() => onNoOptionsMessage}
+          menuPlacement="auto"
+          options={selectProps.options}
         />
       </FormControl>
       {!!module.getUnderlyingModule && (
