@@ -11,10 +11,13 @@ const Home = () => {
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
   const { mainViewModel, setMainViewModel } = useAppContext();
-  
+
   useEffect(() => {
     loadViewModel(mainViewModel);
     forceUpdate();
+
+    const html = document.querySelector("html");
+    if (html) html.style.overflow = "hidden";
   }, []);
 
   return (
