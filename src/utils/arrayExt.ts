@@ -17,4 +17,23 @@ Array.prototype.uniqueByKey = function <T, K extends keyof T>(
   return Array.from(map.values());
 };
 
+Array.prototype.filtered = function <T>(
+  this: Array<T>,
+  filter: (t: T) => boolean,
+) {
+  let i = 0,
+    j = 0;
+
+  while (i < this.length) {
+    if (filter(this[i])) {
+      this[j] = this[i];
+      j++;
+    }
+    i++;
+  }
+
+  this.length = j;
+  return this;
+};
+
 export {};

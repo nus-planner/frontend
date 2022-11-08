@@ -29,14 +29,16 @@
       "resource": "https://cde.nus.edu.sg/me/wp-content/uploads/sites/11/2020/06/Curriculum-Structure2020.pdf",
       "other_resources": [
         "https://cde.nus.edu.sg/me/wp-content/uploads/sites/11/2021/10/Sample-Semester-Schedule-for-ME-students-2019-2020_29-June-2021_revised.pdf"
-      ]
+      ],
+      "hidden": true
     },
     {
       "faculty": "Science",
       "cohort": 2020,
       "course": "Applied Mathematics",
       "filename": "2020/applied_math.json",
-      "resource": "https://www.math.nus.edu.sg/wp-content/uploads/sites/4/2021/11/am2021.pdf"
+      "resource": "https://www.math.nus.edu.sg/wp-content/uploads/sites/4/2021/11/am2021.pdf",
+      "hidden": true
     },
     {
       "faculty": "CHS",

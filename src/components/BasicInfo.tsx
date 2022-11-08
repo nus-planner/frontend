@@ -36,13 +36,15 @@ class DirectoryList {
 }
 
 class DirectoryListing {
-  static branch = process.env.NEXT_PUBLIC_APP_ENV === "development" ? "develop" : "main";
+  static branch =
+    process.env.NEXT_PUBLIC_APP_ENV === "development" ? "develop" : "main";
   static requirementsBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/requirements/`;
   static studyPlanBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/study-plans/`;
   cohort!: number;
   faculty!: string;
   course!: string;
   filename!: string;
+  hidden?: boolean;
   get url(): string {
     return `${DirectoryListing.requirementsBaseUrl}/${this.filename}`;
   }
@@ -78,6 +80,9 @@ const BasicInfo = () => {
       .then((res) => res.json())
       .then((plain) => plainToInstance(DirectoryList, plain))
       .then((directoryList) => {
+        directoryList.files.filtered(
+          (file) => file.hidden === undefined || !file.hidden,
+        );
         setDirectoryList(directoryList);
       });
     setYear(localStorage.getItem(ENROLLMENT_YEAR) || "");

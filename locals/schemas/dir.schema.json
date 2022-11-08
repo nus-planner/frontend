@@ -6,6 +6,9 @@
         "type": "object",
         "required": ["cohort", "faculty", "filename", "course"],
         "properties": {
+          "hidden": {
+            "type": "boolean"
+          },
           "cohort": {
             "type": "number"
           },
