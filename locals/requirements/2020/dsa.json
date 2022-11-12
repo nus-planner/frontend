@@ -122,6 +122,7 @@
       },
       {
         "Level 3000 and 4000": {
+          "description": "For the additional DSA or DSA-recognised modules, note that a maximum of two DSA426X series modules can be used to fulfil this requirement. In addition, there must be at least four modules at level 4000",
           "expected_mcs": 56,
           "state": "overallDegreeState",
           "fulfillment_criteria": {
@@ -143,7 +144,6 @@
             },
             {
               "Additional DSA or DSA-recognised modules": {
-                "description": "Note that a maximum of two DSA426X series modules can be used to fulfil this requirement. There must be at least four modules at level 4000",
                 "fulfillment_criteria": {
                   "at_least_n_modules": 6
                 },
