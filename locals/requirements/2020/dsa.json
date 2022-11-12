@@ -1,186 +1,267 @@
 {
-    "CS-2020": {
-      "and": [
-        {
-          "University Level Requirements": {
-            "expected_mcs": 20,
-            "description": "You must take the ULRs (DSA 2020)!",
-            "state": "overallDegreeState",
-            "title": "University Level Requirements",
-            "and": [
-              {
-                "geh": {
-                  "title": "Any GEH",
-                  "module": {
-                    "code_pattern": "^GEH",
-                    "required_mcs": 4
-                  }
-                }
-              },
-              "GEQ1000",
-              "GER1000",
-              {
-                "ges": {
-                  "title": "Any GES",
-                  "module": {
-                    "code_pattern": "^GES",
-                    "required_mcs": 4
-                  }
-                }
-              },
-              {
-                "get": {
-                  "title": "Any GET",
-                  "module": {
-                    "code_pattern": "^GET",
-                    "required_mcs": 4
-                  }
+  "CS-2020": {
+    "and": [
+      {
+        "University Level Requirements": {
+          "expected_mcs": 20,
+          "description": "You must take the ULRs (DSA 2020)!",
+          "state": "overallDegreeState",
+          "title": "University Level Requirements",
+          "and": [
+            {
+              "geh": {
+                "title": "Any GEH",
+                "module": {
+                  "code_pattern": "^GEH",
+                  "required_mcs": 4
                 }
               }
-            ]
-          }
-        },
-        {
-          "Level 1000": {
-            "state": "overallDegreeState",
-            "expected_mcs": 16,
-            "title": "CS foundation",
-            "and": [
-              {
-                "cs1010": {
-                  "title": "Any CS1010 variant",
-                  "or": ["CS1010", "CS1010E", "CS1010J", "CS1010S", "CS1010X"]
-                }
-              },
-              "DSA1101",
-              {
-                "ma1101r": {
-                  "title": "Any MA1101R variant",
-                  "or": ["MA1101R", "MA2001"]
-                }
-              },
-              {
-                "ma1102r": {
-                  "title": "Any MA1102R variant",
-                  "or": ["MA1102R", "MA2002"]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "Level 2000": {
-            "expected_mcs": 24,
-            "state": "overallDegreeState",
-            "and": [
-              {
-                "cs2040": {
-                    "title": "Any CS2040 variant",
-                    "or": ["CS2040", "CS2040C", "CS2040S"]
-                }
-              },
-              "DSA2101",
-              "DSA2102",
-              "ST2132",
-              {
-                "calculus": {
-                    "title": "Calculus mods",
-                    "or": ["MA2311", "MA2104"]
-                }
-              },
-              {
-                "probability": {
-                    "title": "Probability mods",
-                    "or": ["ST2131", "MA2116", "MA2216"]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "Level 3000 and 4000": {
-            "expected_mcs": 56,
-            "state": "overallDegreeState",
-            "fulfillment_criteria": {
-              "at_least_n_mcs": 56
             },
-            "and": [
-              "CS3244",
-              "DSA3101",
-              "DSA3102",
-              "ST3131",
-              {
-                "FYP": {
-                    "title": "Final Prroject",
-                    "or": ["DSA4199", "DSA4299"]
+            "GEQ1000",
+            "GER1000",
+            {
+              "ges": {
+                "title": "Any GES",
+                "module": {
+                  "code_pattern": "^GES",
+                  "required_mcs": 4
                 }
-              },
-              {
-                "Additional DSA or DSA-recognised modules": {
-                  "description": "Note that a maximum of two DSA426X series modules can be used to fulfil this requirement. There must be at least four modules at level 4000",
-                  "fulfillment_criteria": {
-                    "at_least_n_modules": 6
-                  },
-                  "and": [
-                    {
-                      "List A": {
-                        "state": "dsaModulesState",
-                        "fulfillment_criteria": {
-                          "at_least_n_modules": 2,
-                          "baskets": ["DSA4211", "DSA4212", "DSA4261", "DSA4262", "DSA4263", "DSA4264", "DSA4265", "DSA4266"]
-                        }
-                      }
-                    },
-                    {
-                      "List B": {
-                        "state": "dsaRecognisedModulesState",
-                        "fulfillment_criteria": {
-                          "at_least_n_modules": 2,
-                          "baskets": [
-                            "MA3236", "MA3252", "MA4270", "ST3232", "ST3233", "ST3239", "ST3240", "ST3247", "ST3248", "ST4231", "ST4234", "ST4248",
-                            "CS3210", "CS3223", "CS3230", "CS3243", "CS4224", "CS4225", "CS4231", "CS4234", "CS4243", "CS4248", "CS5340", "MA4230"
-                          ]
-                        }
+              }
+            },
+            {
+              "get": {
+                "title": "Any GET",
+                "module": {
+                  "code_pattern": "^GET",
+                  "required_mcs": 4
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Level 1000": {
+          "state": "overallDegreeState",
+          "expected_mcs": 16,
+          "title": "CS foundation",
+          "and": [
+            {
+              "cs1010": {
+                "title": "Any CS1010 variant",
+                "or": [
+                  "CS1010",
+                  "CS1010E",
+                  "CS1010J",
+                  "CS1010S",
+                  "CS1010X"
+                ]
+              }
+            },
+            "DSA1101",
+            {
+              "ma1101r": {
+                "title": "Any MA1101R variant",
+                "or": [
+                  "MA1101R",
+                  "MA2001"
+                ]
+              }
+            },
+            {
+              "ma1102r": {
+                "title": "Any MA1102R variant",
+                "or": [
+                  "MA1102R",
+                  "MA2002"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Level 2000": {
+          "expected_mcs": 24,
+          "state": "overallDegreeState",
+          "and": [
+            {
+              "cs2040": {
+                "title": "Any CS2040 variant",
+                "or": [
+                  "CS2040",
+                  "CS2040C",
+                  "CS2040S"
+                ]
+              }
+            },
+            "DSA2101",
+            "DSA2102",
+            "ST2132",
+            {
+              "calculus": {
+                "title": "Calculus mods",
+                "or": [
+                  "MA2311",
+                  "MA2104"
+                ]
+              }
+            },
+            {
+              "probability": {
+                "title": "Probability mods",
+                "or": [
+                  "ST2131",
+                  "MA2116",
+                  "MA2216"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Level 3000 and 4000": {
+          "expected_mcs": 56,
+          "state": "overallDegreeState",
+          "fulfillment_criteria": {
+            "at_least_n_mcs": 56
+          },
+          "and": [
+            "CS3244",
+            "DSA3101",
+            "DSA3102",
+            "ST3131",
+            {
+              "FYP": {
+                "title": "Final Prroject",
+                "or": [
+                  "DSA4199",
+                  "DSA4299"
+                ]
+              }
+            },
+            {
+              "Additional DSA or DSA-recognised modules": {
+                "description": "Note that a maximum of two DSA426X series modules can be used to fulfil this requirement. There must be at least four modules at level 4000",
+                "fulfillment_criteria": {
+                  "at_least_n_modules": 6
+                },
+                "and": [
+                  {
+                    "List A": {
+                      "tag": "List A",
+                      "state": "dsaModulesState",
+                      "at_least_n_of": {
+                        "n": 2,
+                        "baskets": [
+                          "DSA4211",
+                          "DSA4212",
+                          "DSA4261",
+                          "DSA4262",
+                          "DSA4263",
+                          "DSA4264",
+                          "DSA4265",
+                          "DSA4266"
+                        ]
                       }
                     }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "Science Requirement": {
-            "expected_mcs": 8,
-            "state": "overallDegreeState",
-            "and": [
-              "SP1541",
-              {
-                "Science": {
-                  "state": "scienceState",
-                  "tag": "1 sci mod",
-                  "module": {
-                    "code_prefix": ["CM", "LSM", "PC"],
-                    "required_mcs": 4
+                  },
+                  {
+                    "List B": {
+                      "state": "dsaRecognisedModulesState",
+                      "at_least_n_of": {
+                        "n": 2,
+                        "baskets": [
+                          {
+                            "List B1": {
+                              "tag": "List B1",
+                              "at_least_n_of": {
+                                "n": 0,
+                                "baskets": [
+                                  "MA3236",
+                                  "MA3252",
+                                  "MA4270",
+                                  "ST3232",
+                                  "ST3233",
+                                  "ST3239",
+                                  "ST3240",
+                                  "ST3247",
+                                  "ST3248",
+                                  "ST4231",
+                                  "ST4234",
+                                  "ST4248"
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "List B2": {
+                              "tag": "List B2",
+                              "at_least_n_of": {
+                                "n": 0,
+                                "baskets": [
+                                  "CS3210",
+                                  "CS3223",
+                                  "CS3230",
+                                  "CS3243",
+                                  "CS4224",
+                                  "CS4225",
+                                  "CS4231",
+                                  "CS4234",
+                                  "CS4243",
+                                  "CS4248",
+                                  "CS5340",
+                                  "MA4230"
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
                   }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Science Requirement": {
+          "expected_mcs": 8,
+          "state": "overallDegreeState",
+          "and": [
+            "SP1541",
+            {
+              "Science": {
+                "state": "scienceState",
+                "tag": "1 sci mod",
+                "module": {
+                  "code_prefix": [
+                    "CM",
+                    "LSM",
+                    "PC"
+                  ],
+                  "required_mcs": 4
                 }
               }
-            ]
-          }
-        },
-        {
-          "Unrestricted Electives": {
-            "expected_mcs": 36,
-            "state": "overallDegreeState",
-            "module": {
-              "code_pattern": ".",
-              "required_mcs": 36,
-              "early_terminate": false,
-              "respawnable": true
             }
+          ]
+        }
+      },
+      {
+        "Unrestricted Electives": {
+          "expected_mcs": 36,
+          "state": "overallDegreeState",
+          "module": {
+            "code_pattern": ".",
+            "required_mcs": 36,
+            "early_terminate": false,
+            "respawnable": true
           }
         }
-      ]
-    }
+      }
+    ]
   }
-  
+}
