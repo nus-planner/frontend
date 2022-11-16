@@ -137,8 +137,22 @@
               "FYP": {
                 "title": "Final Prroject",
                 "or": [
-                  "DSA4199",
-                  "DSA4299"
+                  {
+                    "DSA4199": {
+                      "module": {
+                        "code": "DSA4199",
+                        "mc": 16
+                      }
+                    }
+                  },
+                  {
+                    "DSA4299": {
+                      "module": {
+                        "code": "DSA4299",
+                        "mc": 16
+                      }
+                    }
+                  }
                 ]
               }
             },
