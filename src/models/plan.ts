@@ -118,10 +118,18 @@ export class AcademicPlan {
     return new AcademicPlanView(this, this.modules);
   }
 
+  /**
+   * Resets state of all modules in the academic plan.
+   */
   resetState() {
     this.modules.forEach((module) => module.resetState());
   }
 
+  /**
+   * Verifies this (AcademicPlan) against the given config.
+   * @param config A ValidatorState that is associated with some graduation requirement.
+   * @returns True if validation passes.
+   */
   checkAgainstConfig(config: input.ValidatorState) {
     this.resetState();
     config.basket.resetSubtreeState();
@@ -164,6 +172,9 @@ export class SemPlan {
   }
 }
 
+/**
+ * A subset, often strict subset of the associated AcademicPlan.
+ */
 @Exclude()
 export class AcademicPlanView {
   private academicPlan: AcademicPlan;
@@ -177,7 +188,7 @@ export class AcademicPlanView {
     return this.modules;
   }
 
-  withModules(modules: Array<Module>): AcademicPlanView {
+  private withModules(modules: Array<Module>): AcademicPlanView {
     return new AcademicPlanView(this.academicPlan, modules);
   }
 
@@ -185,6 +196,9 @@ export class AcademicPlanView {
     return this.withModules(this.modules.filter(filter.getFilter()));
   }
 
+  /**
+   * @returns An AcademicPlanView with all the modules from the original AcademicPlan.
+   */
   withOriginalPlan(): AcademicPlanView {
     return new AcademicPlanView(this.academicPlan, this.academicPlan.modules);
   }
