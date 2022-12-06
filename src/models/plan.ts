@@ -112,8 +112,6 @@ export class AcademicPlan {
     return this.plans[convertYearAndSemToIndex(year, semester)];
   }
 
-  preprocess() {}
-
   getPlanView(): AcademicPlanView {
     return new AcademicPlanView(this, this.modules);
   }
