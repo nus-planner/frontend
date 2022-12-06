@@ -4,20 +4,41 @@ import { Basket } from "./basket";
 import { Exclude, Type } from "class-transformer";
 export const moduleRegex =
   /(?<prefix>[A-Z]+)(?<codeNumber>\d)\d+(?<suffix>[A-Z]*)/;
+
 export class ModuleState {
+  // The baskets that the module is matched to.
+  // There can be more than one basket, for e.g. when double counting.
   matchedBaskets: Array<Basket> = [];
 }
 export class Module {
+  // A placeholder object.
   static emptyModule: Module = new Module("EMPTY9999", "Empty", 0);
+
+  // State used during the requirement verification algorithm.
+  // The state is only meaningful after at least verifying once.
   @Exclude()
   state: ModuleState = new ModuleState();
+
+  // Tags are labels that we associate with a module. Think of them as hashtags.
   @Exclude()
   tags: Set<string> = new Set();
+
+  // E.g. The prefix of ABC1234XY is ABC.
   prefix: string;
+
+  // E.g. The suffix of ABC1234XY is XY.
   suffix: string;
+
+  // E.g. The code of ABC1234XY is ABC1234XY.
   code: string;
+
+  // E.g. The level of ABC1234XY is 1. The level of ABC3234XY is 3.
   level: number;
+
+  // The human readable name of a module.
   name: string;
+
+  // Number of MCs.
   credits: number;
   constructor(code: string, name: string, credits: number) {
     if (code === undefined) {
@@ -42,7 +63,17 @@ export class Module {
 }
 
 export class AcademicPlan {
+  // The matriculation year.
   startYear: number;
+
+  // An array of plans.
+  // plans[0] is for exemptions and plans[1] is for apcs.
+  // plans[2] is Y1S1
+  // plans[3] is Y1S2
+  // plans[4] is Y1ST1
+  // plans[5] is Y1ST2
+  // plans[6] is Y2S1
+  // and so on...
   @Type(() => SemPlan)
   plans: Array<SemPlan>;
 

@@ -4,6 +4,8 @@ import * as baskets from "./basket";
 import * as plan from "./plan";
 import { Hydratable } from "../interfaces/planner";
 
+// For all the below non-class types, see the JSON schema for a description of the fields.
+
 type Filter = {
   code_pattern?: string;
   code_prefix?: string | Array<string>;
@@ -80,6 +82,10 @@ export class ValidatorState implements Hydratable {
   @Expose()
   private text?: string;
 
+  /**
+   * Initializes a ValidatorState without any associated graduation requirement.
+   * Hence, all states are empty.
+   */
   constructor() {
     this.basket = ValidatorState.emptyBasket;
     this.allBaskets = new Map();
@@ -95,12 +101,19 @@ export class ValidatorState implements Hydratable {
     }
   }
 
+  /**
+   * @param url A URL to fetch the graduation requirement JSON/YAML string from.
+   * @returns Empty Promise.
+   */
   async initializeFromURL(url: string) {
     return this.initializeFromString(
       await fetch(url).then((res) => res.text()),
     );
   }
 
+  /**
+   * @param text JSON or YAML string representing the graduation requirement.
+   */
   async initializeFromString(text: string) {
     this.text = text;
     const topLevelBasket = yaml.load(text) as TopLevelBasket;
@@ -108,10 +121,17 @@ export class ValidatorState implements Hydratable {
     this.initialize(topLevelBasket);
   }
 
+  /**
+   * @returns True if no academic plan is associated with this ValidatorState.
+   */
   isUninitialized(): boolean {
     return this.basket === ValidatorState.emptyBasket;
   }
 
+  /**
+   * Converts a plain data object (TopLevelBasket) representing a graduation requirement to a ValidatorState.
+   * @param topLevelBasket A structure directly corresponding to the JSON/YAML text.
+   */
   initialize(topLevelBasket: TopLevelBasket) {
     this.basket = this.convertBasketOptionRecord(topLevelBasket);
   }
