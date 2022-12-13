@@ -3,6 +3,9 @@ import * as fs from "fs";
 import util from "util";
 const packageLogFileDir = path.resolve(__dirname, "../", "logs/");
 const packageLogFilePath = path.resolve(packageLogFileDir, "log");
+/**
+ * Runs only in NodeJS. Prints the entirety of an object.
+ */
 export function log(...data: any) {
   console.log(
     util.inspect(data, { showHidden: false, depth: null, colors: false }),
