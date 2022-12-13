@@ -8,10 +8,10 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-import { Module, Semester } from "../interfaces/planner";
+import { Module, Semester } from "../../interfaces/planner";
 import React, { useCallback, useState } from "react";
 import SemesterPlanner from "./SemesterPlanner";
-import { convertYearAndSemToIndex, storePlannerSemesters } from "../utils/plannerUtils";
+import { convertYearAndSemToIndex, storePlannerSemesters } from "../../utils/plannerUtils";
 
 // Fix starting with 4 years (since we are not doing double degree for now)
 // Ay is retrieved from the enrollment year from basic info

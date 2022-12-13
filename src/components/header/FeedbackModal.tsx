@@ -15,7 +15,7 @@ import {
   FormErrorMessage,
   useToast,
 } from "@chakra-ui/react";
-import { postFeedback } from "../api/feedbackAPI";
+import { postFeedback } from "../../api/feedbackAPI";
 
 interface FeedbackModalProps {
   isOpen: boolean;

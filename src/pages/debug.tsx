@@ -1,6 +1,6 @@
 import { Stack, Divider } from "@chakra-ui/react";
 import PlannerComponent from "../components/Planner";
-import BasicInfo from "../components/BasicInfo";
+import BasicInfo from "../components/header/BasicInfo";
 
 const Debug = () => {
 

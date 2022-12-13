@@ -1,9 +1,9 @@
 import { Text, Box, VStack, Flex, Spacer } from "@chakra-ui/react";
-import { Module, Semester } from "../interfaces/planner";
-import ModuleBox from "./ModuleBox";
+import { Module, Semester } from "../../interfaces/planner";
+import ModuleBox from "../moduleBox/ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
 import React, { useState } from "react";
-import { getModuleCredits } from "../utils/moduleUtils";
+import { getModuleCredits } from "../../utils/moduleUtils";
 
 interface SemesterPlannerProps {
   semesterNumber: number;

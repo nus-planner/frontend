@@ -2,7 +2,6 @@ import {
   Select,
   FormControl,
   HStack,
-  Heading,
   Button,
   Spinner,
   Flex,
@@ -15,9 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { plainToInstance, Type } from "class-transformer";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
-import { useAppContext } from "./AppContext";
-import { labelModules, storeViewModel } from "../utils/plannerUtils";
-import { MainViewModel } from "../models";
+import { useAppContext } from "../AppContext";
+import { labelModules, storeViewModel } from "../../utils/plannerUtils";
+import { MainViewModel } from "../../models";
 import { EmailIcon } from "@chakra-ui/icons";
 import { BsTelegram } from "react-icons/bs";
 import FeedbackModal from "./FeedbackModal";
@@ -25,10 +24,8 @@ import {
   COURSE_MAJOR,
   ENROLLMENT_YEAR,
   VIEWMODEL_STORAGE,
-} from "../constants/planner";
+} from "../../constants/planner";
 import LoadAlert from "./LoadAlert";
-
-const baseUrl = "https://raw.githubusercontent.com/nus-planner/frontend/main/";
 
 class DirectoryList {
   @Type(() => DirectoryListing)

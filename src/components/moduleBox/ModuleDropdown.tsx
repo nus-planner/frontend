@@ -1,14 +1,14 @@
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { WindowedMenuList } from "react-windowed-select";
 import { FormControl, Text, useDisclosure } from "@chakra-ui/react";
-import { fetchBasicModuleInfo } from "../api/moduleAPI";
-import { Module } from "../interfaces/planner";
-import * as models from "../models";
-import { useAppContext } from "./AppContext";
-import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
+import { fetchBasicModuleInfo } from "../../api/moduleAPI";
+import { Module } from "../../interfaces/planner";
+import * as models from "../../models";
+import { useAppContext } from "../AppContext";
+import { DEFAULT_MODULE_COLOR } from "../../constants/moduleColor";
 import React, { useEffect, useState } from "react";
 import { FormatOptionLabelMeta } from "react-select/dist/declarations/src/Select";
-import { applyPrereqValidation } from "../utils/moduleUtils";
+import { applyPrereqValidation } from "../../utils/moduleUtils";
 
 interface ModuleDropdownProps {
   module: Module;
