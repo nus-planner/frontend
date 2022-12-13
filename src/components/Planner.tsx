@@ -3,16 +3,8 @@ import {
   Heading,
   Box,
   HStack,
-  Collapse,
-  useDisclosure,
-  Text,
   Stack,
-  Center,
-  IconButton,
-  Circle,
-  Icon,
   Flex,
-  Spacer,
   Alert,
   AlertIcon,
   Wrap,
@@ -21,35 +13,24 @@ import {
   useState,
   useCallback,
   useEffect,
-  Dispatch,
-  SetStateAction,
 } from "react";
 import { Module } from "../interfaces/planner";
-import RequirementContainer from "./RequirementContainer";
-import StudyPlanContainer from "./StudyPlanContainer";
-import ExemptionContainer from "./ExemptionContainer";
+import RequirementContainer from "./requirements/RequirementContainer";
+import StudyPlanContainer from "./modulePlanner/StudyPlanContainer";
+import ExemptionContainer from "./modulePlanner/ExemptionContainer";
 import { DragDropContext } from "react-beautiful-dnd";
 import { applyPrereqValidation } from "../utils/moduleUtils";
-
-import { MainViewModel } from "../models";
-import ValidateStudyPlanButton from "./ValidateStudyPlanButton";
+import ValidateStudyPlanButton from "./modulePlanner/ValidateStudyPlanButton";
 import { useAppContext } from "./AppContext";
 import {
   loadPlannerSemesters,
   sortRequirementModules,
-  storePlannerSemesters,
   storeViewModel,
 } from "../utils/plannerUtils";
-import { motion } from "framer-motion";
-import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
-import APCContainer from "./APCContainer";
+import APCContainer from "./modulePlanner/APCContainer";
 import { Resizable } from "re-resizable";
-import { SP } from "next/dist/shared/lib/utils";
 import { GoArrowBoth } from "react-icons/go";
 
-interface PlannerProps {
-  mainViewModel: MainViewModel;
-}
 
 // Notes about design:
 //
@@ -263,22 +244,6 @@ const Planner = () => {
                 topLeft: false,
               }}
             >
-              {/* <motion.div
-            className="verscroll"
-            {...getDisclosureProps()}
-            hidden={hidden}
-            initial={true}
-            onAnimationStart={() => setHidden(false)}
-            onAnimationComplete={() => setHidden(!isOpen)}
-            animate={{ width: isOpen ? "100%" : 0 }}
-            style={{
-              overflowY: "auto",
-              whiteSpace: "nowrap",
-              left: "0",
-              height: "90vh",
-              top: "0",
-            }}
-          > */}
           <Box mr={"2rem"}>
               <Heading
                 padding="1em 0em 1em 1rem"
@@ -310,29 +275,6 @@ const Planner = () => {
               </Box>
             </Resizable>
           </Stack>
-          {/* </motion.div> */}
-
-          {/* <HStack>
-            <Button
-              _hover={{ bg: "white" }}
-              _active={{ bg: "white" }}
-              backgroundColor={"white"}
-              {...getButtonProps()}
-            >
-              <Circle
-                size="30px"
-                bg={"blackAlpha.900"}
-                color="white"
-                _hover={{ bg: "blackAlpha.700" }}
-              >
-                {isOpen ? (
-                  <GoTriangleLeft />
-                ) : (
-                  <GoTriangleRight />
-                )}
-              </Circle>
-            </Button>
-          </HStack> */}
           <Box minW="50%">
             <HStack align={"center"} spacing="1rem">
               <Heading

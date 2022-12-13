@@ -13,16 +13,16 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
-import { Module } from "../interfaces/planner";
+import { Module } from "../../interfaces/planner";
 import { CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { Draggable } from "react-beautiful-dnd";
-import { DEFAULT_MODULE_COLOR } from "../constants/moduleColor";
+import { DEFAULT_MODULE_COLOR } from "../../constants/moduleColor";
 import {
   convertPrereqTreeToString,
   getNonDuplicateUEs,
   getNUSModsModulePage,
-} from "../utils/moduleUtils";
-import { useAppContext } from "./AppContext";
+} from "../../utils/moduleUtils";
+import { useAppContext } from "../AppContext";
 import ModuleDropdown from "./ModuleDropdown";
 import { useCallback, useEffect, useState } from "react";
 

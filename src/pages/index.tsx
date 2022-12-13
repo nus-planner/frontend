@@ -2,9 +2,9 @@ import { Stack, Divider } from "@chakra-ui/react";
 import { useState, useCallback, useEffect, SetStateAction } from "react";
 import PlannerComponent from "../components/Planner";
 import { loadViewModel } from "../utils/plannerUtils";
-import BasicInfo from "../components/BasicInfo";
+import BasicInfo from "../components/header/BasicInfo";
 import { useAppContext } from "../components/AppContext";
-import MobileDeviceAlert from "../components/MobileDeviceAlert";
+import MobileDeviceAlert from "../components/header/MobileDeviceAlert";
 
 const Home = () => {
   // Helper function to help refresh since react-beautiful-dnd can't detect some changes

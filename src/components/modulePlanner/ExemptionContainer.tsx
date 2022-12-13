@@ -8,16 +8,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { Module } from "../interfaces/planner";
-import ModuleDropdown from "./ModuleDropdown";
+import { Module } from "../../interfaces/planner";
+import ModuleDropdown from "../moduleBox/ModuleDropdown";
 import { useEffect, useState } from "react";
 import {
   applyPrereqValidation,
   getNonDuplicateUEs,
   getNUSModsModulePage,
-} from "../utils/moduleUtils";
-import { useAppContext } from "./AppContext";
-import { sortRequirementModules } from "../utils/plannerUtils";
+} from "../../utils/moduleUtils";
+import { useAppContext } from "../AppContext";
+import { sortRequirementModules } from "../../utils/plannerUtils";
 
 interface ExemptionContainerProps {
   exemptedModules: Module[];

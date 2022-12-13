@@ -6,7 +6,7 @@ import {
   UnorderedList,
   useToast,
 } from "@chakra-ui/react";
-import { MainViewModel } from "../models";
+import { MainViewModel } from "../../models";
 
 interface ValidateStudyPlanButtonProps {
   mainViewModel: MainViewModel;

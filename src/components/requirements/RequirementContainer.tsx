@@ -11,21 +11,18 @@ import {
   InputGroup,
   InputLeftElement,
   Wrap,
-  background,
   HStack,
-  Badge,
   Tag,
-  Spacer,
   Divider,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
-import ModuleBox from "./ModuleBox";
-import { Module, Requirement } from "../interfaces/planner";
+import ModuleBox from "../moduleBox/ModuleBox";
+import { Module } from "../../interfaces/planner";
 import React from "react";
-import { MultiModuleViewModel, RequirementViewModel } from "../models";
-import { useAppContext } from "./AppContext";
-import { moduleColor } from "../constants/moduleColor";
+import { MultiModuleViewModel, RequirementViewModel } from "../../models";
+import { useAppContext } from "../AppContext";
+import { moduleColor } from "../../constants/moduleColor";
 import { SearchIcon } from "@chakra-ui/icons";
 
 const RequirementContainer = ({
