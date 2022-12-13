@@ -59,9 +59,14 @@ export type Constructor<T> = new (...args: any) => T;
 export interface Criterion {
   criterionState: CriterionFulfillmentResult;
   eventDelegate?: CriterionEventDelegate;
-  isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult;
+  isFulfilledWithState(
+    academicPlan: AcademicPlanView,
+  ): CriterionFulfillmentResult;
 }
 
+/**
+ * A Basket represents a sub-requirement, in the sense that it can be nested in a larger basket.
+ */
 @Exclude()
 export abstract class Basket implements Criterion, CriterionEventDelegate {
   // This field is purely for display purposes.
@@ -79,14 +84,26 @@ export abstract class Basket implements Criterion, CriterionEventDelegate {
     visitor: BasketVisitor<ReturnValue>,
   ): ReturnValue;
 
+  /**
+   * A top level basket is a basket that is the top-level requirement, in other words,
+   * it is the degree requirement itself.
+   */
   isTopLevelBasket(): boolean {
     return this.parentBasket === undefined;
   }
 
-  abstract isFulfilled(
+  /**
+   * Returns whether the basket is fulfilled based on the modules present inside the given AcademicPlanView.
+   * Don't call this method directly! Call isFulfilledWithState instead.
+   */
+  protected abstract isFulfilled(
     academicPlan: AcademicPlanView,
   ): CriterionFulfillmentResult;
 
+  /**
+   * Returns whether the basket is fulfilled based on the modules present inside the given AcademicPlanView.
+   * For external users of the Call this instead of isFulfilled.
+   */
   isFulfilledWithState(
     academicPlan: AcademicPlanView,
   ): CriterionFulfillmentResult {
@@ -140,6 +157,9 @@ export abstract class Basket implements Criterion, CriterionEventDelegate {
   }
 }
 
+/**
+ * A basket that does not contain any requirement. It is meant to be used as a placeholder.
+ */
 export class EmptyBasket extends Basket {
   constructor() {
     super("__Empty__");
@@ -147,7 +167,9 @@ export class EmptyBasket extends Basket {
   accept<ReturnValue>(visitor: BasketVisitor<ReturnValue>): ReturnValue {
     throw new Error("Method not implemented.");
   }
-  isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult {
+  protected isFulfilled(
+    academicPlan: AcademicPlanView,
+  ): CriterionFulfillmentResult {
     return new CriterionFulfillmentResult(true, 0, new Set());
   }
   childBaskets(): Basket[] {
@@ -168,6 +190,9 @@ class PrintableCriterionState {
   }
 }
 
+/**
+ * A print-friendly class that is useful for debugging.
+ */
 class PrintableBasket {
   name: string;
   children: Array<PrintableBasket> = [];
@@ -203,6 +228,9 @@ export abstract class BasketVisitor<ReturnValue> {
   }
 }
 
+/**
+ * A basket that is meant to prevent undesirable double-counting.
+ */
 export class StatefulBasket extends Basket {
   basket: Basket;
   state: BasketState;
@@ -221,7 +249,9 @@ export class StatefulBasket extends Basket {
     return [this.basket];
   }
 
-  isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult {
+  protected isFulfilled(
+    academicPlan: AcademicPlanView,
+  ): CriterionFulfillmentResult {
     return this.basket.isFulfilledWithState(
       academicPlan.withModulesFilteredBy(
         new PropertySetFilter("code", this.state.moduleCodesAlreadyMatched),
@@ -242,6 +272,12 @@ export class StatefulBasket extends Basket {
   }
 }
 
+/**
+ * A basket that contains an array of other baskets. It can be used to model
+ * a logical OR or a logical AND condition.
+ * Generally speaking, use the ArrayBasket.or, ArrayBasket.and, ArrayBasket.atLeastN static methods instead
+ * of the constructor.
+ */
 export class ArrayBasket extends Basket {
   baskets: Array<Basket>;
   binaryOp: BinaryOp;
@@ -263,14 +299,23 @@ export class ArrayBasket extends Basket {
     this.earlyTerminate = earlyTerminate;
   }
 
+  /**
+   * @returns A composite basket with an OR condition over the given baskets.
+   */
   static or(name: string, baskets: Array<Basket>): ArrayBasket {
     return new ArrayBasket(name, baskets, BinaryOp.GEQ, 1, true);
   }
 
+  /**
+   * @returns A composite basket with an AND condition over the given baskets.
+   */
   static and(name: string, baskets: Array<Basket>): ArrayBasket {
     return new ArrayBasket(name, baskets, BinaryOp.GEQ, baskets.length, false);
   }
 
+  /**
+   * @returns A composite basket that is fulfilled iff at least n of the given baskets are fulfilled.
+   */
   static atLeastN(name: string, n: number, basket: Array<Basket>): ArrayBasket {
     return new ArrayBasket(name, basket, BinaryOp.GEQ, n, true);
   }
@@ -283,7 +328,9 @@ export class ArrayBasket extends Basket {
     return this.baskets;
   }
 
-  isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult {
+  protected isFulfilled(
+    academicPlan: AcademicPlanView,
+  ): CriterionFulfillmentResult {
     let fulfilled;
     let fulfilledCount = 0;
     let toMatch = 0;
@@ -420,7 +467,9 @@ export class FulfillmentResultBasket extends Basket {
     return [this.basket];
   }
 
-  isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult {
+  protected isFulfilled(
+    academicPlan: AcademicPlanView,
+  ): CriterionFulfillmentResult {
     const fulfilled = this.basket.isFulfilledWithState(academicPlan);
     if (!fulfilled.isFulfilled || !this.predicate(fulfilled)) {
       return new CriterionFulfillmentResult(
@@ -449,7 +498,9 @@ export class ModuleBasket extends Basket {
     return visitor.visitModuleBasket(this);
   }
 
-  isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult {
+  protected isFulfilled(
+    academicPlan: AcademicPlanView,
+  ): CriterionFulfillmentResult {
     const found = !!academicPlan
       .getModules()
       .find((m) => m.code == this.module.code);
@@ -526,7 +577,12 @@ export class ModuleFilter {
   }
 }
 
+/**
+ * A bottom-level basket, i.e. it resides in the leaves of the requirement tree.
+ * Represents multiple modules, based on the filter that is assigned to it.
+ */
 export class MultiModuleBasket extends Basket {
+  // A filter to determine what modules can be associated with this basket.
   filter: ModuleFilter;
   get codes(): Set<string> | undefined {
     return this.filter.codes;
@@ -544,8 +600,16 @@ export class MultiModuleBasket extends Basket {
   get level(): Set<number> | undefined {
     return this.filter.level;
   }
+
+  // Number of mcs required to fulfill this basket.
+  // If undefined, then there is no mc requirement.
   requiredMCs?: number;
+
+  // Works together with requiredMCs, i.e. if requiredMCs is undefined, this field is irrelevant.
+  // If true, matching stops once the number of MCs matched >= requiredMCs.
   earlyTerminate?: boolean;
+
+  // Specific to the UI.
   respawnable: boolean;
   constructor(basket: Partial<MultiModuleBasket> & { filter: ModuleFilter }) {
     super(basket.title);
@@ -563,7 +627,9 @@ export class MultiModuleBasket extends Basket {
     return [];
   }
 
-  isFulfilled(academicPlan: AcademicPlanView): CriterionFulfillmentResult {
+  protected isFulfilled(
+    academicPlan: AcademicPlanView,
+  ): CriterionFulfillmentResult {
     let filteredModules = academicPlan.getModules().filter((module) => {
       if (this.moduleCodePattern && !this.moduleCodePattern.test(module.code)) {
         return false;
@@ -631,6 +697,9 @@ export class MultiModuleBasket extends Basket {
     return `(${Array.from(set).join("|")})`;
   }
 
+  /**
+   * @returns A regex pattern converted from the filter.
+   */
   getEffectivePattern(): string {
     if (this.moduleCodePattern) {
       return this.moduleCodePattern.source;
@@ -656,5 +725,3 @@ export class MultiModuleBasket extends Basket {
     }
   }
 }
-
-export {};
