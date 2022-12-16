@@ -5,7 +5,7 @@ import {
   TagCloseButton,
   Link,
   Tooltip,
-  Text,
+  Heading,
 } from "@chakra-ui/react";
 
 import { Module } from "../../interfaces/planner";
@@ -24,6 +24,7 @@ interface ExemptionContainerProps {
   id: string;
   forceUpdate: () => void;
   setIsValidateButtonDisabled: (isDisabled: boolean) => void;
+  exemptionType: "exemption" | "apc";
 }
 
 const ExemptionContainer = ({
@@ -31,6 +32,7 @@ const ExemptionContainer = ({
   id,
   forceUpdate,
   setIsValidateButtonDisabled,
+  exemptionType,
 }: ExemptionContainerProps) => {
   const { mainViewModel, setMainViewModel } = useAppContext();
   const [mods, setMods] = useState<Module[]>([]);
@@ -52,9 +54,14 @@ const ExemptionContainer = ({
   const handleExemptionClose = async (module: Module) => {
     module.prereqsViolated = [];
     module.coreqsViolated = [];
-    mainViewModel.exemptions.filtered((mod) => mod.code !== module.code);
 
-    // state.requirements[0].modules.push(module);
+    if (exemptionType === "exemption") {
+      mainViewModel.exemptions.filtered((mod) => mod.code !== module.code);
+    }
+    if (exemptionType === "apc") {
+      mainViewModel.apcs.filtered((mod) => mod.code !== module.code);
+    }
+
     mainViewModel.removeModuleViewModelFromGlobalState(module.code);
     await applyPrereqValidation(
       mainViewModel.startYear,
@@ -76,47 +83,59 @@ const ExemptionContainer = ({
   };
 
   return (
-    <Box borderRadius="0.4rem" minH="22sem" color={"blackAlpha.50"}>
-      <ModuleDropdown
-        options={options}
-        isDragging={false}
-        isExemption
-        isAPC={false}
-        module={{ code: ".", name: "exemptions", id: id, credits: -1 }}
-        forceUpdate={forceUpdate}
-        setIsValidateButtonDisabled={setIsValidateButtonDisabled}
-      />
-      {exemptedModules.map((module) => (
-        <Tooltip
-          label={
-            <>
-              <span style={{ fontWeight: "bold" }}>{module.code}:</span>{" "}
-              {module.name}
-            </>
-          }
-          borderRadius="5px"
-          key={module.code}
-        >
-          <Tag
-            variant="outline"
-            colorScheme="blue"
-            mr={"0.5rem"}
-            mt={"0.5rem"}
-            size="lg"
-          >
-            <TagLabel>
-              <Link href={getNUSModsModulePage(module.code)} isExternal>
-                {module.code}
-              </Link>
-            </TagLabel>
-            <TagCloseButton
-              onClick={() => {
-                handleExemptionClose(module);
-              }}
-            />
-          </Tag>
-        </Tooltip>
-      ))}
+    <Box w="50%" padding="0 0.5rem 0 0">
+      <Heading
+        fontSize={"xl"}
+        fontWeight={"bold"}
+        fontFamily={"body"}
+        padding="0.5em 0em 0.4rem"
+      >
+        {exemptionType === "exemption" ? "Exemptions" : "APCs"}
+      </Heading>
+      <Box borderColor="black">
+        <Box borderRadius="0.4rem" minH="22sem" color={"blackAlpha.50"}>
+          <ModuleDropdown
+            options={options}
+            isDragging={false}
+            isExemption={exemptionType === "exemption"}
+            isAPC={exemptionType === "apc"}
+            module={{ code: ".", name: "exemptions", id: id, credits: -1 }}
+            forceUpdate={forceUpdate}
+            setIsValidateButtonDisabled={setIsValidateButtonDisabled}
+          />
+          {exemptedModules.map((module) => (
+            <Tooltip
+              label={
+                <>
+                  <span style={{ fontWeight: "bold" }}>{module.code}:</span>{" "}
+                  {module.name}
+                </>
+              }
+              borderRadius="5px"
+              key={module.code}
+            >
+              <Tag
+                variant="outline"
+                colorScheme="blue"
+                mr={"0.5rem"}
+                mt={"0.5rem"}
+                size="lg"
+              >
+                <TagLabel>
+                  <Link href={getNUSModsModulePage(module.code)} isExternal>
+                    {module.code}
+                  </Link>
+                </TagLabel>
+                <TagCloseButton
+                  onClick={() => {
+                    handleExemptionClose(module);
+                  }}
+                />
+              </Tag>
+            </Tooltip>
+          ))}
+        </Box>
+      </Box>
     </Box>
   );
 };
