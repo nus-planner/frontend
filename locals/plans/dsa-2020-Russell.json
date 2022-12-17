@@ -1,0 +1,58 @@
+{
+  "exemptions": ["MA1301"],
+  "starting_year": 2020,
+  "years": 4,
+  "semesters": [
+    {
+      "year": 1,
+      "semester": 1,
+      "modules": ["CS1010S", "DSA1101", "ES1103", "MA1102R", "GER1000"]
+    },
+    {
+      "year": 1,
+      "semester": 2,
+      "modules": ["CS2040", "SP1541", "MA1101R", "LSM1303", "ST2131", "CFG1002", "GES1003", "GEQ1000"]
+    },
+    {
+      "year": 2,
+      "semester": 1,
+      "modules": ["CS1231", "CS2030", "CS3244", "DSA2101", "GEH1036", "ST2132"]
+    },
+    {
+      "year": 2,
+      "semester": 2,
+      "modules": ["CS3243", "DSA2102", "GET1030", "MA2104", "ST3131"]
+    },
+    {
+      "year": 2,
+      "semester": "ST1",
+      "modules": ["DSA3310"]
+    },
+    {
+      "year": 3,
+      "semester": 1,
+      "modules": ["CS2102", "CS2103", "CS3230", "ST3248", "DSA3101", "EC1101E"]
+    },
+    {
+      "year": 3,
+      "semester": 2,
+      "modules": ["CS4225", "DSA3102", "DSA4212", "ST3247", "ST4248"]
+    },
+    {
+      "year": 3,
+      "semester": "ST1",
+      "modules": ["DSA3310"]
+    },
+    {
+      "year": 4,
+      "semester": 1,
+      "modules": ["CS4248", "LAG1201", "DSA4266"]
+    },
+    {
+      "year": 4,
+      "semester": 2,
+      "modules": ["DSA4299"]
+    }
+  ]
+}
+  

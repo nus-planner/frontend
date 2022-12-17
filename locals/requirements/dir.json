@@ -22,6 +22,13 @@
       "filename": "2020/cs.json"
     },
     {
+      "faculty": "Science",
+      "cohort": 2020,
+      "course": "Data Science and Analytics",
+      "resource": "https://www.stat.nus.edu.sg/wp-content/uploads/sites/8/2022/06/Data-Science-and-Analytics-Major-AY2019-20-to-AY2020-21_17-Jun-1.pdf",
+      "filename": "2020/dsa.json"
+    },
+    {
       "faculty": "Computing",
       "cohort": 2021,
       "course": "Computer Science",

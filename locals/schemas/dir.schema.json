@@ -54,7 +54,7 @@
                 "enum": ["Science"]
               },
               "course": {
-                "enum": ["Applied Mathematics", "Mathematics", "Physics"]
+                "enum": ["Applied Mathematics", "Data Science and Analytics", "Mathematics", "Physics"]
               }
             }
           },
