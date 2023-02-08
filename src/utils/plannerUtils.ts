@@ -7,8 +7,6 @@ import {
   VIEWMODEL_STORAGE,
 } from "../constants/planner";
 
-import {storage as localStorage} from './localStorageModule';
-
 export interface moduleListInterface {
   moduleCode: string;
   title: string;
