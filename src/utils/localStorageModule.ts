@@ -3,12 +3,7 @@
  */
 import { LocalStorage } from 'ts-localstorage';
 
-let storage;
-if (process.release.name == 'node') {
-    storage = LocalStorage;
-} else {
-    storage = localStorage;
-}
-
+//@ts-ignore
+const storage = process.release.name === 'node' ? LocalStorage : localStorage;
 export { storage };
 
