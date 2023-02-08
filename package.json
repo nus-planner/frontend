@@ -35,7 +35,8 @@
     "react-select": "^5.2.2",
     "react-windowed-select": "^5.1.0",
     "reflect-metadata": "^0.1.13",
-    "tailwindcss": "^3.1.8"
+    "tailwindcss": "^3.1.8",
+    "ts-localstorage": "^2.0.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",

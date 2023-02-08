@@ -3802,6 +3802,11 @@ touch@^3.1.0:
   dependencies:
     nopt "~1.0.10"
 
+ts-localstorage@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ts-localstorage/-/ts-localstorage-2.0.0.tgz#3835d3345e818b0730e1336f8d475d210385542b"
+  integrity sha512-fBgRbLFOrkaSUt1KsHX0nN6da7itB641vOvXg7MTZikc/fPvK6ZECuXIpRBmToaLz39k616cv9hYPCZAcB55TQ==
+
 ts-node@^10.9.1:
   version "10.9.1"
   resolved "https://registry.npmjs.org/ts-node/-/ts-node-10.9.1.tgz"

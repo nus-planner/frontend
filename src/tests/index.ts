@@ -5,4 +5,5 @@ console.log({
   requirements: pathToRequirements,
   "acad plan": pathToAcadPlan,
 });
+
 runner.verify(pathToRequirements, pathToAcadPlan);
