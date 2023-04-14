@@ -8,6 +8,7 @@ import { Hydratable } from "../interfaces/planner";
 
 type Filter = {
   code_pattern?: string;
+  reject_pattern?: string;
   code_prefix?: string | Array<string>;
   code_suffix?: string | Array<string>;
   level?: number | Array<number>;
@@ -153,6 +154,9 @@ export class ValidatorState implements Hydratable {
         : undefined,
       moduleCodePattern: filter.code_pattern
         ? new RegExp(filter.code_pattern)
+        : undefined,
+      notModuleCodePattern: filter.reject_pattern
+        ? new RegExp(filter.reject_pattern)
         : undefined,
       level: filter.level
         ? new Set(toArrayIfElement(filter.level).map((level) => level / 1000))

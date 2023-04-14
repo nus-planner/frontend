@@ -64,7 +64,7 @@
                 "enum": ["CHS"]
               },
               "course": {
-                "enum": ["Economics"]
+                "enum": ["Economics", "Data Science"]
               }
             }
           }

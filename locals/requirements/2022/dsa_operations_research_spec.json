@@ -1,0 +1,293 @@
+{
+  "Data Science and Analytics (Operations Research Specialization)": {
+    "and": [
+      {
+        "CHS Common Curriculum": {
+          "and": [
+            {
+              "Common Core": {
+                "and": [
+                  {
+                    "Common Core - AI": {
+                      "module": {
+                        "codes": ["CS2109S", "HS1501", "IT1224"],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  },
+                  {
+                    "Common Core - Communities and Engagement": {
+                      "module": {
+                        "code_pattern": "^CCE",
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  },
+                  {
+                    "Common Core - Digital Literacy": {
+                      "module": {
+                        "codes": ["GEI1001", "GEI1002", "NM2207"],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  },
+                  "DTK1234",
+                  {
+                    "Common Core - Data Literacy": {
+                      "module": {
+                        "codes": [
+                          "BT1101",
+                          "DSA1101",
+                          "DSE1101",
+                          "GRA1000",
+                          "ST1131"
+                        ],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  },
+                  {
+                    "Common Core - Writing": {
+                      "module": {
+                        "codes": ["SP1541", "SP2271", "FAS1101"],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Integrated": {
+                "and": [
+                  "HSA1000",
+                  "HSH1000",
+                  {
+                    "Scientific Inq I": {
+                      "module": {
+                        "codes": ["HSI1000", "SP2274"],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  },
+                  {
+                    "Scientific Inq I": {
+                      "module": {
+                        "codes": [
+                          "HSI2001",
+                          "HSI2002",
+                          "HSI2003",
+                          "HSI2004",
+                          "HSI2005",
+                          "HSI2006",
+                          "HSI2007",
+                          "HSI2008",
+                          "HSI2009",
+                          "HSI2010",
+                          "HSI2011",
+                          "HSI2012",
+                          "HSI2013",
+                          "HSI2014",
+                          "HSI2014"
+                        ],
+                        "required_mcs": 4,
+                        "early_terminate": true
+                      }
+                    }
+                  },
+                  "HSS1000"
+                ]
+              }
+            },
+            {
+              "Interdisciplinary I": {
+                "module": {
+                  "codes": [
+                    "HS2902",
+                    "HS2903",
+                    "HS2904",
+                    "HS2905",
+                    "HS2906",
+                    "HS2907"
+                  ],
+                  "required_mcs": 4,
+                  "early_terminate": true
+                }
+              }
+            },
+            {
+              "Interdisciplinary II": {
+                "module": {
+                  "codes": [
+                    "HS2902",
+                    "HS2903",
+                    "HS2904",
+                    "HS2905",
+                    "HS2906",
+                    "HS2907"
+                  ],
+                  "required_mcs": 4,
+                  "early_terminate": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Level 1000": {
+          "expected_mcs": 4,
+          "and": ["DSA1101"]
+        }
+      },
+      {
+        "Level 2000": {
+          "expected_mcs": 32,
+          "and": [
+            "CS2040",
+            "DSA2101",
+            "DSA2102",
+            "MA2001",
+            "MA2002",
+            {
+              "or": ["MA2311", "MA2104"]
+            },
+            {
+              "or": ["ST2131", "MA2116", "MA2216"]
+            },
+            "ST2132"
+          ]
+        }
+      },
+      {
+        "Level 3000": {
+          "expected_mcs": 16,
+          "and": ["CS3244", "DSA3101", "DSA3102", "ST3131"]
+        }
+      },
+      {
+        "Level 4000": {
+          "expected_mcs": 8,
+          "or": [
+            {
+              "Option A": {
+                "and": [
+                  {
+                    "": {
+                      "or": [
+                        {
+                          "": {
+                            "state": "dsaState",
+                            "module": {
+                              "code_pattern": "DSA42.*",
+                              "reject_pattern": "DSA4288.*"
+                            }
+                          }
+                        },
+                        {
+                          "": { "or": ["DSE4211", "QF4211"] }
+                        },
+                        {
+                          "": { "or": ["DSE4212", "QF4212"] }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "": {
+                      "state": "dsaState",
+                      "module": { "code_pattern": "DSA426.*" }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Option B": {
+                "or": ["DSA4288", "DSA4288M", "DSA4288S"]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Operations Research Specialization": {
+          "expected_mcs": 20,
+          "fulfillment_criteria": {
+            "at_least_n_mcs": 20
+          },
+          "and": [
+            {
+              "Above level 3000": {
+                "fulfillment_criteria": {
+                  "at_least_n_mcs": 12
+                },
+                "at_least_n_of": {
+                  "n": 3,
+                  "baskets": [
+                    "MA4230",
+                    {
+                      "": {
+                        "or": ["MA4251", "ST4238"]
+                      }
+                    },
+                    "MA4260",
+                    "MA4268",
+                    "MA4270",
+                    {
+                      "": {
+                        "module": {
+                          "code": "DSA4288M",
+                          "double_count": true
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Level 3000": {
+                "at_least_n_of": {
+                  "n": 2,
+                  "baskets": [
+                    "MA3252",
+                    "MA3227",
+                    {
+                      "": {
+                        "or": ["MA3238", "ST3236"]
+                      }
+                    },
+                    "MA4230",
+                    {
+                      "": {
+                        "or": ["MA4251", "ST4238"]
+                      }
+                    },
+                    "MA4260",
+                    "MA4268",
+                    "MA4270",
+                    {
+                      "": {
+                        "module": {
+                          "code": "DSA4288M",
+                          "double_count": true
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

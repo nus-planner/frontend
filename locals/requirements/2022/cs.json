@@ -1,47 +1,137 @@
 {
-  "CS-2020": {
+  "Computer Science": {
     "and": [
       {
-        "University Level Requirements": {
-          "expected_mcs": 16,
-          "description": "You must take the ULRs (cs 2021)!",
+        "Common Curriculum Requirements": {
+          "expected_mcs": 40,
           "state": "overallDegreeState",
-          "title": "University Level Requirements",
           "and": [
             {
-              "geh": {
-                "title": "Cultures and Connections",
+              "Cultures and Connections": {
                 "module": {
-                  "code_pattern": "^GEC",
-                  "required_mcs": 4
+                  "code_prefix": "GEC"
                 }
-              }
-            },
-            {
-              "gei": {
-                "title": "Data Literacy",
+              },
+              "Critique and Expression": {
                 "module": {
-                  "code_pattern": "^GEA",
-                  "required_mcs": 4
+                  "code": "ES2660"
                 }
-              }
-            },
-            {
-              "gei": {
-                "title": "Singapore Studies",
+              },
+              "Data Literacy": {
+                "or": ["GEA1000", "BT1101", "ST1131", "DSA1101"]
+              },
+              "Digital Literacy": {
                 "module": {
-                  "code_pattern": "^GESS",
-                  "required_mcs": 4
+                  "code": "CS1101S"
                 }
-              }
-            },
-            {
-              "gei": {
-                "title": "Communities and Engagement",
+              },
+              "Singapore Studies": {
                 "module": {
-                  "code_pattern": "^GEN",
-                  "required_mcs": 4
+                  "code_pattern": "^GES"
                 }
+              },
+              "Communities and Engagement": {
+                "module": {
+                  "code_prefix": "GEN"
+                }
+              },
+              "Computer Ethics": {
+                "module": {
+                  "code": "IS1108"
+                }
+              },
+              "Interdisciplinary/Cross-Disciplinary Education": {
+                "fulfillment_criteria": {
+                  "at_least_n_mcs": 12
+                },
+                "and": [
+                  {
+                    "ID Courses": {
+                      "at_least_n_of": {
+                        "n": 2,
+                        "baskets": [
+                          "IS1128",
+                          "IS2218",
+                          "IS2238",
+                          "HSH1000",
+                          "HSS1000",
+                          "HSA1000",
+                          "HSI1000",
+                          "HSI2001",
+                          "HSI2002",
+                          "HSI2003",
+                          "HSI2004",
+                          "HSI2005",
+                          "HSI2007",
+                          "HSI2008",
+                          "HSI2009",
+                          "HSI2010",
+                          "HSI2011",
+                          "HSI2013",
+                          "HSI2014",
+                          "DTK1234",
+                          "EG1311",
+                          "EG2501",
+                          "IE2141",
+                          "PF1101"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "ID/CD Courses": {
+                      "or": [
+                        "ACC1701X",
+                        "DAO2703",
+                        "MNO1706X",
+                        "SC1101E",
+                        "EL1101E",
+                        "PE2101P",
+                        "GE2103",
+                        "XD3103",
+                        "GE3253",
+                        "GE3255",
+                        "GE3256",
+                        "SPH2002",
+                        "SC2226",
+                        "NUR1113A",
+                        "EG2201A",
+                        "EG2310",
+                        {
+                          "Chemistry/Physics/Biological Sciences": {
+                            "module": {
+                              "code_pattern": "^(PC|CM|LSM)"
+                            }
+                          }
+                        },
+                        "IS1128",
+                        "IS2218",
+                        "IS2238",
+                        "HSH1000",
+                        "HSS1000",
+                        "HSA1000",
+                        "HSI1000",
+                        "HSI2001",
+                        "HSI2002",
+                        "HSI2003",
+                        "HSI2004",
+                        "HSI2005",
+                        "HSI2007",
+                        "HSI2008",
+                        "HSI2009",
+                        "HSI2010",
+                        "HSI2011",
+                        "HSI2013",
+                        "HSI2014",
+                        "DTK1234",
+                        "EG1311",
+                        "EG2501",
+                        "IE2141",
+                        "PF1101"
+                      ]
+                    }
+                  }
+                ]
               }
             }
           ]
@@ -53,35 +143,15 @@
           "expected_mcs": 36,
           "title": "CS foundation",
           "and": [
-            {
-              "cs1010": {
-                "title": "Any CS1010 variant",
-                "or": ["CS1101S", "CS1010X"]
-              }
-            },
             "CS1231S",
             "CS2030S",
             "CS2040S",
             "CS2100",
+            "CS2101",
             "CS2103T",
             "CS2106",
             "CS2109S",
             "CS3230"
-          ]
-        }
-      },
-      {
-        "IT Professionalism": {
-          "expected_mcs": 12,
-          "state": "overallDegreeState",
-          "and": [
-            {
-              "": {
-                "or": ["IS1103", "IS1108"]
-              }
-            },
-            "CS2101",
-            "ES2660"
           ]
         }
       },
@@ -594,7 +664,7 @@
                       ]
                     }
                   },
-                  "MA1101R",
+                  "MA2001",
                   "MA1521"
                 ]
               }
