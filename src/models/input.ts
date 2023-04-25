@@ -1,4 +1,6 @@
 import yaml from "js-yaml";
+
+import 'reflect-metadata'; // needed for class-transformer https://github.com/typestack/class-transformer/issues/178
 import { Exclude, Expose } from "class-transformer";
 import * as baskets from "./basket";
 import * as plan from "./plan";

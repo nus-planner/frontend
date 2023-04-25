@@ -1,3 +1,4 @@
+import 'reflect-metadata'; // needed for class-transformer https://github.com/typestack/class-transformer/issues/178
 import {
   classToPlain,
   Exclude,
