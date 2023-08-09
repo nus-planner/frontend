@@ -37,3 +37,6 @@ next-env.d.ts
 
 locals/out
 tsc_out
+
+# temp file
+/temp/

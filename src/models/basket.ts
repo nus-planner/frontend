@@ -1,3 +1,4 @@
+import 'reflect-metadata'; // needed for class-transformer https://github.com/typestack/class-transformer/issues/178
 import { Exclude } from "class-transformer";
 import { Module, AcademicPlanView, PropertySetFilter } from "./plan";
 
@@ -668,7 +669,7 @@ export class MultiModuleBasket extends Basket {
     if (this.earlyTerminate && this.requiredMCs !== undefined) {
       // Heuristic: prioritize modules with smaller number of credits
       filteredModules.sort((a, b) => a.credits - b.credits);
-      const justEnoughModulesForMCs = [];
+      const justEnoughModulesForMCs: Module[] = [];
       for (
         let i = 0, mcs = 0;
         i < filteredModules.length && mcs < this.requiredMCs;

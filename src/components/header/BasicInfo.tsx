@@ -12,6 +12,8 @@ import {
   Box,
   Link,
 } from "@chakra-ui/react";
+
+import 'reflect-metadata'; // needed for class-transformer https://github.com/typestack/class-transformer/issues/178
 import { plainToInstance, Type } from "class-transformer";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
 import { useAppContext } from "../AppContext";

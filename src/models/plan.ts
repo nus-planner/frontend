@@ -1,6 +1,8 @@
 import * as input from "./input";
 import { convertYearAndSemToIndex } from "../utils/plannerUtils";
 import { Basket } from "./basket";
+
+import 'reflect-metadata'; // needed for class-transformer https://github.com/typestack/class-transformer/issues/178
 import { Exclude, Type } from "class-transformer";
 export const moduleRegex =
   /(?<prefix>[A-Z]+)(?<codeNumber>\d)\d+(?<suffix>[A-Z]*)/;
