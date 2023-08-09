@@ -202,6 +202,10 @@
         "desription": "Regex filter of module code",
         "type": "string"
       },
+      "reject_pattern": {
+        "description": "Filter out if regex matches module code",
+        "type": "string"
+      },
       "level": {
         "description": "Level filter",
         "oneOf": [

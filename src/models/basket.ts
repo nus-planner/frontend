@@ -535,12 +535,14 @@ export class ModuleBasket extends Basket {
 
 export class ModuleFilter {
   moduleCodePattern?: RegExp;
+  notModuleCodePattern?: RegExp; // If match `notPattern`, then reject.
   moduleCodePrefix?: Set<string>;
   moduleCodeSuffix?: Set<string>;
   level?: Set<number>;
   codes?: Set<string>;
   constructor(basket: Partial<ModuleFilter>) {
     this.moduleCodePattern = basket.moduleCodePattern;
+    this.notModuleCodePattern = basket.notModuleCodePattern;
     this.moduleCodePrefix = basket.moduleCodePrefix;
     this.moduleCodeSuffix = basket.moduleCodeSuffix;
     this.level = basket.level;
@@ -553,6 +555,13 @@ export class ModuleFilter {
     }
 
     if (this.moduleCodePattern && !this.moduleCodePattern.test(module.code)) {
+      return false;
+    }
+
+    if (
+      this.notModuleCodePattern &&
+      this.notModuleCodePattern.test(module.code)
+    ) {
       return false;
     }
 
