@@ -1,0 +1,83 @@
+{
+    "starting_year": 2020,
+    "years": 4,
+    "exemptions": ["MA1301"],
+    "apcs": [],
+    "semesters": [
+      {
+        "year": 1,
+        "semester": 1,
+        "modules": ["CS1010S", "DSA1101", "MA1102R", "GER1000"],
+        "baskets": ["Science Requirement"]
+      },
+      {
+        "year": 1,
+        "semester": 2,
+        "modules": ["CS2040", "MA1101R", "ST2131", "GEQ1000"],
+        "baskets": ["Science Requirement"]
+      },
+      {
+        "year": 2,
+        "semester": 1,
+        "modules": ["CS3244", "DSA2101", "ST2132", "MA2311"],
+        "baskets": ["University Level Requirements"]
+      },
+      {
+        "year": 2,
+        "semester": 2,
+        "modules": ["DSA2102", "ST3131"],
+        "baskets": [
+          "Unrestricted Elective",
+          "University Level Requirements",
+          "University Level Requirements"
+        ]
+      },
+      {
+        "year": 3,
+        "semester": 1,
+        "modules": ["DSA3101"],
+        "baskets": [
+            "Focus Area",
+            "Focus Area",
+            "Focus Area",
+            "Unrestricted Elective"
+        ]
+      },
+      {
+        "year": 3,
+        "semester": 2,
+        "modules": ["DSA3102"],
+        "baskets": [
+          "Focus Area",
+          "Unrestricted Elective",
+          "Unrestricted Elective",
+          "Unrestricted Elective"
+        ]
+      },
+      {
+        "year": 4,
+        "semester": 1,
+        "modules": [],
+        "baskets": [
+            "Focus Area",
+            "Unrestricted Elective",
+            "Unrestricted Elective",
+            "Unrestricted Elective",
+            "Unrestricted Elective"
+          ]
+      },
+      {
+        "year": 4,
+        "semester": 2,
+        "modules": [],
+        "baskets": [
+          "Focus Area",
+          "Unrestricted Elective",
+          "Unrestricted Elective",
+          "Unrestricted Elective",
+          "Unrestricted Elective"
+        ]
+      }
+    ]
+  }
+  

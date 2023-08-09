@@ -318,7 +318,7 @@ export class ArrayBasket extends Basket {
    * @returns A composite basket that is fulfilled iff at least n of the given baskets are fulfilled.
    */
   static atLeastN(name: string, n: number, basket: Array<Basket>): ArrayBasket {
-    return new ArrayBasket(name, basket, BinaryOp.GEQ, n, true);
+    return new ArrayBasket(name, basket, BinaryOp.GEQ, n, false);
   }
 
   accept<ReturnValue>(visitor: BasketVisitor<ReturnValue>): ReturnValue {
