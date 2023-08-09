@@ -1,12 +1,9 @@
-import {
-  Text,
-  Box,
-  VStack,
-} from "@chakra-ui/react";
-import { Module, Semester } from "../interfaces/planner";
-import ModuleBox from "./ModuleBox";
+import { Text, Box, VStack, Flex, Spacer } from "@chakra-ui/react";
+import { Module, Semester } from "../../interfaces/planner";
+import ModuleBox from "../moduleBox/ModuleBox";
 import { Droppable } from "react-beautiful-dnd";
 import React, { useState } from "react";
+import { getModuleCredits } from "../../utils/moduleUtils";
 
 interface SemesterPlannerProps {
   semesterNumber: number;
@@ -28,11 +25,22 @@ const SemesterPlanner = ({
       ? `Special Term ${semesterNumber - 2}`
       : `Semester ${semesterNumber}`;
 
+  const creditCount = semester.modules.reduce(
+    (acum, mod) => acum + (getModuleCredits(mod) ?? 0),
+    0,
+  );
+
   return (
     <Box>
-      <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
-        {semTitle}
-      </Text>
+      <Flex>
+        <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.900"} pb={1}>
+          {semTitle}
+        </Text>
+        <Spacer />
+        <Text fontSize={"xs"} fontWeight="bold" color={"blackAlpha.600"} pb={1}>
+          {creditCount} MCs
+        </Text>
+      </Flex>
       <Box
         border="dotted"
         borderColor={"blackAlpha.400"}

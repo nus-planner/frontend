@@ -249,85 +249,78 @@
                         {
                           "algo_focus_area_primaries": {
                             "tag": "Algorithms Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csAlgosFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4231", "CS4232", "CS4234"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csAlgosFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        {
-                                          "CS3230": {
-                                            "module": {
-                                              "code": "CS3230",
-                                              "double_count": true
-                                            }
-                                          }
-                                        },
-                                        "CS3231",
-                                        "CS3236",
-                                        "CS4231",
-                                        "CS4232",
-                                        "CS4234"
-                                      ]
-                                    }
+                            "and": [
+                              {
+                                "Level 4000": {
+                                  "state": "csAlgosFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 1,
+                                    "baskets": ["CS4231", "CS4232", "CS4234"]
                                   }
                                 }
-                              ]
-                            }
+                              },
+                              {
+                                "": {
+                                  "state": "csAlgosFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "CS3230": {
+                                          "module": {
+                                            "code": "CS3230",
+                                            "double_count": true
+                                          }
+                                        }
+                                      },
+                                      "CS3231",
+                                      "CS3236",
+                                      "CS4231",
+                                      "CS4232",
+                                      "CS4234"
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
                           }
                         },
-
                         {
                           "networks_focus_area_primaries": {
                             "tag": "Networks Primary",
-                            "at_least_n_of": {
-                              "n": 2,
-                              "baskets": [
-                                {
-                                  "Level 4000": {
-                                    "state": "csNetworksFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 1,
-                                      "baskets": ["CS4222", "CS4226", "CS4231"]
-                                    }
-                                  }
-                                },
-                                {
-                                  "": {
-                                    "state": "csNetworksFABasketState",
-                                    "at_least_n_of": {
-                                      "n": 2,
-                                      "baskets": [
-                                        {
-                                          "CS2105": {
-                                            "module": {
-                                              "code": "CS2105",
-                                              "double_count": true
-                                            }
-                                          }
-                                        },
-                                        "CS3103",
-                                        "CS4222",
-                                        "CS4226",
-                                        "CS4231"
-                                      ]
-                                    }
+                            "and": [
+                              {
+                                "Level 4000": {
+                                  "state": "csNetworksFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 1,
+                                    "baskets": ["CS4222", "CS4226", "CS4231"]
                                   }
                                 }
-                              ]
-                            }
+                              },
+                              {
+                                "": {
+                                  "state": "csNetworksFABasketState",
+                                  "at_least_n_of": {
+                                    "n": 2,
+                                    "baskets": [
+                                      {
+                                        "CS2105": {
+                                          "module": {
+                                            "code": "CS2105",
+                                            "double_count": true
+                                          }
+                                        }
+                                      },
+                                      "CS3103",
+                                      "CS4222",
+                                      "CS4226",
+                                      "CS4231"
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
                           }
                         },
                         {
@@ -377,182 +370,205 @@
                               {
                                 "ai_focus_area_primaries": {
                                   "tag": "AI Primary",
-                                  "at_least_n_of": {
-                                    "n": 2,
-                                    "baskets": [
-                                      {
-                                        "Level 4000": {
-                                          "state": "csAIFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 1,
-                                            "baskets": [
-                                              "CS4243",
-                                              "CS4244",
-                                              "CS4246",
-                                              "CS4248"
-                                            ]
-                                          }
-                                        }
-                                      },
-                                      {
-                                        "": {
-                                          "state": "csAIFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 2,
-                                            "baskets": [
-                                              "CS2109S",
-                                              "CS3243",
-                                              "CS3244",
-                                              "CS3263",
-                                              "CS3264",
-                                              "CS4243",
-                                              "CS4244",
-                                              "CS4246",
-                                              "CS4248"
-                                            ]
-                                          }
+                                  "and": [
+                                    {
+                                      "Level 4000": {
+                                        "state": "csAIFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 1,
+                                          "baskets": [
+                                            "CS4243",
+                                            "CS4244",
+                                            "CS4246",
+                                            "CS4248"
+                                          ]
                                         }
                                       }
-                                    ]
-                                  }
+                                    },
+                                    {
+                                      "": {
+                                        "state": "csAIFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 2,
+                                          "baskets": [
+                                            "CS2109S",
+                                            "CS3243",
+                                            "CS3244",
+                                            "CS3263",
+                                            "CS3264",
+                                            "CS4243",
+                                            "CS4244",
+                                            "CS4246",
+                                            "CS4248"
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
                                 }
                               },
                               {
                                 "computer_graphics_and_games_fa_primaries": {
                                   "tag": "CG Primary",
-                                  "at_least_n_of": {
-                                    "n": 2,
-                                    "baskets": [
-                                      {
-                                        "Level 4000": {
-                                          "state": "csCGFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 1,
-                                            "baskets": ["CS4247", "CS4350"]
-                                          }
-                                        }
-                                      },
-                                      {
-                                        "": {
-                                          "state": "csCGFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 2,
-                                            "baskets": [
-                                              "CS3241",
-                                              "CS3242",
-                                              "CS3247",
-                                              "CS4247",
-                                              "CS4350"
-                                            ]
-                                          }
+                                  "and": [
+                                    {
+                                      "Level 4000": {
+                                        "state": "csCGFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 1,
+                                          "baskets": ["CS4247", "CS4350"]
                                         }
                                       }
-                                    ]
-                                  }
+                                    },
+                                    {
+                                      "": {
+                                        "state": "csCGFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 2,
+                                          "baskets": [
+                                            "CS3241",
+                                            "CS3242",
+                                            "CS3247",
+                                            "CS4247",
+                                            "CS4350"
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
                                 }
                               },
                               {
                                 "database_systems_fa_primaries": {
                                   "tag": "DB Primary",
-                                  "at_least_n_of": {
-                                    "n": 2,
-                                    "baskets": [
-                                      {
-                                        "Level 4000": {
-                                          "state": "csDBFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 1,
-                                            "baskets": [
-                                              "CS4221",
-                                              "CS4224",
-                                              "CS4225"
-                                            ]
-                                          }
-                                        }
-                                      },
-                                      {
-                                        "": {
-                                          "state": "csDBFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 2,
-                                            "baskets": [
-                                              "CS2102",
-                                              "CS3223",
-                                              "CS4221",
-                                              "CS4224",
-                                              "CS4225"
-                                            ]
-                                          }
+                                  "and": [
+                                    {
+                                      "Level 4000": {
+                                        "state": "csDBFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 1,
+                                          "baskets": [
+                                            "CS4221",
+                                            "CS4224",
+                                            "CS4225"
+                                          ]
                                         }
                                       }
-                                    ]
-                                  }
+                                    },
+                                    {
+                                      "": {
+                                        "state": "csDBFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 2,
+                                          "baskets": [
+                                            "CS2102",
+                                            "CS3223",
+                                            "CS4221",
+                                            "CS4224",
+                                            "CS4225"
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
                                 }
                               },
                               {
                                 "programming_languages_fa_primaries": {
                                   "tag": "PL Primary",
-                                  "at_least_n_of": {
-                                    "n": 2,
-                                    "baskets": [
-                                      {
-                                        "Level 4000": {
-                                          "state": "csPLFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 1,
-                                            "baskets": ["CS4212", "CS4215"]
-                                          }
-                                        }
-                                      },
-                                      {
-                                        "": {
-                                          "state": "csPLFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 2,
-                                            "baskets": [
-                                              "CS2104",
-                                              "CS3211",
-                                              "CS4212",
-                                              "CS4215"
-                                            ]
-                                          }
+                                  "and": [
+                                    {
+                                      "Level 4000": {
+                                        "state": "csPLFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 1,
+                                          "baskets": ["CS4212", "CS4215"]
                                         }
                                       }
-                                    ]
-                                  }
+                                    },
+                                    {
+                                      "": {
+                                        "state": "csPLFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 2,
+                                          "baskets": [
+                                            "CS2104",
+                                            "CS3211",
+                                            "CS4212",
+                                            "CS4215"
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "multimedia_information_retrieval_fa_primaries": {
+                                  "tag": "Multimedia Information Retrieval",
+                                  "fulfillment_criteria": {
+                                    "at_least_n_modules": 3
+                                  },
+                                  "and": [
+                                    {
+                                      "Level 4000": {
+                                        "state": "csMultimediaInformationRetrievalFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 1,
+                                          "baskets": [
+                                            "CS4242",
+                                            "CS4248",
+                                            "CS4347"
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "": {
+                                        "state": "csMultimediaInformationRetrievalFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 2,
+                                          "baskets": [
+                                            "CS2108",
+                                            "CS3245",
+                                            "CS4242",
+                                            "CS4248",
+                                            "CS4347"
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
                                 }
                               },
                               {
                                 "parallel_computing_fa_primaries": {
                                   "tag": "Parallel Computing Primary",
-                                  "at_least_n_of": {
-                                    "n": 2,
-                                    "baskets": [
-                                      {
-                                        "Level 4000": {
-                                          "state": "csParallelComputingFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 1,
-                                            "baskets": ["CS4231", "CS4223"]
-                                          }
-                                        }
-                                      },
-                                      {
-                                        "": {
-                                          "state": "csParallelComputingFABasketState",
-                                          "at_least_n_of": {
-                                            "n": 2,
-                                            "baskets": [
-                                              "CS3210",
-                                              "CS3211",
-                                              "CS4231",
-                                              "CS4223"
-                                            ]
-                                          }
+                                  "and": [
+                                    {
+                                      "Level 4000": {
+                                        "state": "csParallelComputingFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 1,
+                                          "baskets": ["CS4231", "CS4223"]
                                         }
                                       }
-                                    ]
-                                  }
+                                    },
+                                    {
+                                      "": {
+                                        "state": "csParallelComputingFABasketState",
+                                        "at_least_n_of": {
+                                          "n": 2,
+                                          "baskets": [
+                                            "CS3210",
+                                            "CS3211",
+                                            "CS4231",
+                                            "CS4223"
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
                                 }
                               }
                             ]

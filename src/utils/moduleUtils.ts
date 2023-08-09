@@ -1,6 +1,11 @@
 import { fetchModuleList, fetchModulePrereqs } from "../api/moduleAPI";
 import { moduleColor } from "../constants/moduleColor";
-import { Requirement, Semester, PrereqTree } from "../interfaces/planner";
+import {
+  Requirement,
+  Semester,
+  PrereqTree,
+  Module,
+} from "../interfaces/planner";
 
 export const addColorToModules = (moduleRequirements: Requirement[]) => {
   return moduleRequirements.map((requirement, idx) => ({
@@ -29,6 +34,19 @@ export const addColorToModulesv2 = (moduleRequirements: Requirement[]) => {
 
 export const isValidModuleCode = (code: string) => {
   return !!code.match(/[A-Z]+\d+[A-Z]*/);
+};
+
+export const getModuleCredits = (mod: Module): number | null => {
+  
+  if (mod.credits !== null && mod.credits > 0) {
+    return mod.credits;
+  }
+
+  if (!!mod.getUnderlyingModule && !!mod.getUnderlyingModule()?.credits) {
+    return mod.getUnderlyingModule()?.credits ?? 0;
+  }
+
+  return null;
 };
 
 export const applyPrereqValidation = async (
