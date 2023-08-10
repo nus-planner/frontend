@@ -1,7 +1,8 @@
 ### Development commands
 - The usual Next.js commands, e.g. `next start` for the local dev server.
 - `npm run test -- <path_to_requirements_file> <path_to_academic_plan_file>` will verify the given academic plan json/yaml file with the given requirements json/yaml file and print out a bunch of relatively readable objects (`PrintableBasket`) in the console. See `PrintableBasket` in [basket.ts](..src/models/basket.ts).
-  See these [Powershell](../locals/scripts/Test.ps1) and [Sh](../locals/scripts/test.sh) scripts for examples.
+  `npm run test` invokes the [shell script](../scripts/test/test.sh)
+  and `npm run w-test` invokes the [Powershell script](../scripts/test/Test.ps1)
 
 ### Models
 

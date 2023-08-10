@@ -16,7 +16,7 @@
       "label": "tsc",
       "command": "npx",
       "type": "shell",
-      "args": ["tsc", "--project", "locals/tsconfig.json"],
+      "args": ["tsc", "--project", "tsconfig.compile.json"],
       "problemMatcher": ["$tsc"],
       "presentation": {
         "reveal": "always"

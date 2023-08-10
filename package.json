@@ -10,8 +10,8 @@
     "prepare": "husky install",
     "pre-commit": "next lint && next build",
     "export": "next export",
-    "test": "env TS_NODE_PROJECT=\"locals/tsconfig.json\" ts-node -T src/tests/index.ts",
-    "w-test": "Powershell.exe -File locals\\scripts\\Test.ps1"
+    "test": "scripts/test/test.sh",
+    "w-test": "Powershell.exe -File scripts\\test\\Test.ps1"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",

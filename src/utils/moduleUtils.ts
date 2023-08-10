@@ -7,6 +7,7 @@ import {
   Module,
 } from "../interfaces/planner";
 
+
 export const addColorToModules = (moduleRequirements: Requirement[]) => {
   return moduleRequirements.map((requirement, idx) => ({
     ...requirement,

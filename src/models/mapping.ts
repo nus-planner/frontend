@@ -144,7 +144,6 @@ export class MultiModuleViewModel implements frontend.Module {
     return true;
   }
   constructor(code: string, name: string, credits: number) {
-    debugger;
     this.id = (MultiModuleViewModel.count++).toString();
     if (code === undefined) {
       return;
