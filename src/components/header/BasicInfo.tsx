@@ -13,7 +13,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 
-import 'reflect-metadata'; // needed for class-transformer https://github.com/typestack/class-transformer/issues/178
+import "reflect-metadata"; // needed for class-transformer https://github.com/typestack/class-transformer/issues/178
 import { plainToInstance, Type } from "class-transformer";
 import { useState, SetStateAction, useCallback, useEffect } from "react";
 import { useAppContext } from "../AppContext";
@@ -35,10 +35,8 @@ class DirectoryList {
 }
 
 class DirectoryListing {
-  static branch =
-    process.env.NEXT_PUBLIC_APP_ENV === "development" ? "develop" : "main";
-  static requirementsBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/requirements/`;
-  static studyPlanBaseUrl = `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/study-plans/`;
+  static requirementsBaseUrl = "/requirements/";
+  static studyPlanBaseUrl = "/study_plans/";
   cohort!: number;
   faculty!: string;
   course!: string;
@@ -73,9 +71,7 @@ const BasicInfo = () => {
   } = useDisclosure();
 
   useEffect(() => {
-    fetch(
-      `https://raw.githubusercontent.com/nus-planner/frontend/${DirectoryListing.branch}/locals/requirements/dir.json`,
-    )
+    fetch("/requirements/dir.json")
       .then((res) => res.json())
       .then((plain) => plainToInstance(DirectoryList, plain))
       .then((directoryList) => {

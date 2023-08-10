@@ -1,22 +1,25 @@
 {
   "yaml.schemas": {
-    "locals/schemas/requirements.schema.json": "locals/requirements/*.yaml"
+    "schemas/requirements.schema.json": "requirements_and_plans/requirements/*.yaml"
   },
   "json.schemas": [
     {
       "fileMatch": [
-        "/locals/requirements/**/*.json",
-        "!/locals/requirements/dir.*"
+        "/requirements_and_plans/requirements/**/*.json",
+        "!/requirements_and_plans/requirements/dir.*"
       ],
-      "url": "/locals/schemas/requirements.schema.json"
+      "url": "/schemas/requirements.schema.json"
     },
     {
-      "fileMatch": ["/locals/requirements/dir.json"],
-      "url": "/locals/schemas/dir.schema.json"
+      "fileMatch": ["/requirements_and_plans/requirements/dir.json"],
+      "url": "/schemas/dir.schema.json"
     },
     {
-      "fileMatch": ["/locals/study-plans/**/*.json", "/locals/plans/**/*.json"],
-      "url": "/locals/schemas/plan.schema.json"
+      "fileMatch": [
+        "/requirements_and_plans/study_plans/**/*.json",
+        "/requirements_and_plans/plans/**/*.json"
+      ],
+      "url": "/schemas/plan.schema.json"
     }
   ]
 }
