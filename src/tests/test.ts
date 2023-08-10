@@ -9,7 +9,6 @@ import {
 import { AcademicPlan, Module } from "../models/plan";
 import * as log from "../models/log";
 import * as input from "../models/input";
-debugger;
 /**
  * With specialization in operations research and applied mathematics
  */

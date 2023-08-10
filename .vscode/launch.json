@@ -37,8 +37,8 @@
       "preLaunchTask": "tsc",
       "program": "${workspaceFolder}/src/tests/index.ts",
       "args": [
-        "./locals/requirements/cs-2019.json",
-        "./locals/plans/cs-2019-2.json"
+        "./requirements_and_plans/requirements/cs-2019.json",
+        "./requirements_and_plans/plans/cs-2019-2.json"
       ],
       "outFiles": ["${workspaceFolder}/**/*.js"]
     }
